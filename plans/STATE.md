@@ -22,7 +22,7 @@ Both agents read and write this file. It is the single source of truth for progr
 | 06   | completed | 2026-03-24 | A-05 | Deduplication pipeline |
 | 07   | completed | 2026-03-24 | A-03, A-05 | AI extraction pipeline |
 | 08   | completed | 2026-03-24 | A-03, A-07 | Candidate + Role CRUD endpoints |
-| 09   | not_started | | A-07 | Structured + semantic matching |
+| 09   | completed | 2026-03-24 | A-07 | Structured + semantic matching |
 | 10   | not_started | | A-09 | Match explanation generator |
 | 11   | not_started | | A-09, A-10 | Match + Collection endpoints |
 | 12   | not_started | | A-03 | Signal tracking + analytics |
