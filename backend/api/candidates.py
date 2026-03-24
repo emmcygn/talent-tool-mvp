@@ -3,6 +3,7 @@ from typing import Optional
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
+from pydantic import BaseModel
 
 from api.auth import CurrentUser, get_current_user, require_role
 from api.deps import PaginatedResponse, get_supabase_admin
@@ -318,3 +319,60 @@ async def update_candidate(
     )
 
     return result.data[0] if result.data else {}
+
+
+@router.post("/upload")
+async def upload_cv(
+    user: CurrentUser = Depends(
+        require_role(UserRole.talent_partner, UserRole.admin)
+    ),
+):
+    """Upload a CV file for candidate creation.
+
+    Stub endpoint — full file handling requires multipart processing.
+    Returns a placeholder response for frontend integration.
+    """
+    raise HTTPException(
+        status_code=501,
+        detail="CV upload not yet implemented. Use POST /api/candidates with cv_text instead.",
+    )
+
+
+class ExtractFromTextRequest(BaseModel):
+    text: str
+
+
+@router.post("/extract")
+async def extract_from_text(
+    body: ExtractFromTextRequest,
+    user: CurrentUser = Depends(
+        require_role(UserRole.talent_partner, UserRole.admin)
+    ),
+):
+    """Extract candidate data from raw text using AI.
+
+    Returns structured candidate data without creating a record.
+    """
+    pipeline = ExtractionPipeline()
+    result = pipeline._parse_candidate_extraction(
+        await pipeline._call_extraction_llm(
+            body.text, pipeline.CANDIDATE_EXTRACTION_PROMPT
+            if hasattr(pipeline, "CANDIDATE_EXTRACTION_PROMPT")
+            else ""
+        )
+    )
+    return {
+        "skills": [s.model_dump() for s in result.skills],
+        "experience": [e.model_dump() for e in result.experience],
+        "seniority": result.seniority.value if result.seniority else None,
+        "salary_expectation": (
+            result.salary_expectation.model_dump(mode="json")
+            if result.salary_expectation
+            else None
+        ),
+        "availability": (
+            result.availability.value if result.availability else None
+        ),
+        "industries": result.industries,
+        "confidence": result.overall_confidence,
+    }

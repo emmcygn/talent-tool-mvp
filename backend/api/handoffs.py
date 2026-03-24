@@ -2,6 +2,7 @@ from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 
 from api.auth import CurrentUser, get_current_user, require_role
 from api.deps import get_supabase_admin
@@ -77,11 +78,15 @@ async def get_attribution_chain(
     return await service.get_attribution_chain(attribution_id)
 
 
-@router.patch("/{handoff_id}/respond")
+class HandoffResponse(BaseModel):
+    accept: bool
+    notes: str | None = None
+
+
+@router.post("/{handoff_id}/respond")
 async def respond_to_handoff(
     handoff_id: UUID,
-    accept: bool,
-    response_notes: Optional[str] = None,
+    body: HandoffResponse,
     user: CurrentUser = Depends(require_role(UserRole.talent_partner, UserRole.admin)),
 ):
     """Accept or decline a handoff. Only the recipient can respond."""
@@ -90,8 +95,8 @@ async def respond_to_handoff(
     result = await service.respond(
         handoff_id=handoff_id,
         partner_id=user.id,
-        accept=accept,
-        response_notes=response_notes,
+        accept=body.accept,
+        response_notes=body.notes,
     )
     if not result:
         raise HTTPException(

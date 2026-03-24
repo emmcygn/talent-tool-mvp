@@ -3,6 +3,7 @@ from typing import Optional
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
+from pydantic import BaseModel
 
 from api.auth import CurrentUser, get_current_user, require_role
 from api.deps import PaginatedResponse, get_supabase_admin
@@ -210,3 +211,30 @@ async def update_role(
         background_tasks.add_task(_run_role_extraction, role_id)
 
     return result.data[0] if result.data else {}
+
+
+class ExtractRequirementsRequest(BaseModel):
+    description: str
+
+
+@router.post("/extract-requirements")
+async def extract_requirements(
+    body: ExtractRequirementsRequest,
+    user: CurrentUser = Depends(get_current_user),
+):
+    """Extract role requirements from a description using AI.
+
+    Returns structured skills, seniority, etc. without creating a role.
+    Used by the role creation wizard for preview.
+    """
+    pipeline = extraction_pipeline
+    extraction = await pipeline._call_extraction_llm(
+        body.description,
+        "You are a recruitment data extraction system. Extract structured job requirements from the following role description.\n\nReturn a JSON object with exactly these fields:\n\n{\n  \"required_skills\": [{\"name\": \"skill name\", \"min_years\": years_or_null, \"importance\": \"required\"}],\n  \"preferred_skills\": [{\"name\": \"skill name\", \"min_years\": years_or_null, \"importance\": \"preferred\"}],\n  \"seniority\": \"junior|mid|senior|lead|principal\",\n  \"salary_band\": {\"min_amount\": number_or_null, \"max_amount\": number_or_null, \"currency\": \"GBP\"},\n  \"industry\": \"industry name or null\",\n  \"field_confidences\": {\"required_skills\": 0.0_to_1.0, \"preferred_skills\": 0.0_to_1.0, \"seniority\": 0.0_to_1.0, \"salary_band\": 0.0_to_1.0, \"industry\": 0.0_to_1.0}\n}\n\nRules:\n- Distinguish required vs preferred skills based on language\n- UK market context — GBP for salary\n- Return valid JSON only",
+    )
+    parsed = pipeline._parse_role_extraction(extraction)
+    return {
+        "required_skills": parsed.required_skills,
+        "preferred_skills": parsed.preferred_skills,
+        "seniority": parsed.seniority.value if parsed.seniority else None,
+    }

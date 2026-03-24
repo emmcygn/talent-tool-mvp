@@ -3,7 +3,7 @@ import logging
 import time
 import uuid
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -94,12 +94,43 @@ async def internal_error_handler(request: Request, exc):
 # ---- Health Check ----
 
 @app.get("/health", tags=["system"])
+@app.get("/api/health", tags=["system"], include_in_schema=False)
 async def health_check():
     """Health check endpoint. Returns 200 if API is running."""
     return {
         "status": "healthy",
         "service": "recruittech-api",
         "version": "0.1.0",
+    }
+
+
+
+# ---- Users/Me ----
+
+from api.auth import get_current_user as _get_current_user
+from api.auth import CurrentUser as _CurrentUser
+
+
+@app.get("/api/users/me", tags=["users"])
+async def get_me(user: _CurrentUser = Depends(_get_current_user)):
+    """Get the current authenticated user's profile."""
+    try:
+        from api.deps import get_supabase_admin
+        supabase = get_supabase_admin()
+        result = supabase.table("users").select("*").eq("id", str(user.id)).single().execute()
+        if result.data:
+            return result.data
+    except Exception:
+        pass
+    # Fallback: return what we know from the JWT
+    return {
+        "id": str(user.id),
+        "email": user.email,
+        "first_name": user.email.split("@")[0].split(".")[0].title(),
+        "last_name": "",
+        "role": user.role.value,
+        "organisation_id": None,
+        "is_active": True,
     }
 
 
