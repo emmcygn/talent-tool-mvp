@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import type { Role } from "@/contracts/canonical";
 import { apiClient } from "@/lib/api-client";
+import { MOCK_MATCHES, getCandidateById } from "@/lib/mock-data";
 import { Columns3, Filter } from "lucide-react";
 
 const PIPELINE_STAGES: KanbanStage[] = [
@@ -35,8 +36,28 @@ export default function PipelinePage() {
       try {
         const rolesData = await apiClient.roles.list();
         setRoles(rolesData);
-        // Pipeline items would come from a dedicated endpoint or composed from matches
-        // For now, mock structure
+
+        // Populate pipeline from mock matches
+        const pipelineItems: PipelineCandidateItem[] = MOCK_MATCHES
+          .filter((m) => m.overall_score >= 0.7)
+          .map((m, idx) => {
+            const candidate = getCandidateById(m.candidate_id);
+            const stages = ["matched", "shortlisted", "intro_requested"] as const;
+            return {
+              id: m.id,
+              stage: stages[idx % stages.length],
+              candidateId: m.candidate_id,
+              name: candidate
+                ? `${candidate.first_name} ${candidate.last_name.charAt(0)}.`
+                : "Unknown",
+              location: candidate?.location ?? null,
+              skills: candidate?.skills.slice(0, 4).map((s) => s.name) ?? [],
+              confidence: m.confidence,
+              availability: candidate?.availability ?? null,
+              stageNotes: "",
+            };
+          });
+        setItems(pipelineItems);
       } catch {
         // Handle error
       } finally {

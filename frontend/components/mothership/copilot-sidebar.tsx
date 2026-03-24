@@ -139,8 +139,9 @@ export function CopilotSidebar({ pageContext = "default" }: CopilotSidebarProps)
     }
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleAction(action: string, entityId: string) {
-    console.log("Copilot action:", action, entityId);
+    // Action handling — to be wired to real navigation/API calls
   }
 
   function handleReset() {

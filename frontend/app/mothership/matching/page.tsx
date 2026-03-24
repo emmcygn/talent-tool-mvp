@@ -39,7 +39,7 @@ export default function MatchingPage() {
     let cancelled = false;
     apiClient.roles.list().then((data) => {
       if (!cancelled) setRoles(data);
-    });
+    }).catch(() => {});
     return () => { cancelled = true; };
   }, []);
 
@@ -127,23 +127,29 @@ export default function MatchingPage() {
     }
   }, []);
 
-  const handleAddToCollection = useCallback(() => {
+  const handleAddToCollection = useCallback((matchId?: string) => {
+    console.log("[PoC stub] Add to collection — match:", matchId);
     toast.success("Added to collection");
   }, []);
 
-  const handleRefer = useCallback(() => {
+  const handleRefer = useCallback((matchId?: string) => {
+    console.log("[PoC stub] Refer / handoff — match:", matchId);
     toast.success("Handoff initiated");
   }, []);
 
   const handleBulkAddToCollection = useCallback(() => {
-    toast.success(`${selectedIds.size} candidates added to collection`);
+    const ids = Array.from(selectedIds);
+    console.log("[PoC stub] Bulk add to collection — matches:", ids);
+    toast.success(`${selectedIds.size} candidate${selectedIds.size === 1 ? "" : "s"} added to collection`);
     setSelectedIds(new Set());
-  }, [selectedIds.size]);
+  }, [selectedIds]);
 
   const handleBulkSendHandoff = useCallback(() => {
-    toast.success(`Handoff created for ${selectedIds.size} candidates`);
+    const ids = Array.from(selectedIds);
+    console.log("[PoC stub] Bulk send handoff — matches:", ids);
+    toast.success(`Handoff created for ${selectedIds.size} candidate${selectedIds.size === 1 ? "" : "s"}`);
     setSelectedIds(new Set());
-  }, [selectedIds.size]);
+  }, [selectedIds]);
 
   return (
     <div className="space-y-6">
@@ -237,8 +243,8 @@ export default function MatchingPage() {
               selected={selectedIds.has(match.id)}
               onToggleSelect={() => toggleSelect(match.id)}
               onShortlist={() => handleShortlist(match.id)}
-              onAddToCollection={() => handleAddToCollection()}
-              onRefer={() => handleRefer()}
+              onAddToCollection={() => handleAddToCollection(match.id)}
+              onRefer={() => handleRefer(match.id)}
             />
           ))}
         </div>

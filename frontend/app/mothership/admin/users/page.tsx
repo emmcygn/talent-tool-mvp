@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   UserCog, Plus, Search, Shield, Users, Briefcase,
 } from "lucide-react";
+import { toast } from "sonner";
 import { MOCK_USERS } from "@/lib/mock-data";
 import type { User } from "@/contracts/canonical";
 
@@ -25,7 +27,16 @@ const roleIcon: Record<string, React.ElementType> = {
 
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [users] = useState<User[]>(MOCK_USERS);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setUsers(MOCK_USERS);
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filtered = users.filter((u) =>
     u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,7 +56,7 @@ export default function UsersPage() {
             Manage platform users, roles, and access.
           </p>
         </div>
-        <Button>
+        <Button onClick={() => toast("Coming soon")}>
           <Plus className="h-4 w-4 mr-1.5" />
           Invite User
         </Button>
@@ -75,40 +86,54 @@ export default function UsersPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((user) => {
-                  const RoleIcon = roleIcon[user.role] || Users;
-                  return (
-                    <tr key={user.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-medium text-slate-600">
-                            {user.full_name.split(" ").map((n) => n[0]).join("")}
-                          </div>
-                          <span className="font-medium">{user.full_name}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">{user.email}</td>
-                      <td className="px-4 py-3">
-                        <Badge variant="outline" className={roleBadgeStyle[user.role] || ""}>
-                          <RoleIcon className="h-3 w-3 mr-1" />
-                          {user.role.replace("_", " ")}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        {new Date(user.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <Button variant="ghost" size="sm">Edit</Button>
-                      </td>
+                {loading ? (
+                  Array.from({ length: 4 }).map((_, i) => (
+                    <tr key={i} className="border-b last:border-0">
+                      <td className="px-4 py-3"><Skeleton className="h-5 w-32" /></td>
+                      <td className="px-4 py-3"><Skeleton className="h-5 w-40" /></td>
+                      <td className="px-4 py-3"><Skeleton className="h-5 w-24" /></td>
+                      <td className="px-4 py-3"><Skeleton className="h-5 w-20" /></td>
+                      <td className="px-4 py-3 text-right"><Skeleton className="h-5 w-12 ml-auto" /></td>
                     </tr>
-                  );
-                })}
-                {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
-                      No users found matching your search.
-                    </td>
-                  </tr>
+                  ))
+                ) : (
+                  <>
+                    {filtered.map((user) => {
+                      const RoleIcon = roleIcon[user.role] || Users;
+                      return (
+                        <tr key={user.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-3">
+                              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-medium text-slate-600">
+                                {user.full_name.split(" ").map((n) => n[0]).join("")}
+                              </div>
+                              <span className="font-medium">{user.full_name}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3 text-muted-foreground">{user.email}</td>
+                          <td className="px-4 py-3">
+                            <Badge variant="outline" className={roleBadgeStyle[user.role] || ""}>
+                              <RoleIcon className="h-3 w-3 mr-1" />
+                              {user.role.replace("_", " ")}
+                            </Badge>
+                          </td>
+                          <td className="px-4 py-3 text-muted-foreground">
+                            {new Date(user.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <Button variant="ghost" size="sm">Edit</Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {filtered.length === 0 && (
+                      <tr>
+                        <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                          No users found matching your search.
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 )}
               </tbody>
             </table>

@@ -26,6 +26,7 @@ import {
 import { useAuth } from "@/app/providers";
 import { CopilotSidebar } from "@/components/mothership/copilot-sidebar";
 import { cn } from "@/lib/utils";
+import { useKeyboardShortcuts } from "@/lib/use-keyboard-shortcuts";
 
 const MAIN_NAV = [
   { href: "/mothership/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -76,6 +77,7 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
   );
   const [copilotOpen, setCopilotOpen] = useState(false);
 
+  useKeyboardShortcuts();
   const isAdmin = user?.role === "admin";
 
   return (
@@ -170,7 +172,12 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
           </main>
 
           {copilotOpen && (
-            <CopilotSidebar />
+            <CopilotSidebar pageContext={
+              pathname.includes("/matching") ? "matching"
+              : pathname.includes("/collections") ? "collections"
+              : pathname.includes("/admin") ? "admin"
+              : "default"
+            } />
           )}
         </div>
       </div>

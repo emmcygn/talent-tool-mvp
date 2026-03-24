@@ -26,12 +26,11 @@ export default function CollectionsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const [ownCols, allCols, allCandidates] = await Promise.all([
-          apiClient.collections.list(),
+        const [allCols, allCandidates] = await Promise.all([
           apiClient.collections.list(),
           apiClient.candidates.list(),
         ]);
-        setCollections(ownCols);
+        setCollections(allCols);
         setSharedCollections(allCols.filter((c: Collection) => c.visibility !== "private"));
         setCandidates(allCandidates);
       } catch {
@@ -43,13 +42,26 @@ export default function CollectionsPage() {
     load();
   }, []);
 
-  async function handleCreate(data: CollectionCreate) {
+  async function handleSubmit(data: CollectionCreate) {
     try {
-      const created = await apiClient.collections.create(data);
-      setCollections([created, ...collections]);
-      toast.success("Collection created");
+      if (editTarget) {
+        // Optimistic update — no update endpoint available yet
+        const updated: Collection = {
+          ...editTarget,
+          ...data,
+          shared_with: data.shared_with ?? [],
+          description: data.description ?? "",
+          updated_at: new Date().toISOString(),
+        };
+        setCollections(collections.map((c) => (c.id === editTarget.id ? updated : c)));
+        toast.success("Collection updated");
+      } else {
+        const created = await apiClient.collections.create(data);
+        setCollections([created, ...collections]);
+        toast.success("Collection created");
+      }
     } catch {
-      toast.error("Failed to create collection");
+      toast.error(editTarget ? "Failed to update collection" : "Failed to create collection");
     }
   }
 
@@ -211,9 +223,10 @@ export default function CollectionsPage() {
 
       {/* Create/Edit Dialog */}
       <CollectionForm
+        key={editTarget?.id ?? "new"}
         open={formOpen}
         onOpenChange={setFormOpen}
-        onSubmit={handleCreate}
+        onSubmit={handleSubmit}
         initial={editTarget}
       />
     </div>

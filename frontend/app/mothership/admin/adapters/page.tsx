@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { apiClient } from "@/lib/api-client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MetricTile } from "@/components/shared/metric-tile";
 import {
   Plug, RefreshCw, CheckCircle2, AlertTriangle, XCircle,
-  Database, Clock, ArrowDownToLine,
+  Database, Clock, ArrowDownToLine, Cpu, Loader2, CheckCheck, Ban,
 } from "lucide-react";
 import { formatRelativeTime } from "@/lib/utils";
 
@@ -206,6 +206,48 @@ export default function AdaptersPage() {
           })
         )}
       </div>
+
+      <Card>
+        <CardContent className="p-5 space-y-4">
+          <h3 className="font-semibold flex items-center gap-2">
+            <Cpu className="h-5 w-5" />
+            AI Pipeline Health
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <MetricTile
+              label="Extraction Queue"
+              value={12}
+              subtitle="Pending"
+              icon={<Loader2 className="h-4 w-4" />}
+              loading={loading}
+            />
+            <MetricTile
+              label="Processing"
+              value={3}
+              subtitle="Active"
+              icon={<Cpu className="h-4 w-4" />}
+              loading={loading}
+            />
+            <MetricTile
+              label="Completed"
+              value={847}
+              subtitle="Total"
+              icon={<CheckCheck className="h-4 w-4" />}
+              loading={loading}
+            />
+            <MetricTile
+              label="Failed"
+              value={5}
+              subtitle="Total"
+              icon={<Ban className="h-4 w-4" />}
+              loading={loading}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Pipeline metrics refresh every 60 seconds
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

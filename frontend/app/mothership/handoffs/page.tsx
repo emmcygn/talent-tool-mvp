@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import type { Handoff, HandoffCreate, Candidate, Role, User } from "@/contracts/canonical";
 import { apiClient } from "@/lib/api-client";
+import { MOCK_USERS } from "@/lib/mock-data";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,7 +24,7 @@ export default function HandoffsPage() {
 
   // Data for send dialog
   const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [partners] = useState<User[]>([]);
+  const [partners, setPartners] = useState<User[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function HandoffsPage() {
         setOutbox(outboxData);
         setCandidates(candidateData);
         setRoles(roleData);
-        // Partners would come from a users endpoint
+        setPartners(MOCK_USERS.filter((u) => u.role === "talent_partner"));
       } catch {
         toast.error("Failed to load handoffs");
       } finally {

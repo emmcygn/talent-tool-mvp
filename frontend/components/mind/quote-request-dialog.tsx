@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { QuoteCard } from "./quote-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "@/lib/api";
+import { apiClient } from "@/lib/api-client";
 
 interface QuoteRequestDialogProps {
   open: boolean;
@@ -40,7 +40,7 @@ export function QuoteRequestDialog({
     setLoading(true);
     setError(null);
     try {
-      const q = await api.quotes.request({ candidate_id: candidate.id, role_id: roleId });
+      const q = await apiClient.quotes.request({ candidate_id: candidate.id, role_id: roleId });
       setQuote(q);
     } catch {
       setError("Failed to generate quote. Please try again.");

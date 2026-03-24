@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import type { Quote } from "@/contracts/canonical";
 import { apiClient } from "@/lib/api-client";
+import { toast } from "sonner";
 import { QuoteCard } from "@/components/mind/quote-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,6 +26,20 @@ export default function QuotesPage() {
     }
     load();
   }, []);
+
+  function handleAcceptQuote(quoteId: string) {
+    setQuotes((prev) =>
+      prev.map((q) => (q.id === quoteId ? { ...q, status: "accepted" as const } : q))
+    );
+    toast.success("Quote accepted. Introduction request sent.");
+  }
+
+  function handleDeclineQuote(quoteId: string) {
+    setQuotes((prev) =>
+      prev.map((q) => (q.id === quoteId ? { ...q, status: "declined" as const } : q))
+    );
+    toast.info("Quote declined.");
+  }
 
   const active = quotes.filter((q) => q.status === "generated" || q.status === "sent");
   const accepted = quotes.filter((q) => q.status === "accepted");
@@ -78,8 +93,8 @@ export default function QuotesPage() {
               <QuoteCard
                 key={q.id}
                 quote={q}
-                onAccept={() => {/* Accept via API */}}
-                onDecline={() => {/* Decline via API */}}
+                onAccept={() => handleAcceptQuote(q.id)}
+                onDecline={() => handleDeclineQuote(q.id)}
               />
             ))
           )}

@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/app/providers";
 import { cn } from "@/lib/utils";
+import { useKeyboardShortcuts } from "@/lib/use-keyboard-shortcuts";
 
 const NAV_ITEMS = [
   { href: "/mind/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -33,6 +34,7 @@ const NAV_ITEMS = [
 export default function MindLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user, signOut } = useAuth();
+  useKeyboardShortcuts();
 
   return (
     <div className="min-h-screen bg-white">
