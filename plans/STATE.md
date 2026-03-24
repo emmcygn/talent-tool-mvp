@@ -48,7 +48,7 @@ _(none)_
 | 06   | completed | 2026-03-24 | B-03, B-04 | Mind: Role posting wizard |
 | 07   | completed | 2026-03-24 | B-03, B-04 | Mind: Candidate browse + matching |
 | 08   | completed | 2026-03-24 | B-03, B-04 | Mothership: Match results view |
-| 09   | not_started | | B-03, B-04 | Mothership: Collections UI |
+| 09   | completed | 2026-03-24 | B-03, B-04 | Mothership: Collections UI |
 | 10   | not_started | | B-03, B-04 | Mothership: Handoff inbox/outbox |
 | 11   | not_started | | B-03, B-04 | Mind: Quotes + pipeline |
 | 12   | not_started | | B-04 | Mothership: Copilot sidebar |
