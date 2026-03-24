@@ -21,7 +21,7 @@ Both agents read and write this file. It is the single source of truth for progr
 | 05   | completed | 2026-03-24 | A-02, A-04 | Ingest + normalize pipeline |
 | 06   | completed | 2026-03-24 | A-05 | Deduplication pipeline |
 | 07   | completed | 2026-03-24 | A-03, A-05 | AI extraction pipeline |
-| 08   | not_started | | A-03, A-07 | Candidate + Role CRUD endpoints |
+| 08   | completed | 2026-03-24 | A-03, A-07 | Candidate + Role CRUD endpoints |
 | 09   | not_started | | A-07 | Structured + semantic matching |
 | 10   | not_started | | A-09 | Match explanation generator |
 | 11   | not_started | | A-09, A-10 | Match + Collection endpoints |
@@ -43,7 +43,7 @@ _(none)_
 | 01   | completed | 2026-03-24 | A-01 | Bootstrap: Next.js + TypeScript contracts (PAIR) |
 | 02   | completed | 2026-03-24 | B-01 | Layout shells + auth flow |
 | 03   | completed | 2026-03-24 | B-01 | Shared UI components (batch 1) |
-| 04   | not_started | | B-01, A-01 | API client + mock layer |
+| 04   | completed | 2026-03-24 | B-01, A-01 | API client + mock layer |
 | 05   | not_started | | B-03, B-04 | Mothership: Candidate ingestion |
 | 06   | not_started | | B-03, B-04 | Mind: Role posting wizard |
 | 07   | not_started | | B-03, B-04 | Mind: Candidate browse + matching |

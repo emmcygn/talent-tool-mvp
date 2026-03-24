@@ -1,0 +1,566 @@
+import type {
+  Candidate, CandidateAnonymized, Role, Match, Collection,
+  User, Organisation,
+} from "@/contracts/canonical";
+
+const uuid = (n: number) => `00000000-0000-0000-0000-${String(n).padStart(12, "0")}`;
+
+// ============================================================
+// Users
+// ============================================================
+export const MOCK_USERS: User[] = [
+  {
+    id: uuid(1),
+    email: "alex.morgan@mothership.demo",
+    full_name: "Alex Morgan",
+    role: "talent_partner",
+    organisation_id: null,
+    avatar_url: null,
+    created_at: "2026-01-15T09:00:00Z",
+  },
+  {
+    id: uuid(2),
+    email: "jamie.chen@acmecorp.demo",
+    full_name: "Jamie Chen",
+    role: "client",
+    organisation_id: uuid(100),
+    avatar_url: null,
+    created_at: "2026-02-01T09:00:00Z",
+  },
+  {
+    id: uuid(3),
+    email: "sam.patel@mothership.demo",
+    full_name: "Sam Patel",
+    role: "admin",
+    organisation_id: null,
+    avatar_url: null,
+    created_at: "2026-01-10T09:00:00Z",
+  },
+];
+
+// ============================================================
+// Organisations
+// ============================================================
+export const MOCK_ORGANISATIONS: Organisation[] = [
+  { id: uuid(100), name: "Acme Fintech", industry: "Fintech", website: "https://acmefintech.co.uk", location: "London" },
+  { id: uuid(101), name: "HealthBridge", industry: "Healthtech", website: "https://healthbridge.io", location: "Manchester" },
+  { id: uuid(102), name: "CloudScale Systems", industry: "SaaS", website: "https://cloudscale.dev", location: "Remote" },
+];
+
+// ============================================================
+// Candidates (5)
+// ============================================================
+export const MOCK_CANDIDATES: Candidate[] = [
+  {
+    id: uuid(10),
+    first_name: "Priya",
+    last_name: "Sharma",
+    email: "priya.sharma@gmail.com",
+    phone: "+44 7700 900123",
+    location: "London",
+    linkedin_url: "https://linkedin.com/in/priyasharma",
+    skills: [
+      { name: "Python", years: 6, confidence: 0.95 },
+      { name: "FastAPI", years: 3, confidence: 0.9 },
+      { name: "PostgreSQL", years: 5, confidence: 0.88 },
+      { name: "AWS", years: 4, confidence: 0.85 },
+      { name: "Docker", years: 3, confidence: 0.9 },
+      { name: "React", years: 2, confidence: 0.75 },
+    ],
+    experience: [
+      { company: "Revolut", title: "Senior Backend Engineer", duration_months: 24, industry: "Fintech" },
+      { company: "Monzo", title: "Backend Engineer", duration_months: 18, industry: "Fintech" },
+      { company: "BBC", title: "Software Developer", duration_months: 30, industry: "Media" },
+    ],
+    seniority: "senior",
+    salary_expectation: { min_amount: 85000, max_amount: 100000, currency: "GBP" },
+    availability: "1_month",
+    industries: ["Fintech", "Media"],
+    cv_text: "Experienced backend engineer with 6 years of Python development...",
+    profile_text: null,
+    sources: [{ adapter_name: "bullhorn", external_id: "BH-4521", ingested_at: "2026-03-10T14:30:00Z" }],
+    dedup_group: null,
+    dedup_confidence: null,
+    extraction_confidence: 0.92,
+    extraction_flags: [],
+    embedding: null,
+    created_at: "2026-03-10T14:30:00Z",
+    updated_at: "2026-03-10T14:30:00Z",
+    created_by: uuid(1),
+  },
+  {
+    id: uuid(11),
+    first_name: "Marcus",
+    last_name: "Williams",
+    email: "marcus.w@protonmail.com",
+    phone: "+44 7700 900456",
+    location: "Manchester",
+    linkedin_url: "https://linkedin.com/in/marcuswilliams",
+    skills: [
+      { name: "TypeScript", years: 5, confidence: 0.92 },
+      { name: "React", years: 5, confidence: 0.95 },
+      { name: "Next.js", years: 3, confidence: 0.88 },
+      { name: "Node.js", years: 4, confidence: 0.9 },
+      { name: "GraphQL", years: 2, confidence: 0.8 },
+      { name: "Tailwind CSS", years: 2, confidence: 0.85 },
+    ],
+    experience: [
+      { company: "Booking.com", title: "Senior Frontend Engineer", duration_months: 30, industry: "Travel" },
+      { company: "THG", title: "Frontend Developer", duration_months: 24, industry: "E-commerce" },
+    ],
+    seniority: "senior",
+    salary_expectation: { min_amount: 75000, max_amount: 90000, currency: "GBP" },
+    availability: "immediate",
+    industries: ["Travel", "E-commerce"],
+    cv_text: "Senior frontend engineer specialising in React and TypeScript...",
+    profile_text: null,
+    sources: [{ adapter_name: "linkedin", external_id: "LI-8832", ingested_at: "2026-03-12T10:00:00Z" }],
+    dedup_group: null,
+    dedup_confidence: null,
+    extraction_confidence: 0.89,
+    extraction_flags: ["salary_expectation"],
+    embedding: null,
+    created_at: "2026-03-12T10:00:00Z",
+    updated_at: "2026-03-12T10:00:00Z",
+    created_by: uuid(1),
+  },
+  {
+    id: uuid(12),
+    first_name: "Elena",
+    last_name: "Kovac",
+    email: "elena.kovac@outlook.com",
+    phone: "+44 7700 900789",
+    location: "London",
+    linkedin_url: "https://linkedin.com/in/elenakovac",
+    skills: [
+      { name: "Python", years: 8, confidence: 0.95 },
+      { name: "Machine Learning", years: 5, confidence: 0.9 },
+      { name: "TensorFlow", years: 4, confidence: 0.88 },
+      { name: "SQL", years: 7, confidence: 0.92 },
+      { name: "Spark", years: 3, confidence: 0.85 },
+      { name: "Airflow", years: 2, confidence: 0.78 },
+    ],
+    experience: [
+      { company: "DeepMind", title: "ML Engineer", duration_months: 36, industry: "AI" },
+      { company: "Ocado Technology", title: "Data Scientist", duration_months: 24, industry: "E-commerce" },
+    ],
+    seniority: "lead",
+    salary_expectation: { min_amount: 110000, max_amount: 130000, currency: "GBP" },
+    availability: "3_months",
+    industries: ["AI", "E-commerce"],
+    cv_text: "Lead ML engineer with experience at DeepMind and Ocado...",
+    profile_text: null,
+    sources: [{ adapter_name: "hubspot", external_id: "HS-2211", ingested_at: "2026-03-08T16:00:00Z" }],
+    dedup_group: null,
+    dedup_confidence: null,
+    extraction_confidence: 0.94,
+    extraction_flags: [],
+    embedding: null,
+    created_at: "2026-03-08T16:00:00Z",
+    updated_at: "2026-03-08T16:00:00Z",
+    created_by: uuid(1),
+  },
+  {
+    id: uuid(13),
+    first_name: "Tom",
+    last_name: "Bradley",
+    email: "tom.bradley@gmail.com",
+    phone: "+44 7700 900321",
+    location: "Bristol",
+    linkedin_url: "https://linkedin.com/in/tombradley",
+    skills: [
+      { name: "Python", years: 3, confidence: 0.9 },
+      { name: "Django", years: 2, confidence: 0.85 },
+      { name: "JavaScript", years: 3, confidence: 0.88 },
+      { name: "PostgreSQL", years: 2, confidence: 0.82 },
+      { name: "Docker", years: 1, confidence: 0.7 },
+    ],
+    experience: [
+      { company: "Just Eat", title: "Software Engineer", duration_months: 18, industry: "Food Tech" },
+      { company: "Graduate scheme", title: "Junior Developer", duration_months: 12, industry: "Consulting" },
+    ],
+    seniority: "mid",
+    salary_expectation: { min_amount: 50000, max_amount: 60000, currency: "GBP" },
+    availability: "immediate",
+    industries: ["Food Tech", "Consulting"],
+    cv_text: "Mid-level developer with full-stack experience...",
+    profile_text: null,
+    sources: [{ adapter_name: "bullhorn", external_id: "BH-6634", ingested_at: "2026-03-15T11:00:00Z" }],
+    dedup_group: null,
+    dedup_confidence: null,
+    extraction_confidence: 0.86,
+    extraction_flags: ["seniority"],
+    embedding: null,
+    created_at: "2026-03-15T11:00:00Z",
+    updated_at: "2026-03-15T11:00:00Z",
+    created_by: uuid(1),
+  },
+  {
+    id: uuid(14),
+    first_name: "Aisha",
+    last_name: "Okafor",
+    email: "aisha.okafor@gmail.com",
+    phone: "+44 7700 900654",
+    location: "London",
+    linkedin_url: "https://linkedin.com/in/aishaokafor",
+    skills: [
+      { name: "Python", years: 5, confidence: 0.92 },
+      { name: "FastAPI", years: 2, confidence: 0.85 },
+      { name: "Kubernetes", years: 3, confidence: 0.88 },
+      { name: "Terraform", years: 3, confidence: 0.9 },
+      { name: "AWS", years: 4, confidence: 0.92 },
+      { name: "Go", years: 2, confidence: 0.75 },
+    ],
+    experience: [
+      { company: "Deliveroo", title: "Platform Engineer", duration_months: 24, industry: "Food Tech" },
+      { company: "Sky", title: "DevOps Engineer", duration_months: 30, industry: "Media" },
+    ],
+    seniority: "senior",
+    salary_expectation: { min_amount: 90000, max_amount: 105000, currency: "GBP" },
+    availability: "1_month",
+    industries: ["Food Tech", "Media"],
+    cv_text: "Platform engineer with deep AWS and Kubernetes experience...",
+    profile_text: null,
+    sources: [
+      { adapter_name: "linkedin", external_id: "LI-9912", ingested_at: "2026-03-14T09:00:00Z" },
+      { adapter_name: "bullhorn", external_id: "BH-7745", ingested_at: "2026-03-11T13:00:00Z" },
+    ],
+    dedup_group: "dedup-group-1",
+    dedup_confidence: 0.95,
+    extraction_confidence: 0.91,
+    extraction_flags: [],
+    embedding: null,
+    created_at: "2026-03-11T13:00:00Z",
+    updated_at: "2026-03-14T09:00:00Z",
+    created_by: uuid(1),
+  },
+];
+
+// ============================================================
+// Roles (3)
+// ============================================================
+export const MOCK_ROLES: Role[] = [
+  {
+    id: uuid(20),
+    title: "Senior Backend Engineer",
+    description: "We are looking for a Senior Backend Engineer to join our payments team. You will design and build high-throughput APIs processing millions of transactions. Experience with Python, FastAPI or Django, PostgreSQL, and AWS required. Fintech experience preferred.",
+    organisation_id: uuid(100),
+    required_skills: [
+      { name: "Python", min_years: 4, importance: "required" },
+      { name: "PostgreSQL", min_years: 3, importance: "required" },
+      { name: "AWS", min_years: 2, importance: "required" },
+    ],
+    preferred_skills: [
+      { name: "FastAPI", min_years: 1, importance: "preferred" },
+      { name: "Docker", min_years: 1, importance: "preferred" },
+      { name: "Fintech experience", min_years: null, importance: "preferred" },
+    ],
+    seniority: "senior",
+    salary_band: { min_amount: 80000, max_amount: 100000, currency: "GBP" },
+    location: "London",
+    remote_policy: "hybrid",
+    industry: "Fintech",
+    extraction_confidence: 0.93,
+    embedding: null,
+    status: "active",
+    created_at: "2026-03-18T10:00:00Z",
+    created_by: uuid(2),
+  },
+  {
+    id: uuid(21),
+    title: "Senior Frontend Engineer",
+    description: "Join our product team to build the next generation of our health records platform. We need a Senior Frontend Engineer with strong React/TypeScript skills. Experience with Next.js, design systems, and accessibility is highly valued. Healthtech background a plus.",
+    organisation_id: uuid(101),
+    required_skills: [
+      { name: "React", min_years: 4, importance: "required" },
+      { name: "TypeScript", min_years: 3, importance: "required" },
+    ],
+    preferred_skills: [
+      { name: "Next.js", min_years: 1, importance: "preferred" },
+      { name: "Tailwind CSS", min_years: 1, importance: "preferred" },
+      { name: "Accessibility (a11y)", min_years: null, importance: "preferred" },
+    ],
+    seniority: "senior",
+    salary_band: { min_amount: 70000, max_amount: 90000, currency: "GBP" },
+    location: "Manchester",
+    remote_policy: "remote",
+    industry: "Healthtech",
+    extraction_confidence: 0.91,
+    embedding: null,
+    status: "active",
+    created_at: "2026-03-19T14:00:00Z",
+    created_by: uuid(2),
+  },
+  {
+    id: uuid(22),
+    title: "ML Engineer",
+    description: "We are hiring an ML Engineer to work on our recommendation engine. You will design, train, and deploy machine learning models at scale. Deep experience with Python, TensorFlow/PyTorch, and cloud ML services required. Must be comfortable with data pipelines (Spark, Airflow).",
+    organisation_id: uuid(102),
+    required_skills: [
+      { name: "Python", min_years: 5, importance: "required" },
+      { name: "Machine Learning", min_years: 3, importance: "required" },
+      { name: "TensorFlow", min_years: 2, importance: "required" },
+    ],
+    preferred_skills: [
+      { name: "Spark", min_years: 1, importance: "preferred" },
+      { name: "Airflow", min_years: 1, importance: "preferred" },
+      { name: "Kubernetes", min_years: null, importance: "preferred" },
+    ],
+    seniority: "lead",
+    salary_band: { min_amount: 100000, max_amount: 130000, currency: "GBP" },
+    location: "London",
+    remote_policy: "hybrid",
+    industry: "SaaS",
+    extraction_confidence: 0.95,
+    embedding: null,
+    status: "active",
+    created_at: "2026-03-20T09:00:00Z",
+    created_by: uuid(2),
+  },
+];
+
+// ============================================================
+// Matches (5)
+// ============================================================
+export const MOCK_MATCHES: Match[] = [
+  {
+    id: uuid(30),
+    candidate_id: uuid(10),
+    role_id: uuid(20),
+    overall_score: 0.88,
+    structured_score: 0.91,
+    semantic_score: 0.85,
+    skill_overlap: [
+      { skill_name: "Python", status: "matched", candidate_years: 6, required_years: 4 },
+      { skill_name: "PostgreSQL", status: "matched", candidate_years: 5, required_years: 3 },
+      { skill_name: "AWS", status: "matched", candidate_years: 4, required_years: 2 },
+      { skill_name: "FastAPI", status: "matched", candidate_years: 3, required_years: 1 },
+      { skill_name: "Docker", status: "matched", candidate_years: 3, required_years: 1 },
+      { skill_name: "Fintech experience", status: "matched", candidate_years: null, required_years: null },
+    ],
+    confidence: "strong",
+    explanation: "Priya is an excellent fit for this role. She has 6 years of Python experience and has worked extensively with FastAPI and PostgreSQL in fintech environments at Revolut and Monzo. Her AWS and Docker skills exceed the requirements.",
+    strengths: [
+      "6 years of Python exceeds the 4-year requirement",
+      "Direct FastAPI production experience at Revolut",
+      "Strong fintech background with payments exposure",
+      "All required and preferred skills matched",
+    ],
+    gaps: ["Currently on a 1-month notice period"],
+    recommendation: "Strong match — schedule an introduction promptly.",
+    scoring_breakdown: { skill_weight: 0.4, semantic_weight: 0.35, experience_weight: 0.25 },
+    model_version: "gpt-4o-2026-03",
+    created_at: "2026-03-20T12:00:00Z",
+    status: "generated",
+  },
+  {
+    id: uuid(31),
+    candidate_id: uuid(14),
+    role_id: uuid(20),
+    overall_score: 0.72,
+    structured_score: 0.68,
+    semantic_score: 0.76,
+    skill_overlap: [
+      { skill_name: "Python", status: "matched", candidate_years: 5, required_years: 4 },
+      { skill_name: "PostgreSQL", status: "missing", candidate_years: null, required_years: 3 },
+      { skill_name: "AWS", status: "matched", candidate_years: 4, required_years: 2 },
+      { skill_name: "FastAPI", status: "matched", candidate_years: 2, required_years: 1 },
+      { skill_name: "Docker", status: "partial", candidate_years: null, required_years: 1 },
+      { skill_name: "Fintech experience", status: "missing", candidate_years: null, required_years: null },
+    ],
+    confidence: "good",
+    explanation: "Aisha has strong Python and AWS experience from platform engineering roles. While she lacks direct PostgreSQL and fintech experience, her infrastructure expertise and FastAPI skills make her a solid candidate who could ramp up quickly.",
+    strengths: [
+      "5 years of Python with production API experience",
+      "Strong AWS and infrastructure skills",
+      "Platform engineering background valuable for high-throughput systems",
+    ],
+    gaps: [
+      "No listed PostgreSQL experience",
+      "No fintech industry background",
+      "Docker experience not explicitly listed (but likely from Kubernetes work)",
+    ],
+    recommendation: "Good match — worth an introduction, especially if infrastructure depth is valued.",
+    scoring_breakdown: { skill_weight: 0.4, semantic_weight: 0.35, experience_weight: 0.25 },
+    model_version: "gpt-4o-2026-03",
+    created_at: "2026-03-20T12:00:00Z",
+    status: "generated",
+  },
+  {
+    id: uuid(32),
+    candidate_id: uuid(13),
+    role_id: uuid(20),
+    overall_score: 0.45,
+    structured_score: 0.4,
+    semantic_score: 0.5,
+    skill_overlap: [
+      { skill_name: "Python", status: "partial", candidate_years: 3, required_years: 4 },
+      { skill_name: "PostgreSQL", status: "partial", candidate_years: 2, required_years: 3 },
+      { skill_name: "AWS", status: "missing", candidate_years: null, required_years: 2 },
+      { skill_name: "FastAPI", status: "missing", candidate_years: null, required_years: 1 },
+      { skill_name: "Docker", status: "partial", candidate_years: 1, required_years: 1 },
+    ],
+    confidence: "possible",
+    explanation: "Tom has relevant Python and PostgreSQL experience but falls short of the seniority level required. At mid-level with 3 years of Python, he is still growing into the senior space. Could be worth considering if the team is open to a strong mid-level hire.",
+    strengths: [
+      "Available immediately",
+      "Python and PostgreSQL foundations in place",
+      "Lower salary expectations could fit budget",
+    ],
+    gaps: [
+      "3 years Python vs 4 required — slightly under",
+      "No AWS or FastAPI experience listed",
+      "Mid-level seniority, role requires senior",
+    ],
+    recommendation: "Possible fit if the team would consider a strong mid-level candidate at a lower cost.",
+    scoring_breakdown: { skill_weight: 0.4, semantic_weight: 0.35, experience_weight: 0.25 },
+    model_version: "gpt-4o-2026-03",
+    created_at: "2026-03-20T12:00:00Z",
+    status: "generated",
+  },
+  {
+    id: uuid(33),
+    candidate_id: uuid(11),
+    role_id: uuid(21),
+    overall_score: 0.92,
+    structured_score: 0.95,
+    semantic_score: 0.89,
+    skill_overlap: [
+      { skill_name: "React", status: "matched", candidate_years: 5, required_years: 4 },
+      { skill_name: "TypeScript", status: "matched", candidate_years: 5, required_years: 3 },
+      { skill_name: "Next.js", status: "matched", candidate_years: 3, required_years: 1 },
+      { skill_name: "Tailwind CSS", status: "matched", candidate_years: 2, required_years: 1 },
+    ],
+    confidence: "strong",
+    explanation: "Marcus is an outstanding match. His 5 years of React and TypeScript experience, combined with deep Next.js and Tailwind CSS skills, align perfectly with the role. His experience building UI at Booking.com demonstrates large-scale frontend expertise.",
+    strengths: [
+      "5 years React and TypeScript — exceeds requirements",
+      "3 years Next.js — strong match",
+      "Large-scale frontend experience at Booking.com",
+      "Available immediately",
+    ],
+    gaps: [],
+    recommendation: "Excellent match — prioritise this introduction.",
+    scoring_breakdown: { skill_weight: 0.4, semantic_weight: 0.35, experience_weight: 0.25 },
+    model_version: "gpt-4o-2026-03",
+    created_at: "2026-03-20T12:00:00Z",
+    status: "generated",
+  },
+  {
+    id: uuid(34),
+    candidate_id: uuid(12),
+    role_id: uuid(22),
+    overall_score: 0.9,
+    structured_score: 0.92,
+    semantic_score: 0.88,
+    skill_overlap: [
+      { skill_name: "Python", status: "matched", candidate_years: 8, required_years: 5 },
+      { skill_name: "Machine Learning", status: "matched", candidate_years: 5, required_years: 3 },
+      { skill_name: "TensorFlow", status: "matched", candidate_years: 4, required_years: 2 },
+      { skill_name: "Spark", status: "matched", candidate_years: 3, required_years: 1 },
+      { skill_name: "Airflow", status: "matched", candidate_years: 2, required_years: 1 },
+    ],
+    confidence: "strong",
+    explanation: "Elena is a top-tier match with 8 years of Python and 5 years of ML experience from DeepMind. Her Spark and Airflow skills cover the data pipeline requirements. She brings world-class ML expertise to the recommendation engine.",
+    strengths: [
+      "8 years Python — well above requirement",
+      "DeepMind ML experience — elite pedigree",
+      "Full data pipeline skills (Spark + Airflow)",
+      "Lead-level seniority matches role",
+    ],
+    gaps: [
+      "3-month notice period",
+      "Salary expectations at top of band (110-130k)",
+    ],
+    recommendation: "Exceptional match — the notice period is the only consideration.",
+    scoring_breakdown: { skill_weight: 0.4, semantic_weight: 0.35, experience_weight: 0.25 },
+    model_version: "gpt-4o-2026-03",
+    created_at: "2026-03-20T12:00:00Z",
+    status: "generated",
+  },
+];
+
+// ============================================================
+// Collections (3)
+// ============================================================
+export const MOCK_COLLECTIONS: Collection[] = [
+  {
+    id: uuid(40),
+    name: "Senior Backend — London",
+    description: "Strong backend candidates based in London for fintech roles",
+    owner_id: uuid(1),
+    visibility: "shared_all",
+    shared_with: null,
+    candidate_ids: [uuid(10), uuid(14)],
+    tags: ["backend", "london", "senior"],
+    candidate_count: 2,
+    avg_match_score: 0.8,
+    available_now_count: 0,
+    created_at: "2026-03-15T10:00:00Z",
+    updated_at: "2026-03-20T12:00:00Z",
+  },
+  {
+    id: uuid(41),
+    name: "ML Engineers — Remote OK",
+    description: "ML and data science talent open to remote positions",
+    owner_id: uuid(1),
+    visibility: "private",
+    shared_with: null,
+    candidate_ids: [uuid(12)],
+    tags: ["ml", "data-science", "remote"],
+    candidate_count: 1,
+    avg_match_score: 0.9,
+    available_now_count: 0,
+    created_at: "2026-03-16T11:00:00Z",
+    updated_at: "2026-03-20T12:00:00Z",
+  },
+  {
+    id: uuid(42),
+    name: "Immediate Availability",
+    description: "Candidates available to start right away",
+    owner_id: uuid(1),
+    visibility: "shared_all",
+    shared_with: null,
+    candidate_ids: [uuid(11), uuid(13)],
+    tags: ["immediate", "available-now"],
+    candidate_count: 2,
+    avg_match_score: null,
+    available_now_count: 2,
+    created_at: "2026-03-17T09:00:00Z",
+    updated_at: "2026-03-20T12:00:00Z",
+  },
+];
+
+// ============================================================
+// Helpers
+// ============================================================
+export function anonymizeCandidate(c: Candidate): CandidateAnonymized {
+  return {
+    id: c.id,
+    first_name: c.first_name,
+    last_initial: c.last_name.charAt(0),
+    location: c.location,
+    skills: c.skills,
+    seniority: c.seniority,
+    availability: c.availability,
+    industries: c.industries,
+    experience_years: c.experience.reduce((sum, e) => sum + (e.duration_months ?? 0), 0) / 12,
+    is_pool_candidate: c.sources.length > 1 || (c.dedup_group !== null),
+  };
+}
+
+export function getCandidateById(id: string): Candidate | undefined {
+  return MOCK_CANDIDATES.find((c) => c.id === id);
+}
+
+export function getRoleById(id: string): Role | undefined {
+  return MOCK_ROLES.find((r) => r.id === id);
+}
+
+export function getMatchesForRole(roleId: string): Match[] {
+  return MOCK_MATCHES.filter((m) => m.role_id === roleId);
+}
+
+export function getMatchesForCandidate(candidateId: string): Match[] {
+  return MOCK_MATCHES.filter((m) => m.candidate_id === candidateId);
+}

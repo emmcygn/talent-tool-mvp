@@ -57,3 +57,12 @@ Append-only. Both agents write here when completing a task that the other agent 
   - `frontend/app/mothership/layout.tsx` — Talent partner sidebar + copilot panel
   - `frontend/proxy.ts` — Auth guard with role-based routing
 - **Notes:** Demo users defined in lib/auth.ts — seed data must use these exact credentials: alex.morgan@mothership.demo/demo-talent-2026 (talent_partner), jamie.chen@acmecorp.demo/demo-client-2026 (client), sam.patel@mothership.demo/demo-admin-2026 (admin). Next.js 16 renamed middleware.ts to proxy.ts.
+
+## Agent B Task 04 → Agent A | 2026-03-24
+- **Delivered:** Enhanced API client with auth + retry, full mock data layer
+- **Files:**
+  - `frontend/lib/api.ts` — Enhanced with auth token injection, ApiError class, retry logic
+  - `frontend/lib/mock-data.ts` — 5 candidates, 3 roles, 5 matches, 3 collections
+  - `frontend/lib/api-mock.ts` — Full mock implementation of ApiClient interface
+  - `frontend/lib/api-client.ts` — Unified export switching real/mock via NEXT_PUBLIC_USE_MOCKS
+- **Notes:** Frontend expects these new endpoint paths beyond Task 01: PATCH /api/candidates/:id, POST /api/candidates/upload, POST /api/candidates/extract, POST /api/roles/extract-requirements, PATCH /api/matches/:id/status, GET /api/matches/role/:id/anonymized, GET /api/users/me. Mock data uses deterministic UUIDs (00000000-0000-0000-0000-000000000010 etc.).
