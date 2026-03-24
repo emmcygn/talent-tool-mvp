@@ -171,8 +171,9 @@ async def update_role(
     if not existing.data:
         raise HTTPException(status_code=404, detail="Role not found")
 
+    # Only the role creator or an admin can update
     if (
-        user.role == UserRole.client
+        user.role != UserRole.admin
         and existing.data["created_by"] != str(user.id)
     ):
         raise HTTPException(

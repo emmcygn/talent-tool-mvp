@@ -3,6 +3,7 @@ from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 
 from api.auth import CurrentUser, get_current_user, require_role
 from api.deps import get_supabase_admin
@@ -14,7 +15,14 @@ logger = logging.getLogger("recruittech.api.matches")
 router = APIRouter()
 
 
-@router.get("/by-role/{role_id}")
+class MatchStatusUpdate(BaseModel):
+    """Request body for updating match status."""
+
+    status: MatchStatus
+    reason: str | None = None
+
+
+@router.get("/role/{role_id}")
 async def get_matches_by_role(
     role_id: UUID,
     confidence: Optional[ConfidenceLevel] = None,
@@ -23,8 +31,25 @@ async def get_matches_by_role(
     offset: int = Query(default=0, ge=0),
     user: CurrentUser = Depends(get_current_user),
 ):
-    """Get all matches for a role, ranked by overall score."""
+    """Get all matches for a role, ranked by overall score.
+
+    Clients can only see matches for their own roles.
+    Talent partners and admins can see all.
+    """
     supabase = get_supabase_admin()
+
+    # Clients: verify they own the role
+    if user.role == UserRole.client:
+        role_check = (
+            supabase.table("roles")
+            .select("id, created_by")
+            .eq("id", str(role_id))
+            .single()
+            .execute()
+        )
+        if not role_check.data or role_check.data["created_by"] != str(user.id):
+            raise HTTPException(status_code=403, detail="Access denied")
+
     query = (
         supabase.table("matches")
         .select("*")
@@ -41,15 +66,96 @@ async def get_matches_by_role(
     return result.data or []
 
 
-@router.get("/by-candidate/{candidate_id}")
-async def get_matches_by_candidate(
-    candidate_id: UUID,
+@router.get("/role/{role_id}/anonymized")
+async def get_matches_by_role_anonymized(
+    role_id: UUID,
     confidence: Optional[ConfidenceLevel] = None,
     limit: int = Query(default=50, le=100),
     offset: int = Query(default=0, ge=0),
     user: CurrentUser = Depends(get_current_user),
 ):
-    """Get all matches for a candidate across all roles."""
+    """Get matches for a role with anonymized candidate data (for clients)."""
+    supabase = get_supabase_admin()
+
+    # Clients: verify they own the role
+    if user.role == UserRole.client:
+        role_check = (
+            supabase.table("roles")
+            .select("id, created_by")
+            .eq("id", str(role_id))
+            .single()
+            .execute()
+        )
+        if not role_check.data or role_check.data["created_by"] != str(user.id):
+            raise HTTPException(status_code=403, detail="Access denied")
+
+    query = (
+        supabase.table("matches")
+        .select("*")
+        .eq("role_id", str(role_id))
+        .order("overall_score", desc=True)
+        .range(offset, offset + limit - 1)
+    )
+    if confidence:
+        query = query.eq("confidence", confidence.value)
+
+    matches_result = query.execute()
+    matches = matches_result.data or []
+
+    # Load candidates and anonymize
+    candidate_ids = list({m["candidate_id"] for m in matches})
+    if not candidate_ids:
+        return []
+
+    candidates_result = (
+        supabase.table("candidates")
+        .select("id, first_name, last_name, location, skills, seniority, availability, industries, experience, sources")
+        .in_("id", candidate_ids)
+        .execute()
+    )
+    candidates_map = {c["id"]: c for c in (candidates_result.data or [])}
+
+    results = []
+    for match in matches:
+        candidate = candidates_map.get(match["candidate_id"])
+        if not candidate:
+            continue
+
+        experience = candidate.get("experience") or []
+        total_months = sum(
+            (e.get("duration_months", 0) or 0)
+            for e in experience
+            if isinstance(e, dict)
+        )
+
+        anon_candidate = {
+            "id": candidate["id"],
+            "first_name": candidate.get("first_name", ""),
+            "last_initial": candidate.get("last_name", "?")[0],
+            "location": candidate.get("location"),
+            "skills": candidate.get("skills", []),
+            "seniority": candidate.get("seniority"),
+            "availability": candidate.get("availability"),
+            "industries": candidate.get("industries", []),
+            "experience_years": total_months // 12 if total_months else None,
+            "is_pool_candidate": len(candidate.get("sources", [])) > 1,
+        }
+        results.append({"match": match, "candidate": anon_candidate})
+
+    return results
+
+
+@router.get("/candidate/{candidate_id}")
+async def get_matches_by_candidate(
+    candidate_id: UUID,
+    confidence: Optional[ConfidenceLevel] = None,
+    limit: int = Query(default=50, le=100),
+    offset: int = Query(default=0, ge=0),
+    user: CurrentUser = Depends(
+        require_role(UserRole.talent_partner, UserRole.admin)
+    ),
+):
+    """Get all matches for a candidate. Talent partners and admins only."""
     supabase = get_supabase_admin()
     query = (
         supabase.table("matches")
@@ -70,7 +176,10 @@ async def get_match(
     match_id: UUID,
     user: CurrentUser = Depends(get_current_user),
 ):
-    """Get a single match with full details."""
+    """Get a single match with full details.
+
+    Clients can only access matches for their own roles.
+    """
     supabase = get_supabase_admin()
     result = (
         supabase.table("matches")
@@ -81,16 +190,32 @@ async def get_match(
     )
     if not result.data:
         raise HTTPException(status_code=404, detail="Match not found")
+
+    # Clients: verify they own the associated role
+    if user.role == UserRole.client:
+        role_check = (
+            supabase.table("roles")
+            .select("id, created_by")
+            .eq("id", result.data["role_id"])
+            .single()
+            .execute()
+        )
+        if not role_check.data or role_check.data["created_by"] != str(user.id):
+            raise HTTPException(status_code=403, detail="Access denied")
+
     return result.data
 
 
 @router.patch("/{match_id}/status")
 async def update_match_status(
     match_id: UUID,
-    status: MatchStatus,
+    body: MatchStatusUpdate,
     user: CurrentUser = Depends(get_current_user),
 ):
-    """Update match status (shortlist, dismiss, request intro)."""
+    """Update match status (shortlist, dismiss, request intro).
+
+    Accepts { status, reason } JSON body.
+    """
     supabase = get_supabase_admin()
 
     match_result = (
@@ -103,14 +228,27 @@ async def update_match_status(
     if not match_result.data:
         raise HTTPException(status_code=404, detail="Match not found")
 
-    supabase.table("matches").update({"status": status.value}).eq(
+    # Clients: verify they own the associated role
+    if user.role == UserRole.client:
+        role_check = (
+            supabase.table("roles")
+            .select("id, created_by")
+            .eq("id", match_result.data["role_id"])
+            .single()
+            .execute()
+        )
+        if not role_check.data or role_check.data["created_by"] != str(user.id):
+            raise HTTPException(status_code=403, detail="Access denied")
+
+    update_data = {"status": body.status.value}
+    supabase.table("matches").update(update_data).eq(
         "id", str(match_id)
     ).execute()
 
     return {
         "status": "updated",
         "match_id": str(match_id),
-        "new_status": status.value,
+        "new_status": body.status.value,
     }
 
 

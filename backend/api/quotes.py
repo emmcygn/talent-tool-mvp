@@ -12,7 +12,7 @@ from services.quote import QuoteService
 router = APIRouter()
 
 
-@router.post("/generate")
+@router.post("")
 async def generate_quote(
     data: QuoteRequest,
     user: CurrentUser = Depends(get_current_user),
@@ -34,7 +34,7 @@ async def generate_quote(
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.get("/")
+@router.get("")
 async def list_quotes(
     status: Optional[QuoteStatus] = None,
     limit: int = Query(default=50, le=100),

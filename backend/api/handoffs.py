@@ -12,7 +12,7 @@ from services.handoff import HandoffService
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("")
 async def create_handoff(
     data: HandoffCreate,
     user: CurrentUser = Depends(require_role(UserRole.talent_partner, UserRole.admin)),

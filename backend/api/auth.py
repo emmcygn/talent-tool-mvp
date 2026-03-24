@@ -11,9 +11,10 @@ from contracts.shared import UserRole
 
 logger = logging.getLogger("recruittech.auth")
 
-# Supabase JWT uses HS256 with the JWT secret
-# For local dev, the JWT secret is derived from the Supabase project
-SUPABASE_JWT_SECRET = settings.supabase_key  # anon key used for verification in PoC
+# Supabase JWTs are signed with the project's JWT secret (not the anon key).
+# Set SUPABASE_JWT_SECRET in .env to match your Supabase project's JWT secret.
+# Default matches the standard local Supabase dev JWT secret.
+SUPABASE_JWT_SECRET = settings.supabase_jwt_secret
 ALGORITHM = "HS256"
 
 security = HTTPBearer()

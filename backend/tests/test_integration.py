@@ -97,11 +97,11 @@ class TestHandoffFlow:
 
 class TestQuoteFlow:
     def test_list_quotes_requires_auth(self, client, auth_headers):
-        response = client.get("/api/quotes/", headers=auth_headers)
+        response = client.get("/api/quotes", headers=auth_headers)
         assert response.status_code == 401
 
     def test_generate_quote_requires_auth(self, client, auth_headers):
-        response = client.post("/api/quotes/generate", json={
+        response = client.post("/api/quotes", json={
             "candidate_id": str(uuid4()),
             "role_id": str(uuid4()),
         }, headers=auth_headers)
