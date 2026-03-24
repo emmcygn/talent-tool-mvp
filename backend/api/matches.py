@@ -240,10 +240,41 @@ async def update_match_status(
         if not role_check.data or role_check.data["created_by"] != str(user.id):
             raise HTTPException(status_code=403, detail="Access denied")
 
-    update_data = {"status": body.status.value}
+    # Persist status and reason in scoring_breakdown metadata
+    existing_breakdown = match_result.data.get("scoring_breakdown") or {}
+    if body.reason:
+        existing_breakdown["status_reason"] = body.reason
+
+    update_data = {
+        "status": body.status.value,
+        "scoring_breakdown": existing_breakdown,
+    }
     supabase.table("matches").update(update_data).eq(
         "id", str(match_id)
     ).execute()
+
+    # Emit signal for analytics tracking
+    from signals.tracker import SignalTracker
+
+    signal_type_map = {
+        MatchStatus.shortlisted: "candidate_shortlisted",
+        MatchStatus.dismissed: "candidate_dismissed",
+        MatchStatus.intro_requested: "intro_requested",
+    }
+    if body.status in signal_type_map:
+        tracker = SignalTracker(supabase)
+        await tracker.emit(
+            event_type=signal_type_map[body.status],
+            actor_id=user.id,
+            actor_role=user.role,
+            entity_type="match",
+            entity_id=match_id,
+            metadata={
+                "role_id": match_result.data["role_id"],
+                "candidate_id": match_result.data["candidate_id"],
+                "reason": body.reason,
+            },
+        )
 
     return {
         "status": "updated",

@@ -55,12 +55,23 @@ async def get_quote(
     quote_id: UUID,
     user: CurrentUser = Depends(get_current_user),
 ):
-    """Get a single quote with fee breakdown."""
+    """Get a single quote with fee breakdown.
+
+    Clients can only see their own quotes. Talent partners and admins see all.
+    """
     supabase = get_supabase_admin()
     service = QuoteService(supabase)
     result = await service.get_quote(quote_id)
     if not result:
         raise HTTPException(status_code=404, detail="Quote not found")
+
+    # Clients can only view their own quotes
+    if (
+        user.role == UserRole.client
+        and result.get("client_id") != str(user.id)
+    ):
+        raise HTTPException(status_code=403, detail="Access denied")
+
     return result
 
 
@@ -70,8 +81,18 @@ async def update_quote_status(
     status: QuoteStatus,
     user: CurrentUser = Depends(get_current_user),
 ):
-    """Update quote status (accept, decline). Valid transitions are enforced."""
+    """Update quote status (accept, decline). Valid transitions are enforced.
+
+    Clients can only update their own quotes. Admins can update any.
+    """
     supabase = get_supabase_admin()
+
+    # Check ownership for clients
+    if user.role == UserRole.client:
+        service = QuoteService(supabase)
+        existing = await service.get_quote(quote_id)
+        if not existing or existing.get("client_id") != str(user.id):
+            raise HTTPException(status_code=403, detail="Access denied")
     service = QuoteService(supabase)
     result = await service.update_quote_status(
         quote_id=quote_id,
