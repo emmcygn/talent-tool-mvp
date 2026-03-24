@@ -1,8 +1,6 @@
-from uuid import uuid4
-
 ORGANISATIONS = [
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000001",
         "name": "Monzo",
         "industry": "fintech",
         "location": "London",
@@ -10,7 +8,7 @@ ORGANISATIONS = [
         "size": "1000-5000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000002",
         "name": "Babylon Health",
         "industry": "healthtech",
         "location": "London",
@@ -18,7 +16,7 @@ ORGANISATIONS = [
         "size": "500-1000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000003",
         "name": "Paddle",
         "industry": "SaaS",
         "location": "London",
@@ -26,7 +24,7 @@ ORGANISATIONS = [
         "size": "200-500",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000004",
         "name": "Starling Bank",
         "industry": "fintech",
         "location": "London",
@@ -34,7 +32,7 @@ ORGANISATIONS = [
         "size": "1000-5000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000005",
         "name": "Huma",
         "industry": "healthtech",
         "location": "London",
@@ -42,7 +40,7 @@ ORGANISATIONS = [
         "size": "200-500",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000006",
         "name": "Checkout.com",
         "industry": "fintech",
         "location": "London",
@@ -50,7 +48,7 @@ ORGANISATIONS = [
         "size": "1000-5000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000007",
         "name": "ContentSquare",
         "industry": "SaaS",
         "location": "London",
@@ -58,7 +56,7 @@ ORGANISATIONS = [
         "size": "500-1000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000008",
         "name": "Gousto",
         "industry": "e-commerce",
         "location": "London",
@@ -66,7 +64,7 @@ ORGANISATIONS = [
         "size": "500-1000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000009",
         "name": "Peak AI",
         "industry": "SaaS",
         "location": "Manchester",
@@ -74,7 +72,7 @@ ORGANISATIONS = [
         "size": "100-200",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000010",
         "name": "Multiverse",
         "industry": "edtech",
         "location": "London",
@@ -82,7 +80,7 @@ ORGANISATIONS = [
         "size": "500-1000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000011",
         "name": "Thought Machine",
         "industry": "fintech",
         "location": "London",
@@ -90,7 +88,7 @@ ORGANISATIONS = [
         "size": "500-1000",
     },
     {
-        "id": str(uuid4()),
+        "id": "aaaa0001-0001-0001-0001-000000000012",
         "name": "Onfido",
         "industry": "fintech",
         "location": "London",

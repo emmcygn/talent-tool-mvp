@@ -161,6 +161,7 @@ class MatchingEngine:
                     overall_score=score_result["overall_score"],
                     structured_score=score_result["structured_score"],
                     semantic_score=score_result["semantic_score"],
+                    experience_score=score_result["experience_score"],
                     skill_overlap=score_result["skill_overlap"],
                     confidence=confidence,
                     explanation="",

@@ -1,20 +1,9 @@
 import logging
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from supabase import Client, create_client
 
 from config import settings
-
-
-class PaginationParams(BaseModel):
-    """Standard pagination parameters."""
-
-    page: int = Field(default=1, ge=1)
-    page_size: int = Field(default=20, ge=1, le=100)
-
-    @property
-    def offset(self) -> int:
-        return (self.page - 1) * self.page_size
 
 
 class PaginatedResponse(BaseModel):
@@ -25,6 +14,7 @@ class PaginatedResponse(BaseModel):
     page: int
     page_size: int
     total_pages: int
+
 
 logger = logging.getLogger("recruittech.deps")
 

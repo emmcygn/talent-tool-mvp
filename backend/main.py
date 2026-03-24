@@ -18,6 +18,8 @@ logger = logging.getLogger("recruittech")
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
     logger.info("RecruitTech API starting up")
+    from adapters.registry import init_adapters
+    init_adapters()
     yield
     logger.info("RecruitTech API shutting down")
 
@@ -63,6 +65,14 @@ async def log_requests(request: Request, call_next):
 
 
 # ---- Global Exception Handlers ----
+
+@app.exception_handler(422)
+async def validation_error_handler(request: Request, exc):
+    return JSONResponse(
+        status_code=422,
+        content={"detail": "Validation error", "path": request.url.path},
+    )
+
 
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc):

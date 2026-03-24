@@ -15,20 +15,8 @@ CREATE TABLE IF NOT EXISTS dedup_queue (
 CREATE INDEX IF NOT EXISTS idx_dedup_queue_status ON dedup_queue(status);
 CREATE INDEX IF NOT EXISTS idx_dedup_queue_confidence ON dedup_queue(confidence DESC);
 
--- Users table (platform user profiles, separate from Supabase auth)
-CREATE TABLE IF NOT EXISTS users (
-    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    email text UNIQUE NOT NULL,
-    first_name text NOT NULL,
-    last_name text NOT NULL,
-    role text NOT NULL,  -- talent_partner, client, admin
-    organisation_id uuid REFERENCES organisations(id),
-    is_active boolean DEFAULT true,
-    created_at timestamptz DEFAULT now()
-);
-
-CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+-- Users table is created in 001_initial_schema.sql with first_name, last_name, role (user_role enum).
+-- No duplicate definition needed here.
 
 -- RLS for admin-only tables
 ALTER TABLE dedup_queue ENABLE ROW LEVEL SECURITY;

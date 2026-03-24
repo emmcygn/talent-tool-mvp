@@ -13,6 +13,7 @@ class Match(BaseModel):
     overall_score: float
     structured_score: float
     semantic_score: float
+    experience_score: float = 0.0
     skill_overlap: list[SkillMatch] = []
     confidence: ConfidenceLevel
     explanation: str

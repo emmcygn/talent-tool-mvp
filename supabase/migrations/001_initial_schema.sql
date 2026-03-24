@@ -33,11 +33,14 @@ CREATE TYPE signal_type AS ENUM (
 -- TABLES
 -- =============================================================
 
--- Users (extends Supabase auth.users)
+-- Users (platform user profiles)
+-- In production, id would REFERENCES auth.users(id). For PoC demo mode,
+-- users are created directly so we use a standalone PK.
 CREATE TABLE users (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email TEXT NOT NULL UNIQUE,
-    full_name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
     role user_role NOT NULL DEFAULT 'talent_partner',
     organisation_id UUID,  -- FK added after organisations table
     is_active BOOLEAN NOT NULL DEFAULT true,
