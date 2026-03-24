@@ -24,6 +24,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "@/app/providers";
+import { CopilotSidebar } from "@/components/mothership/copilot-sidebar";
 import { cn } from "@/lib/utils";
 
 const MAIN_NAV = [
@@ -169,11 +170,7 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
           </main>
 
           {copilotOpen && (
-            <aside className="w-96 shrink-0 border-l border-slate-200 bg-white">
-              <div className="flex h-full items-center justify-center text-sm text-slate-400">
-                Copilot panel — Task 12
-              </div>
-            </aside>
+            <CopilotSidebar />
           )}
         </div>
       </div>
