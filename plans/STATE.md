@@ -18,7 +18,7 @@ Both agents read and write this file. It is the single source of truth for progr
 | 02   | completed | 2026-03-24 | A-01 | Supabase schema + migrations |
 | 03   | completed | 2026-03-24 | A-02 | FastAPI skeleton + auth |
 | 04   | completed | 2026-03-24 | A-01 | Adapter interfaces + mocks |
-| 05   | not_started | | A-02, A-04 | Ingest + normalize pipeline |
+| 05   | completed | 2026-03-24 | A-02, A-04 | Ingest + normalize pipeline |
 | 06   | not_started | | A-05 | Deduplication pipeline |
 | 07   | not_started | | A-03, A-05 | AI extraction pipeline |
 | 08   | not_started | | A-03, A-07 | Candidate + Role CRUD endpoints |
