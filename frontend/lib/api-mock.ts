@@ -239,13 +239,49 @@ export const mockApi: ApiClient = {
     },
     list: async () => { await delay(); return []; },
     get: async () => { await delay(); throw new Error("Quote not found"); },
+    updateStatus: async (quoteId, status) => {
+      await delay();
+      return {
+        id: quoteId,
+        client_id: MOCK_USERS[1].id,
+        candidate_id: MOCK_CANDIDATES[0].id,
+        role_id: MOCK_ROLES[0].id,
+        is_pool_candidate: false,
+        base_fee: 15000,
+        pool_discount: null,
+        final_fee: 15000,
+        fee_breakdown: {},
+        status,
+        created_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+      } as Quote;
+    },
   },
   copilot: {
     query: async () => {
       return new Response(
-        JSON.stringify({ response: "Mock copilot response. The real copilot will stream results." }),
+        JSON.stringify({
+          summary: "Mock copilot response.",
+          interpretation: "Interpreted your query",
+          results: [],
+          total_count: 0,
+          actions: [],
+          followup_suggestions: ["Show more candidates", "Filter by location"],
+        }),
         { headers: { "Content-Type": "application/json" } }
       );
+    },
+    stream: async () => {
+      // Return a mock SSE stream
+      const events = [
+        `data: ${JSON.stringify({ phase: "parsing", message: "Understanding..." })}\n\n`,
+        `data: ${JSON.stringify({ phase: "parsed", interpretation: "Mock query parsed" })}\n\n`,
+        `data: ${JSON.stringify({ phase: "executing", message: "Searching..." })}\n\n`,
+        `data: ${JSON.stringify({ phase: "executed", total_count: 0 })}\n\n`,
+        `data: ${JSON.stringify({ phase: "complete", summary: "Mock results", actions: [], followup_suggestions: [] })}\n\n`,
+        `data: ${JSON.stringify({ phase: "done" })}\n\n`,
+      ].join("");
+      return new Response(events, { headers: { "Content-Type": "text/event-stream" } });
     },
   },
   signals: {
@@ -255,35 +291,28 @@ export const mockApi: ApiClient = {
     stats: async () => {
       await delay();
       return {
-        total_candidates: MOCK_CANDIDATES.length,
-        active_roles: MOCK_ROLES.filter((r) => r.status === "active").length,
-        total_matches: MOCK_MATCHES.length,
-        placements_this_quarter: 3,
-        revenue_pipeline: 45000,
+        totals: { candidates: MOCK_CANDIDATES.length, roles: MOCK_ROLES.length, matches: MOCK_MATCHES.length },
+        active: { active_roles: MOCK_ROLES.filter((r) => r.status === "active").length },
+        growth_7d: { new_candidates: 5, new_matches: 12 },
       };
     },
-    funnelData: async () => {
+    pipelineStatus: async () => {
       await delay();
       return {
-        stages: [
-          { name: "Ingested", count: 52 },
-          { name: "Deduplicated", count: 48 },
-          { name: "Enriched", count: 45 },
-          { name: "Matched", count: 38 },
-          { name: "Shortlisted", count: 15 },
-          { name: "Intro Requested", count: 8 },
-          { name: "Placed", count: 3 },
-        ],
+        extraction_queue: { pending: 12, low_confidence_review: 3, processed: 847 },
+        confidence_distribution: { high: 42, medium: 8, low: 2 },
+        embedding_coverage: { with_embedding: 45, total: 52, percentage: 86.5 },
       };
     },
     adapterHealth: async () => {
       await delay();
       return [
-        { name: "Bullhorn", status: "healthy", last_sync: "2026-03-24T08:00:00Z", records_synced: 312, error_rate: 0.01 },
-        { name: "HubSpot", status: "healthy", last_sync: "2026-03-24T07:30:00Z", records_synced: 189, error_rate: 0.02 },
-        { name: "LinkedIn", status: "degraded", last_sync: "2026-03-23T22:00:00Z", records_synced: 95, error_rate: 0.08 },
+        { adapter_name: "bullhorn", status: "healthy", last_sync: "2026-03-24T08:00:00Z", records_processed: 312, error_count: 3 },
+        { adapter_name: "hubspot", status: "healthy", last_sync: "2026-03-24T07:30:00Z", records_processed: 189, error_count: 4 },
+        { adapter_name: "linkedin", status: "degraded", last_sync: "2026-03-23T22:00:00Z", records_processed: 95, error_count: 8 },
       ];
     },
+    users: async () => { await delay(); return [...MOCK_USERS]; },
   },
   users: {
     me: async () => { await delay(); return MOCK_USERS[0]; },

@@ -73,7 +73,7 @@ export default function AnalyticsPage() {
       try {
         await Promise.all([
           apiClient.admin.stats(),
-          apiClient.admin.funnelData(),
+          apiClient.admin.pipelineStatus(),
         ]);
       } catch {
         // Handle error

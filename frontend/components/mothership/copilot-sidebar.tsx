@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import type { CopilotMessage as CopilotMessageType, CopilotStreamChunk } from "@/lib/copilot-types";
+import type { CopilotMessage as CopilotMessageType } from "@/lib/copilot-types";
 import { CopilotMessageComponent } from "./copilot-message";
 import { CopilotInput } from "./copilot-input";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,9 @@ export function CopilotSidebar({ pageContext = "default" }: CopilotSidebarProps)
     setIsStreaming(true);
 
     try {
-      const response = await apiClient.copilot.query(text);
+      // Use the SSE streaming endpoint — backend uses { query } not { message },
+      // and sends events with 'phase' field, not 'type'
+      const response = await apiClient.copilot.stream(text);
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
 
@@ -91,16 +93,19 @@ export function CopilotSidebar({ pageContext = "default" }: CopilotSidebarProps)
 
         for (const line of lines) {
           try {
-            const parsed: CopilotStreamChunk = JSON.parse(line.slice(6));
+            const parsed = JSON.parse(line.slice(6));
+            const phase: string = parsed.phase ?? "";
 
-            if (parsed.type === "token" && parsed.content) {
-              fullContent += parsed.content;
-            } else if (parsed.type === "query" && parsed.query) {
-              structuredQuery = parsed.query;
-            } else if (parsed.type === "results" && parsed.results) {
+            if (phase === "parsing" || phase === "executing") {
+              fullContent = parsed.message ?? fullContent;
+            } else if (phase === "parsed") {
+              fullContent = parsed.interpretation ?? fullContent;
+            } else if (phase === "results" && parsed.results) {
               results = parsed.results;
-            } else if (parsed.type === "suggestions" && parsed.suggestions) {
-              replySuggestions = parsed.suggestions;
+            } else if (phase === "complete") {
+              fullContent = parsed.summary ?? fullContent;
+              structuredQuery = parsed.query_executed;
+              replySuggestions = parsed.followup_suggestions ?? [];
             }
 
             setMessages((prev) =>
@@ -112,7 +117,7 @@ export function CopilotSidebar({ pageContext = "default" }: CopilotSidebarProps)
                       structuredQuery,
                       results,
                       suggestions: replySuggestions,
-                      isStreaming: parsed.type !== "done",
+                      isStreaming: phase !== "done",
                     }
                   : m
               )

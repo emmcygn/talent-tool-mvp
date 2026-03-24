@@ -5,7 +5,7 @@ import type {
   Match,
   Collection, CollectionCreate,
   Handoff, HandoffCreate,
-  Quote, QuoteRequest,
+  Quote, QuoteRequest, QuoteStatus,
   Signal,
   User,
 } from "@/contracts/canonical";
@@ -13,6 +13,16 @@ import type {
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const MAX_RETRIES = 2;
 const RETRY_DELAY_MS = 1000;
+
+// ---- Paginated response shape matching backend PaginatedResponse ----
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
 
 export class ApiError extends Error {
   constructor(
@@ -38,8 +48,10 @@ async function fetchAPI<T>(
   const token = await getAuthToken();
   const retries = options?.retries ?? MAX_RETRIES;
 
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+  // Build headers: omit Content-Type when body is FormData so browser sets boundary
+  const isFormData = options?.body instanceof FormData;
+  const baseHeaders: Record<string, string> = {
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options?.headers as Record<string, string> ?? {}),
   };
@@ -50,7 +62,7 @@ async function fetchAPI<T>(
     try {
       const res = await fetch(`${API_BASE}${path}`, {
         ...options,
-        headers,
+        headers: baseHeaders,
       });
 
       if (!res.ok) {
@@ -79,29 +91,41 @@ async function fetchAPI<T>(
   throw lastError!;
 }
 
+/**
+ * Unwrap a paginated response, returning just the data array.
+ * Callers that need pagination metadata can use fetchAPI<PaginatedResponse<T>> directly.
+ */
+async function fetchPaginated<T>(path: string): Promise<T[]> {
+  const response = await fetchAPI<PaginatedResponse<T>>(path);
+  return response.data;
+}
+
 export const api = {
   candidates: {
-    list: () => fetchAPI<Candidate[]>("/api/candidates"),
+    // Backend returns PaginatedResponse — unwrap to T[]
+    list: () => fetchPaginated<Candidate>("/api/candidates"),
     get: (id: string) => fetchAPI<Candidate>(`/api/candidates/${id}`),
     create: (data: CandidateCreate) =>
       fetchAPI<Candidate>("/api/candidates", { method: "POST", body: JSON.stringify(data) }),
     update: (id: string, data: Partial<CandidateCreate>) =>
       fetchAPI<Candidate>(`/api/candidates/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
-    search: (query: string) => fetchAPI<Candidate[]>(`/api/candidates/search?q=${encodeURIComponent(query)}`),
+    // Backend returns PaginatedResponse for search too
+    search: (query: string) => fetchPaginated<Candidate>(`/api/candidates/search?q=${encodeURIComponent(query)}`),
     uploadCV: (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
+      // Don't pass Content-Type — let browser set multipart boundary
       return fetchAPI<Candidate>("/api/candidates/upload", {
         method: "POST",
         body: formData,
-        headers: {},
       });
     },
     extractFromText: (text: string) =>
       fetchAPI<Candidate>("/api/candidates/extract", { method: "POST", body: JSON.stringify({ text }) }),
   },
   roles: {
-    list: () => fetchAPI<Role[]>("/api/roles"),
+    // Backend returns PaginatedResponse
+    list: () => fetchPaginated<Role>("/api/roles"),
     get: (id: string) => fetchAPI<Role>(`/api/roles/${id}`),
     create: (data: RoleCreate) =>
       fetchAPI<Role>("/api/roles", { method: "POST", body: JSON.stringify(data) }),
@@ -152,8 +176,14 @@ export const api = {
       fetchAPI<Quote>("/api/quotes", { method: "POST", body: JSON.stringify(data) }),
     list: () => fetchAPI<Quote[]>("/api/quotes"),
     get: (id: string) => fetchAPI<Quote>(`/api/quotes/${id}`),
+    // Backend: PATCH /api/quotes/{id}/status with query param ?status=accepted
+    updateStatus: (quoteId: string, status: QuoteStatus) =>
+      fetchAPI<Quote>(`/api/quotes/${quoteId}/status?status=${status}`, {
+        method: "PATCH",
+      }),
   },
   copilot: {
+    // Non-streaming: backend expects { query }, not { message }
     query: async (message: string) => {
       const token = await getAuthToken();
       return fetch(`${API_BASE}/api/copilot/query`, {
@@ -162,7 +192,19 @@ export const api = {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ query: message }),
+      });
+    },
+    // SSE streaming endpoint (separate from /query)
+    stream: async (message: string, sessionId?: string) => {
+      const token = await getAuthToken();
+      return fetch(`${API_BASE}/api/copilot/query/stream`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ query: message, session_id: sessionId }),
       });
     },
   },
@@ -171,8 +213,12 @@ export const api = {
   },
   admin: {
     stats: () => fetchAPI<Record<string, unknown>>("/api/admin/stats"),
-    funnelData: () => fetchAPI<Record<string, unknown>>("/api/admin/funnel"),
-    adapterHealth: () => fetchAPI<Record<string, unknown>[]>("/api/admin/adapters"),
+    // Backend endpoint is /api/admin/pipeline/status, not /funnel
+    pipelineStatus: () => fetchAPI<Record<string, unknown>>("/api/admin/pipeline/status"),
+    // Backend endpoint is /api/admin/adapters/health, not /adapters
+    adapterHealth: () => fetchAPI<Record<string, unknown>[]>("/api/admin/adapters/health"),
+    // User management
+    users: () => fetchAPI<User[]>("/api/admin/users"),
   },
   users: {
     me: () => fetchAPI<User>("/api/users/me"),

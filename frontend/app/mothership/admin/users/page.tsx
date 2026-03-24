@@ -10,7 +10,7 @@ import {
   UserCog, Plus, Search, Shield, Users, Briefcase,
 } from "lucide-react";
 import { toast } from "sonner";
-import { MOCK_USERS } from "@/lib/mock-data";
+import { apiClient } from "@/lib/api-client";
 import type { User } from "@/contracts/canonical";
 
 const roleBadgeStyle: Record<string, string> = {
@@ -31,11 +31,17 @@ export default function UsersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setUsers(MOCK_USERS);
-      setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function load() {
+      try {
+        const data = await apiClient.admin.users();
+        setUsers(data);
+      } catch {
+        toast.error("Failed to load users");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
   const filtered = users.filter((u) =>

@@ -27,18 +27,28 @@ export default function QuotesPage() {
     load();
   }, []);
 
-  function handleAcceptQuote(quoteId: string) {
-    setQuotes((prev) =>
-      prev.map((q) => (q.id === quoteId ? { ...q, status: "accepted" as const } : q))
-    );
-    toast.success("Quote accepted. Introduction request sent.");
+  async function handleAcceptQuote(quoteId: string) {
+    try {
+      await apiClient.quotes.updateStatus(quoteId, "accepted");
+      setQuotes((prev) =>
+        prev.map((q) => (q.id === quoteId ? { ...q, status: "accepted" as const } : q))
+      );
+      toast.success("Quote accepted. Introduction request sent.");
+    } catch {
+      toast.error("Failed to accept quote.");
+    }
   }
 
-  function handleDeclineQuote(quoteId: string) {
-    setQuotes((prev) =>
-      prev.map((q) => (q.id === quoteId ? { ...q, status: "declined" as const } : q))
-    );
-    toast.info("Quote declined.");
+  async function handleDeclineQuote(quoteId: string) {
+    try {
+      await apiClient.quotes.updateStatus(quoteId, "declined");
+      setQuotes((prev) =>
+        prev.map((q) => (q.id === quoteId ? { ...q, status: "declined" as const } : q))
+      );
+      toast.info("Quote declined.");
+    } catch {
+      toast.error("Failed to decline quote.");
+    }
   }
 
   const active = quotes.filter((q) => q.status === "generated" || q.status === "sent");

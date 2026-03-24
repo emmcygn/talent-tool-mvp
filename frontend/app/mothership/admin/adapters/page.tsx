@@ -14,11 +14,11 @@ import {
 import { formatRelativeTime } from "@/lib/utils";
 
 interface AdapterHealth {
-  name: string;
+  adapter_name: string;
   status: string;
-  last_sync: string;
-  records_synced: number;
-  error_rate: number;
+  last_sync: string | null;
+  records_processed: number;
+  error_count: number;
 }
 
 const statusConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
@@ -28,7 +28,7 @@ const statusConfig: Record<string, { icon: React.ElementType; color: string; lab
 };
 
 const SCHEMA_MAPPINGS: Record<string, { from: string; to: string }[]> = {
-  Bullhorn: [
+  bullhorn: [
     { from: "candidateFirstName", to: "first_name" },
     { from: "candidateLastName", to: "last_name" },
     { from: "candidateEmail", to: "email" },
@@ -36,7 +36,7 @@ const SCHEMA_MAPPINGS: Record<string, { from: string; to: string }[]> = {
     { from: "candidateAddress.city", to: "location" },
     { from: "candidateSkills", to: "skills (via extraction)" },
   ],
-  HubSpot: [
+  hubspot: [
     { from: "contact.firstname", to: "first_name" },
     { from: "contact.lastname", to: "last_name" },
     { from: "contact.email", to: "email" },
@@ -44,7 +44,7 @@ const SCHEMA_MAPPINGS: Record<string, { from: string; to: string }[]> = {
     { from: "contact.city", to: "location" },
     { from: "contact.notes", to: "profile_text" },
   ],
-  LinkedIn: [
+  linkedin: [
     { from: "profile.firstName", to: "first_name" },
     { from: "profile.lastName", to: "last_name" },
     { from: "profile.emailAddress", to: "email" },
@@ -73,10 +73,8 @@ export default function AdaptersPage() {
     load();
   }, []);
 
-  const totalSynced = adapters.reduce((sum, a) => sum + a.records_synced, 0);
-  const avgErrorRate = adapters.length > 0
-    ? (adapters.reduce((sum, a) => sum + a.error_rate, 0) / adapters.length * 100).toFixed(1)
-    : "0";
+  const totalSynced = adapters.reduce((sum, a) => sum + a.records_processed, 0);
+  const totalErrors = adapters.reduce((sum, a) => sum + a.error_count, 0);
 
   return (
     <div className="space-y-6">
@@ -106,15 +104,15 @@ export default function AdaptersPage() {
           loading={loading}
         />
         <MetricTile
-          label="Avg Error Rate"
-          value={`${avgErrorRate}%`}
+          label="Total Errors"
+          value={totalErrors}
           subtitle="Across all adapters"
           icon={<AlertTriangle className="h-4 w-4" />}
           loading={loading}
         />
         <MetricTile
           label="Last Sync"
-          value={adapters.length > 0 ? formatRelativeTime(adapters[0].last_sync) : "\u2014"}
+          value={adapters.length > 0 && adapters[0].last_sync ? formatRelativeTime(adapters[0].last_sync) : "\u2014"}
           subtitle="Most recent"
           icon={<Clock className="h-4 w-4" />}
           loading={loading}
@@ -130,11 +128,11 @@ export default function AdaptersPage() {
           adapters.map((adapter) => {
             const config = statusConfig[adapter.status] || statusConfig.healthy;
             const StatusIcon = config.icon;
-            const mappings = SCHEMA_MAPPINGS[adapter.name] || [];
-            const isExpanded = expandedAdapter === adapter.name;
+            const mappings = SCHEMA_MAPPINGS[adapter.adapter_name] || [];
+            const isExpanded = expandedAdapter === adapter.adapter_name;
 
             return (
-              <Card key={adapter.name} className={`border ${adapter.status === "degraded" ? "border-amber-200" : adapter.status === "down" ? "border-red-200" : ""}`}>
+              <Card key={adapter.adapter_name} className={`border ${adapter.status === "degraded" ? "border-amber-200" : adapter.status === "down" ? "border-red-200" : ""}`}>
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -142,9 +140,9 @@ export default function AdaptersPage() {
                         <StatusIcon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="font-semibold">{adapter.name}</h3>
+                        <h3 className="font-semibold">{adapter.adapter_name}</h3>
                         <p className="text-xs text-muted-foreground">
-                          Last sync: {formatRelativeTime(adapter.last_sync)}
+                          Last sync: {adapter.last_sync ? formatRelativeTime(adapter.last_sync) : "Never"}
                         </p>
                       </div>
                       <Badge variant="outline" className={config.color}>
@@ -153,12 +151,12 @@ export default function AdaptersPage() {
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="text-right">
-                        <p className="text-sm font-medium">{adapter.records_synced.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">records synced</p>
+                        <p className="text-sm font-medium">{adapter.records_processed.toLocaleString()}</p>
+                        <p className="text-xs text-muted-foreground">records processed</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium">{(adapter.error_rate * 100).toFixed(1)}%</p>
-                        <p className="text-xs text-muted-foreground">error rate</p>
+                        <p className="text-sm font-medium">{adapter.error_count}</p>
+                        <p className="text-xs text-muted-foreground">errors</p>
                       </div>
                       <Button variant="outline" size="sm">
                         <RefreshCw className="h-4 w-4 mr-1.5" />
@@ -173,7 +171,7 @@ export default function AdaptersPage() {
                         variant="ghost"
                         size="sm"
                         className="text-xs"
-                        onClick={() => setExpandedAdapter(isExpanded ? null : adapter.name)}
+                        onClick={() => setExpandedAdapter(isExpanded ? null : adapter.adapter_name)}
                       >
                         <ArrowDownToLine className="h-3 w-3 mr-1" />
                         {isExpanded ? "Hide schema mapping" : "View schema mapping"}
@@ -183,7 +181,7 @@ export default function AdaptersPage() {
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="bg-slate-50 border-b">
-                                <th className="text-left font-medium px-3 py-2">{adapter.name} Field</th>
+                                <th className="text-left font-medium px-3 py-2">{adapter.adapter_name} Field</th>
                                 <th className="text-left font-medium px-3 py-2">Canonical Field</th>
                               </tr>
                             </thead>
