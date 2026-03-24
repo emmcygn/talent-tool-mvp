@@ -130,7 +130,7 @@ export const mockApi: ApiClient = {
       await delay();
       const m = MOCK_MATCHES.find((m) => m.id === matchId);
       if (!m) throw new Error("Match not found");
-      return { ...m, status };
+      return { status: "updated", match_id: matchId, new_status: status };
     },
     forRoleAnonymized: async (roleId) => {
       await delay();

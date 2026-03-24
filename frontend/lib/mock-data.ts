@@ -336,6 +336,7 @@ export const MOCK_MATCHES: Match[] = [
     overall_score: 0.88,
     structured_score: 0.91,
     semantic_score: 0.85,
+    experience_score: 0.90,
     skill_overlap: [
       { skill_name: "Python", status: "matched", candidate_years: 6, required_years: 4 },
       { skill_name: "PostgreSQL", status: "matched", candidate_years: 5, required_years: 3 },
@@ -366,6 +367,7 @@ export const MOCK_MATCHES: Match[] = [
     overall_score: 0.72,
     structured_score: 0.68,
     semantic_score: 0.76,
+    experience_score: 0.70,
     skill_overlap: [
       { skill_name: "Python", status: "matched", candidate_years: 5, required_years: 4 },
       { skill_name: "PostgreSQL", status: "missing", candidate_years: null, required_years: 3 },
@@ -399,6 +401,7 @@ export const MOCK_MATCHES: Match[] = [
     overall_score: 0.45,
     structured_score: 0.4,
     semantic_score: 0.5,
+    experience_score: 0.42,
     skill_overlap: [
       { skill_name: "Python", status: "partial", candidate_years: 3, required_years: 4 },
       { skill_name: "PostgreSQL", status: "partial", candidate_years: 2, required_years: 3 },
@@ -431,6 +434,7 @@ export const MOCK_MATCHES: Match[] = [
     overall_score: 0.92,
     structured_score: 0.95,
     semantic_score: 0.89,
+    experience_score: 0.93,
     skill_overlap: [
       { skill_name: "React", status: "matched", candidate_years: 5, required_years: 4 },
       { skill_name: "TypeScript", status: "matched", candidate_years: 5, required_years: 3 },
@@ -459,6 +463,7 @@ export const MOCK_MATCHES: Match[] = [
     overall_score: 0.9,
     structured_score: 0.92,
     semantic_score: 0.88,
+    experience_score: 0.91,
     skill_overlap: [
       { skill_name: "Python", status: "matched", candidate_years: 8, required_years: 5 },
       { skill_name: "Machine Learning", status: "matched", candidate_years: 5, required_years: 3 },

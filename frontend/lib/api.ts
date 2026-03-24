@@ -140,7 +140,7 @@ export const api = {
     forRole: (roleId: string) => fetchAPI<Match[]>(`/api/matches/role/${roleId}`),
     forCandidate: (candidateId: string) => fetchAPI<Match[]>(`/api/matches/candidate/${candidateId}`),
     updateStatus: (matchId: string, status: Match["status"], reason?: string) =>
-      fetchAPI<Match>(`/api/matches/${matchId}/status`, {
+      fetchAPI<{ status: string; match_id: string; new_status: string }>(`/api/matches/${matchId}/status`, {
         method: "PATCH",
         body: JSON.stringify({ status, reason }),
       }),
@@ -223,7 +223,7 @@ export const api = {
   users: {
     me: () => fetchAPI<User>("/api/users/me"),
   },
-  health: () => fetchAPI<{ status: string }>("/api/health"),
+  health: () => fetchAPI<{ status: string }>("/health"),
 };
 
 export type ApiClient = typeof api;

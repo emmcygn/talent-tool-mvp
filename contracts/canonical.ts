@@ -155,6 +155,7 @@ export interface Match {
   overall_score: number;
   structured_score: number;
   semantic_score: number;
+  experience_score: number;
   skill_overlap: SkillMatch[];
   confidence: ConfidenceLevel;
   explanation: string;
