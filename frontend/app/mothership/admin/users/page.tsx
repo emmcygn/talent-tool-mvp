@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
+import { userFullName } from "@/contracts/canonical";
 import type { User } from "@/contracts/canonical";
 
 const roleBadgeStyle: Record<string, string> = {
@@ -44,11 +45,11 @@ export default function UsersPage() {
     load();
   }, []);
 
-  const filtered = users.filter((u) =>
-    u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    u.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    u.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filtered = users.filter((u) => {
+    const name = userFullName(u).toLowerCase();
+    const q = searchQuery.toLowerCase();
+    return name.includes(q) || u.email.toLowerCase().includes(q) || u.role.toLowerCase().includes(q);
+  });
 
   return (
     <div className="space-y-6">
@@ -111,9 +112,9 @@ export default function UsersPage() {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
                               <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-medium text-slate-600">
-                                {user.full_name.split(" ").map((n) => n[0]).join("")}
+                                {user.first_name[0]}{user.last_name[0]}
                               </div>
-                              <span className="font-medium">{user.full_name}</span>
+                              <span className="font-medium">{userFullName(user)}</span>
                             </div>
                           </td>
                           <td className="px-4 py-3 text-muted-foreground">{user.email}</td>

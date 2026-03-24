@@ -69,10 +69,10 @@ export default function MindLayout({ children }: { children: ReactNode }) {
             <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm hover:bg-accent focus:outline-none">
               <Avatar className="h-7 w-7">
                 <AvatarFallback className="bg-slate-100 text-xs">
-                  {user?.full_name?.charAt(0) ?? "U"}
+                  {user?.first_name?.charAt(0) ?? "U"}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm text-slate-700">{user?.full_name ?? "User"}</span>
+              <span className="text-sm text-slate-700">{user ? `${user.first_name} ${user.last_name}` : "User"}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={signOut} className="gap-2 text-red-600">

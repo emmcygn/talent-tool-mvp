@@ -129,12 +129,12 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
           <div className="flex items-center gap-3 rounded-md px-3 py-2">
             <Avatar className="h-8 w-8">
               <AvatarFallback className="bg-slate-100 text-xs">
-                {user?.full_name?.charAt(0) ?? "U"}
+                {user?.first_name?.charAt(0) ?? "U"}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
               <p className="truncate text-sm font-medium text-slate-900">
-                {user?.full_name ?? "User"}
+                {user ? `${user.first_name} ${user.last_name}` : "User"}
               </p>
               <p className="truncate text-xs text-slate-500 capitalize">
                 {user?.role?.replace("_", " ") ?? ""}

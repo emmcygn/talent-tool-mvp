@@ -1,5 +1,6 @@
 "use client";
 
+import { userFullName } from "@/contracts/canonical";
 import type { Handoff, User } from "@/contracts/canonical";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,11 +23,9 @@ export function HandoffCard({
   handoff, sender, receiver, direction, onAccept, onDecline, onViewDetail,
 }: HandoffCardProps) {
   const otherParty = direction === "inbox" ? sender : receiver;
-  const initials = otherParty?.full_name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase() ?? "??";
+  const initials = otherParty
+    ? `${otherParty.first_name[0]}${otherParty.last_name[0]}`.toUpperCase()
+    : "??";
 
   return (
     <Card className="hover:shadow-sm transition-shadow">
@@ -42,11 +41,11 @@ export function HandoffCard({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-medium text-sm">
-                  {direction === "inbox" ? sender?.full_name ?? "Unknown" : receiver?.full_name ?? "Unknown"}
+                  {direction === "inbox" ? (sender ? userFullName(sender) : "Unknown") : (receiver ? userFullName(receiver) : "Unknown")}
                 </span>
                 <ArrowRight className="h-3 w-3 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  {direction === "inbox" ? "you" : receiver?.full_name ?? "Unknown"}
+                  {direction === "inbox" ? "you" : (receiver ? userFullName(receiver) : "Unknown")}
                 </span>
                 <HandoffStatusBadge status={handoff.status} />
               </div>

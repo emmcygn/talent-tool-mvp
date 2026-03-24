@@ -22,7 +22,7 @@ interface CollectionFormProps {
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: CollectionCreate) => void;
   initial?: Collection | null;
-  partners?: { id: string; full_name: string }[];
+  partners?: { id: string; first_name: string; last_name: string }[];
 }
 
 export function CollectionForm({
@@ -175,7 +175,7 @@ export function CollectionForm({
                         );
                       }}
                     />
-                    {p.full_name}
+                    {p.first_name} {p.last_name}
                   </label>
                 ))}
               </div>

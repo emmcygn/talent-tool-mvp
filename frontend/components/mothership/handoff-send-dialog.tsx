@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { userFullName } from "@/contracts/canonical";
 import type { Candidate, HandoffCreate, Role, User } from "@/contracts/canonical";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
@@ -155,7 +156,7 @@ export function HandoffSendDialog({
               <SelectContent>
                 {partners.map((p) => (
                   <SelectItem key={p.id} value={p.id}>
-                    {p.full_name}
+                    {userFullName(p)}
                   </SelectItem>
                 ))}
               </SelectContent>

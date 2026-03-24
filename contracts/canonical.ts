@@ -283,9 +283,16 @@ export interface Organisation {
 export interface User {
   id: string;
   email: string;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   role: UserRole;
   organisation_id: string | null;
-  avatar_url: string | null;
+  is_active: boolean;
   created_at: string;
+  updated_at: string;
+}
+
+/** Compute display name from User record. */
+export function userFullName(u: Pick<User, "first_name" | "last_name">): string {
+  return `${u.first_name} ${u.last_name}`;
 }
