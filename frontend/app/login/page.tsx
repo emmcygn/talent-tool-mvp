@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Briefcase, Shield, Loader2 } from "lucide-react";
+import { Users, Briefcase, Shield, Loader2, Play } from "lucide-react";
 import { signInAsDemo, getDashboardPath, DEMO_USERS } from "@/lib/auth";
 import type { UserRole } from "@/contracts/canonical";
+import { DemoOverlay } from "@/components/shared/demo-overlay";
 
 const PERSONA_ICONS = {
   talent_partner: Users,
@@ -17,6 +18,7 @@ const PERSONA_ICONS = {
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<UserRole | null>(null);
+  const [showTour, setShowTour] = useState(false);
 
   const handleLogin = async (role: UserRole) => {
     setLoading(role);
@@ -78,9 +80,22 @@ export default function LoginPage() {
           )}
         </div>
 
-        <p className="text-center text-sm text-slate-400">
-          Demo accounts with pre-loaded data. No registration required.
-        </p>
+        <div className="text-center space-y-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowTour(true)}
+            className="gap-2"
+          >
+            <Play className="h-4 w-4" />
+            Take a Tour
+          </Button>
+          <p className="text-sm text-slate-400">
+            Demo accounts with pre-loaded data. No registration required.
+          </p>
+        </div>
+
+        {showTour && <DemoOverlay onClose={() => setShowTour(false)} />}
       </div>
     </div>
   );
