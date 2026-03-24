@@ -41,7 +41,7 @@ _(none)_
 | Task | Status | Completed | Depends On | Notes |
 |------|--------|-----------|------------|-------|
 | 01   | completed | 2026-03-24 | A-01 | Bootstrap: Next.js + TypeScript contracts (PAIR) |
-| 02   | not_started | | B-01 | Layout shells + auth flow |
+| 02   | completed | 2026-03-24 | B-01 | Layout shells + auth flow |
 | 03   | not_started | | B-01 | Shared UI components (batch 1) |
 | 04   | not_started | | B-01, A-01 | API client + mock layer |
 | 05   | not_started | | B-03, B-04 | Mothership: Candidate ingestion |
