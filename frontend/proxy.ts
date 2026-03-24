@@ -13,6 +13,28 @@ export async function proxy(request: NextRequest) {
     request: { headers: request.headers },
   });
 
+  // Check for demo mode user (stored in cookie by client)
+  const demoUser = request.cookies.get("recruittech_demo_role")?.value;
+  if (demoUser) {
+    // Demo mode — skip Supabase auth, enforce role-based routing
+    if (pathname.startsWith("/mind") && demoUser !== "client") {
+      if (demoUser === "talent_partner") {
+        return NextResponse.redirect(new URL("/mothership/dashboard", request.url));
+      }
+      if (demoUser === "admin") {
+        return NextResponse.redirect(new URL("/mothership/admin/analytics", request.url));
+      }
+    }
+    if (pathname.startsWith("/mothership") && demoUser === "client") {
+      return NextResponse.redirect(new URL("/mind/dashboard", request.url));
+    }
+    if (pathname.startsWith("/mothership/admin") && demoUser !== "admin") {
+      return NextResponse.redirect(new URL("/mothership/dashboard", request.url));
+    }
+    return response;
+  }
+
+  // Real auth — check Supabase session
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -33,7 +55,7 @@ export async function proxy(request: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
 
-  // No session — redirect to login
+  // No session and no demo cookie — redirect to login
   if (!session) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -47,7 +69,7 @@ export async function proxy(request: NextRequest) {
 
   const role = user?.role as string | undefined;
 
-  // Route guards — enforce product boundaries
+  // Route guards
   if (pathname.startsWith("/mind") && role !== "client") {
     if (role === "talent_partner") {
       return NextResponse.redirect(new URL("/mothership/dashboard", request.url));

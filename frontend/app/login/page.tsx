@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Users, Briefcase, Shield, Loader2, ArrowRight, Sparkles } from "lucide-react";
 import { signInAsDemo, getDashboardPath, DEMO_USERS } from "@/lib/auth";
+import { useAuth } from "@/app/providers";
 import type { UserRole } from "@/contracts/canonical";
 
 const PERSONA_CONFIG = {
@@ -33,12 +34,16 @@ const PERSONA_CONFIG = {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { setDemoUser } = useAuth();
   const [loading, setLoading] = useState<UserRole | null>(null);
 
   const handleLogin = async (role: UserRole) => {
     setLoading(role);
     try {
-      await signInAsDemo(role);
+      const result = await signInAsDemo(role);
+      if (result.type === "demo") {
+        setDemoUser(result.user);
+      }
       router.push(getDashboardPath(role));
     } catch (err) {
       console.error("Login failed:", err);
