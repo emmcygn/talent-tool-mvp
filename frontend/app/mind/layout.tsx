@@ -25,7 +25,7 @@ import { useKeyboardShortcuts } from "@/lib/use-keyboard-shortcuts";
 
 const NAV_ITEMS = [
   { href: "/mind/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mind/roles", label: "My Roles", icon: Briefcase },
+  { href: "/mind/roles/new", label: "Post Role", icon: Briefcase },
   { href: "/mind/candidates", label: "Candidates", icon: Users },
   { href: "/mind/quotes", label: "Quotes", icon: Receipt },
   { href: "/mind/pipeline", label: "Pipeline", icon: KanbanSquare },

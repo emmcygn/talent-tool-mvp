@@ -30,11 +30,10 @@ import { useKeyboardShortcuts } from "@/lib/use-keyboard-shortcuts";
 
 const MAIN_NAV = [
   { href: "/mothership/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mothership/candidates", label: "Candidates", icon: Users },
+  { href: "/mothership/candidates/new", label: "Candidates", icon: Users },
   { href: "/mothership/matching", label: "Matching", icon: Sparkles },
   { href: "/mothership/collections", label: "Collections", icon: FolderOpen },
   { href: "/mothership/handoffs", label: "Handoffs", icon: ArrowRightLeft },
-  { href: "/mothership/copilot", label: "Copilot", icon: MessageSquare },
 ];
 
 const ADMIN_NAV = [
