@@ -58,6 +58,58 @@ Append-only. Both agents write here when completing a task that the other agent 
   - `frontend/proxy.ts` — Auth guard with role-based routing
 - **Notes:** Demo users defined in lib/auth.ts — seed data must use these exact credentials: alex.morgan@mothership.demo/demo-talent-2026 (talent_partner), jamie.chen@acmecorp.demo/demo-client-2026 (client), sam.patel@mothership.demo/demo-admin-2026 (admin). Next.js 16 renamed middleware.ts to proxy.ts.
 
+## Agent A Task 13 → Agent B | 2026-03-24
+- **Delivered:** Handoff lifecycle endpoints + quote generation with fee calculator
+- **Files:**
+  - `backend/services/handoff.py` — HandoffService: create, inbox, outbox, respond, attribution chain
+  - `backend/services/quote.py` — QuoteService: generate_quote, fee calc by seniority, 20% pool discount
+  - `backend/api/handoffs.py` — GET /api/handoffs/inbox, /outbox, POST /, PATCH /{id}/respond, GET /attribution/{id}
+  - `backend/api/quotes.py` — POST /api/quotes/generate, GET /, GET /{id}, PATCH /{id}/status
+- **Notes:**
+  - Handoff inbox/outbox return separate lists. attribution_id links the full referral chain.
+  - Quote `fee_breakdown` field: `{summary, seniority_level, base_fee, pool_discount?, savings_message?, final_fee, validity}`. Render as fee card.
+  - Quote status flow: generated → sent → accepted/declined/expired (transitions enforced).
+  - Fee schedule (GBP): junior=8K, mid=12K, senior=18K, lead=25K, principal=35K. Pool discount=20%.
+
+## Agent A Task 14 → Agent B | 2026-03-24
+- **Delivered:** NL copilot query layer with streaming SSE endpoint
+- **Files:**
+  - `backend/copilot/parser.py` — LLM-based NL→structured query parser
+  - `backend/copilot/executor.py` — Supabase query executor
+  - `backend/copilot/formatter.py` — Response formatter with actions and suggestions
+  - `backend/api/copilot.py` — POST /api/copilot/query (full), POST /api/copilot/query/stream (SSE)
+- **Notes:**
+  - Non-streaming `/query` returns: `{summary, interpretation, query_executed, results, total_count, actions, followup_suggestions}`.
+  - SSE phases: `parsing` → `parsed` → `executing` → `executed` → `results` (chunked, 5/chunk) → `complete` → `done`.
+  - Session ID is client-generated UUID, sent with each query for multi-turn context (capped at 10 turns, in-memory).
+  - `actions` have `label`, `action`, `description` — render as clickable buttons in copilot sidebar.
+
+## Agent A Task 15 → Agent B | 2026-03-24
+- **Delivered:** Admin endpoints for platform monitoring and user management
+- **Files:**
+  - `backend/api/admin.py` — All admin endpoints (stats, adapter health, pipeline status, dedup queue, user CRUD)
+  - `supabase/migrations/005_admin_tables.sql` — dedup_queue + users tables
+- **Notes:**
+  - GET /api/admin/stats: `{totals, active, growth_7d}`.
+  - GET /api/admin/pipeline/status: `{extraction_queue, confidence_distribution, embedding_coverage}`.
+  - GET /api/admin/dedup/queue: enriched with both candidate summaries side-by-side.
+  - All endpoints require admin role — show access-denied UI for non-admins.
+
+## Agent A Task 16 → Agent B | 2026-03-24
+- **Delivered:** Comprehensive UK-market seed data generation
+- **Files:**
+  - `backend/seed/organisations.py` — 12 UK tech companies
+  - `backend/seed/users.py` — 9 demo users with stable UUIDs
+  - `backend/seed/candidates.py` — 50+ candidates (8 hand-crafted + 42 generated)
+  - `backend/seed/roles.py` — 15 roles across fintech/healthtech/SaaS/e-commerce
+  - `backend/seed/generate.py` — Master orchestrator, generates supabase/seed.sql
+  - `backend/tests/test_integration.py` — End-to-end API route tests
+- **Notes:**
+  - Demo user stable UUIDs: partners=`11111111-1111-1111-1111-{111..555}`, clients=`22222222-2222-2222-2222-{111..333}`, admin=`33333333-3333-3333-3333-111111111111`.
+  - Run `cd backend && python -m seed.generate` to produce `supabase/seed.sql`.
+  - Seed includes: 12+ handoffs, 18 quotes, 600+ signals (30 days), 8 dedup queue items, 6 collections.
+  - Embeddings and matches are NOT pre-generated (require AI pipeline run after loading SQL).
+
 ## Agent B Task 04 → Agent A | 2026-03-24
 - **Delivered:** Enhanced API client with auth + retry, full mock data layer
 - **Files:**

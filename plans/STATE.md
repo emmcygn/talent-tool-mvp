@@ -26,10 +26,10 @@ Both agents read and write this file. It is the single source of truth for progr
 | 10   | completed | 2026-03-24 | A-09 | Match explanation generator |
 | 11   | completed | 2026-03-24 | A-09, A-10 | Match + Collection endpoints |
 | 12   | completed | 2026-03-24 | A-03 | Signal tracking + analytics |
-| 13   | not_started | | A-08, A-12 | Handoff + Quote endpoints |
-| 14   | not_started | | A-08, A-09 | Copilot query layer |
-| 15   | not_started | | A-12 | Admin endpoints + monitoring |
-| 16   | not_started | | A-01..A-15 | Seed data + final integration |
+| 13   | completed | 2026-03-24 | A-08, A-12 | Handoff + Quote endpoints |
+| 14   | completed | 2026-03-24 | A-08, A-09 | Copilot query layer |
+| 15   | completed | 2026-03-24 | A-12 | Admin endpoints + monitoring |
+| 16   | completed | 2026-03-24 | A-01..A-15 | Seed data + final integration |
 
 ### Current Blockers
 _(none)_
