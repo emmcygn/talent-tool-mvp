@@ -1,0 +1,49 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export function formatCurrency(amount: number, currency = "GBP"): string {
+  return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount);
+}
+
+export function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString("en-GB", {
+    day: "numeric", month: "short", year: "numeric"
+  });
+}
+
+export function formatRelativeTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 1) return "just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return formatDate(dateString);
+}
+
+export function confidenceColor(confidence: string): string {
+  switch (confidence) {
+    case "strong": return "text-green-600 bg-green-50 border-green-200";
+    case "good": return "text-amber-600 bg-amber-50 border-amber-200";
+    case "possible": return "text-slate-500 bg-slate-50 border-slate-200";
+    default: return "text-slate-400 bg-slate-50 border-slate-200";
+  }
+}
+
+export function skillMatchColor(status: string): string {
+  switch (status) {
+    case "matched": return "bg-green-100 text-green-800 border-green-300";
+    case "partial": return "bg-amber-100 text-amber-800 border-amber-300";
+    case "missing": return "bg-slate-100 text-slate-500 border-slate-300";
+    default: return "bg-slate-100 text-slate-500 border-slate-300";
+  }
+}

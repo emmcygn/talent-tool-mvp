@@ -35,3 +35,14 @@ Append-only. Both agents write here when completing a task that the other agent 
   - `supabase/config.toml` — Supabase local dev configuration
   - `docker-compose.yml` — Backend + Supabase DB services
 - **Notes:** Supabase Realtime enabled on `matches`, `handoffs`, `quotes`, `signals` — subscribe for live updates. RLS uses `auth.jwt() -> 'user_metadata' ->> 'role'` to determine access. JSONB used for structured arrays (skills, experience, etc.). HNSW indexes on candidate/role embeddings for vector similarity search.
+
+## Agent B Task 01 → Agent A | 2026-03-24
+- **Delivered:** Next.js 16 scaffold with TypeScript contracts, shadcn/ui, typed API client
+- **Files:**
+  - `contracts/canonical.ts` — All TypeScript types mirroring Python contracts
+  - `frontend/lib/api.ts` — Typed API client skeleton
+  - `frontend/lib/supabase.ts` — Supabase browser client
+  - `frontend/lib/utils.ts` — cn() helper + formatting utilities
+  - `frontend/lib/types.ts` — Re-export from canonical
+- **Import paths:** `import type { Candidate } from "@/contracts/canonical"` or `from "@/lib/types"`
+- **Notes:** Using Next.js 16 (not 14 as plan assumed). shadcn/ui toast is deprecated, using sonner instead. If you change Python contracts, note in HANDOFF.md so I can update the TS mirror.
