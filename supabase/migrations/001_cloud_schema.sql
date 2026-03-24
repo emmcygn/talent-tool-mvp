@@ -52,6 +52,7 @@ CREATE TABLE organisations (
     website TEXT,
     location TEXT,
     description TEXT,
+    size TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -175,6 +176,9 @@ CREATE TABLE collections (
     visibility collection_visibility NOT NULL DEFAULT 'private',
     shared_with JSONB,
     tags JSONB NOT NULL DEFAULT '[]'::jsonb,
+    candidate_count INTEGER NOT NULL DEFAULT 0,
+    avg_match_score FLOAT,
+    available_now_count INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
