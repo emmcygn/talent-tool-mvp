@@ -99,18 +99,18 @@ from api.candidates import router as candidates_router
 from api.roles import router as roles_router
 from api.matches import router as matches_router
 from api.collections import router as collections_router
-# from api.handoffs import router as handoffs_router
-# from api.quotes import router as quotes_router
-# from api.copilot import router as copilot_router
+from api.handoffs import router as handoffs_router
+from api.quotes import router as quotes_router
+from api.copilot import router as copilot_router
 from api.signals import router as signals_router
-# from api.admin import router as admin_router
+from api.admin import router as admin_router
 
 app.include_router(candidates_router, prefix="/api/candidates", tags=["candidates"])
 app.include_router(roles_router, prefix="/api/roles", tags=["roles"])
 app.include_router(matches_router, prefix="/api/matches", tags=["matches"])
 app.include_router(collections_router, prefix="/api/collections", tags=["collections"])
-# app.include_router(handoffs_router, prefix="/api/handoffs", tags=["handoffs"])
-# app.include_router(quotes_router, prefix="/api/quotes", tags=["quotes"])
-# app.include_router(copilot_router, prefix="/api/copilot", tags=["copilot"])
+app.include_router(handoffs_router, prefix="/api/handoffs", tags=["handoffs"])
+app.include_router(quotes_router, prefix="/api/quotes", tags=["quotes"])
+app.include_router(copilot_router, prefix="/api/copilot", tags=["copilot"])
 app.include_router(signals_router, prefix="/api/signals", tags=["signals"])
-# app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
+app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
