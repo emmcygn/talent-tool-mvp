@@ -134,9 +134,8 @@ recruittech/
 │   │   └── utils.ts            # Shared utilities
 │   ├── package.json
 │   └── tsconfig.json
-├── contracts/                  # Shared type definitions
-│   ├── canonical.ts            # TypeScript canonical types (source of truth for frontend)
-│   └── canonical.py            # Python canonical types (source of truth for backend)
+├── contracts/                  # Shared interface boundary between agents
+│   └── canonical.ts            # TypeScript canonical types (Agent B mirrors from backend/contracts/)
 ├── supabase/
 │   ├── migrations/             # Database migrations
 │   ├── seed.sql                # Seed data SQL
@@ -715,8 +714,8 @@ Data should feel real enough that a recruitment professional would recognize the
 ### Shared Contract Boundary
 
 The **canonical type definitions** are the interface:
-- Agent A writes `contracts/canonical.py` (Pydantic models) — this is the source of truth
-- Agent B writes `contracts/canonical.ts` (TypeScript types) — mirrors the Python contracts exactly
+- Agent A writes `backend/contracts/*.py` (Pydantic models) — this is the single source of truth for all data shapes
+- Agent B writes `contracts/canonical.ts` (TypeScript types) — mirrors the Python contracts exactly for frontend consumption
 - Agent A's API endpoints accept and return these contract shapes
 - Agent B's frontend consumes these shapes via the typed API client
 
