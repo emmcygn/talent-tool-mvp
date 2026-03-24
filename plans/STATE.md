@@ -15,7 +15,7 @@ Both agents read and write this file. It is the single source of truth for progr
 | Task | Status | Completed | Depends On | Notes |
 |------|--------|-----------|------------|-------|
 | 01   | completed | 2026-03-24 | — | Bootstrap: Project structure + canonical contracts (PAIR) |
-| 02   | not_started | | A-01 | Supabase schema + migrations |
+| 02   | completed | 2026-03-24 | A-01 | Supabase schema + migrations |
 | 03   | not_started | | A-02 | FastAPI skeleton + auth |
 | 04   | not_started | | A-01 | Adapter interfaces + mocks |
 | 05   | not_started | | A-02, A-04 | Ingest + normalize pipeline |
@@ -70,4 +70,7 @@ Track key files that both agents depend on. When these change, note it here.
 | `backend/contracts/*` | Agent A | A-01 | All canonical Pydantic contracts created |
 | `backend/config.py` | Agent A | A-01 | Settings class with env defaults |
 | `backend/requirements.txt` | Agent A | A-01 | All Python dependencies |
+| `supabase/migrations/001_initial_schema.sql` | Agent A | A-02 | Full schema: tables, enums, indexes, RLS, Realtime |
+| `supabase/config.toml` | Agent A | A-02 | Supabase local dev config |
+| `docker-compose.yml` | Agent A | A-02 | Backend + Supabase DB services |
 |------|-----------------|------|--------------|
