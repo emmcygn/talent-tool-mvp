@@ -16,7 +16,7 @@ Both agents read and write this file. It is the single source of truth for progr
 |------|--------|-----------|------------|-------|
 | 01   | completed | 2026-03-24 | — | Bootstrap: Project structure + canonical contracts (PAIR) |
 | 02   | completed | 2026-03-24 | A-01 | Supabase schema + migrations |
-| 03   | not_started | | A-02 | FastAPI skeleton + auth |
+| 03   | completed | 2026-03-24 | A-02 | FastAPI skeleton + auth |
 | 04   | not_started | | A-01 | Adapter interfaces + mocks |
 | 05   | not_started | | A-02, A-04 | Ingest + normalize pipeline |
 | 06   | not_started | | A-05 | Deduplication pipeline |
@@ -40,7 +40,7 @@ _(none)_
 
 | Task | Status | Completed | Depends On | Notes |
 |------|--------|-----------|------------|-------|
-| 01   | not_started | | A-01 | Bootstrap: Next.js + TypeScript contracts (PAIR) |
+| 01   | completed | 2026-03-24 | A-01 | Bootstrap: Next.js + TypeScript contracts (PAIR) |
 | 02   | not_started | | B-01 | Layout shells + auth flow |
 | 03   | not_started | | B-01 | Shared UI components (batch 1) |
 | 04   | not_started | | B-01, A-01 | API client + mock layer |
@@ -73,4 +73,7 @@ Track key files that both agents depend on. When these change, note it here.
 | `supabase/migrations/001_initial_schema.sql` | Agent A | A-02 | Full schema: tables, enums, indexes, RLS, Realtime |
 | `supabase/config.toml` | Agent A | A-02 | Supabase local dev config |
 | `docker-compose.yml` | Agent A | A-02 | Backend + Supabase DB services |
+| `backend/main.py` | Agent A | A-03 | FastAPI app with CORS, middleware, health endpoint |
+| `backend/api/auth.py` | Agent A | A-03 | JWT auth + role-based access control |
+| `backend/api/deps.py` | Agent A | A-03 | Supabase client dependencies |
 |------|-----------------|------|--------------|

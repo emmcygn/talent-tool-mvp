@@ -1,7 +1,9 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
+
     supabase_url: str = "http://localhost:54321"
     supabase_key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  # local dev default
     supabase_service_key: str = ""
@@ -11,9 +13,6 @@ class Settings(BaseSettings):
     embedding_dimensions: int = 1536
     database_url: str = "postgresql://postgres:postgres@localhost:54322/postgres"
     cors_origins: list[str] = ["http://localhost:3000"]
-
-    class Config:
-        env_file = ".env"
 
 
 settings = Settings()
