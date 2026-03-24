@@ -46,7 +46,7 @@ _(none)_
 | 04   | completed | 2026-03-24 | B-01, A-01 | API client + mock layer |
 | 05   | completed | 2026-03-24 | B-03, B-04 | Mothership: Candidate ingestion |
 | 06   | completed | 2026-03-24 | B-03, B-04 | Mind: Role posting wizard |
-| 07   | not_started | | B-03, B-04 | Mind: Candidate browse + matching |
+| 07   | completed | 2026-03-24 | B-03, B-04 | Mind: Candidate browse + matching |
 | 08   | not_started | | B-03, B-04 | Mothership: Match results view |
 | 09   | not_started | | B-03, B-04 | Mothership: Collections UI |
 | 10   | not_started | | B-03, B-04 | Mothership: Handoff inbox/outbox |
