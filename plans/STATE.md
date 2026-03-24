@@ -52,7 +52,7 @@ _(none)_
 | 10   | completed | 2026-03-24 | B-03, B-04 | Mothership: Handoff inbox/outbox |
 | 11   | completed | 2026-03-24 | B-03, B-04 | Mind: Quotes + pipeline |
 | 12   | completed | 2026-03-24 | B-04 | Mothership: Copilot sidebar |
-| 13   | not_started | | B-03..B-11 | Mind + Mothership: Dashboards |
+| 13   | completed | 2026-03-24 | B-03..B-11 | Mind + Mothership: Dashboards |
 | 14   | not_started | | B-04, A-15 | Admin: Analytics + data quality |
 | 15   | not_started | | B-14 | Admin: Adapters + monitoring + users |
 | 16   | not_started | | B-01..B-15 | Polish: Demo mode + final pass |
