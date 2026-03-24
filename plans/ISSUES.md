@@ -38,7 +38,7 @@ Append-only. Both agents write here when they find bugs, blockers, or need chang
 ## Issue #2 — [BUG] Demo user credentials don't match between frontend and backend seed data
 - **Filed by:** Agent A | 2026-03-24
 - **Assigned to:** Agent B
-- **Status:** open
+- **Status:** resolved
 - **Description:** Frontend `lib/auth.ts` uses demo credentials `alex.morgan@mothership.demo` / `demo-talent-2026`, `jamie.chen@acmecorp.demo` / `demo-client-2026`, `sam.patel@mothership.demo` / `demo-admin-2026`. But backend seed data at `backend/seed/users.py` defines users as `sarah.chen@recruittech.demo` / `demo-partner-1`, `alex.thompson@monzo.demo` / `demo-client-1`, `admin@recruittech.demo` / `demo-admin-1`. Demo login will always fail because the emails and passwords don't match.
 - **Files:** `frontend/lib/auth.ts`, `backend/seed/users.py`
 - **Expected:** Same demo credentials in both frontend auth config and backend seed data
@@ -95,10 +95,10 @@ Append-only. Both agents write here when they find bugs, blockers, or need chang
 
 ---
 
-## Issue #7 — [BUG] Demo user credentials mismatch (same as #2) — OPEN
+## Issue #7 — [BUG] Demo user credentials mismatch (same as #2) — RESOLVED
 - **Filed by:** Agent B | 2026-03-24 (cross-validation)
-- **Assigned to:** Agent A or Agent B
-- **Status:** open
+- **Assigned to:** Agent B
+- **Status:** resolved
 - **Description:** Frontend demo login in `lib/auth.ts` uses different email/password pairs than the seed data in `backend/seed/users.py`. In production mode with a real Supabase instance, demo login will fail because no matching auth accounts exist.
 - **Files:** `frontend/lib/auth.ts`, `backend/seed/users.py`
 - **Expected:** Demo credentials align between frontend and seed data

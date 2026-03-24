@@ -1,25 +1,26 @@
 import { createClient } from "@/lib/supabase";
 import type { UserRole } from "@/contracts/canonical";
 
+// Credentials aligned to backend seed data (backend/seed/users.py)
 export const DEMO_USERS = {
   talent_partner: {
-    email: "alex.morgan@mothership.demo",
-    password: "demo-talent-2026",
-    label: "Talent Partner",
+    email: "sarah.chen@recruittech.demo",
+    password: "demo-partner-1",
+    label: "Sarah Chen — Talent Partner",
     description: "Ingest candidates, run matching, manage collections, use copilot",
     icon: "Users",
   },
   client: {
-    email: "jamie.chen@acmecorp.demo",
-    password: "demo-client-2026",
-    label: "Client / Hiring Manager",
+    email: "alex.thompson@monzo.demo",
+    password: "demo-client-1",
+    label: "Alex Thompson — Hiring Manager (Monzo)",
     description: "Post roles, review matched candidates, request introductions",
     icon: "Briefcase",
   },
   admin: {
-    email: "sam.patel@mothership.demo",
-    password: "demo-admin-2026",
-    label: "Admin / Ops",
+    email: "admin@recruittech.demo",
+    password: "demo-admin-1",
+    label: "Admin",
     description: "Platform analytics, data quality, adapter management",
     icon: "Shield",
   },

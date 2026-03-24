@@ -8,12 +8,13 @@ const uuid = (n: number) => `00000000-0000-0000-0000-${String(n).padStart(12, "0
 // ============================================================
 // Users
 // ============================================================
+// Aligned to backend seed data UUIDs and names (backend/seed/users.py)
 export const MOCK_USERS: User[] = [
   {
-    id: uuid(1),
-    email: "alex.morgan@mothership.demo",
-    first_name: "Alex",
-    last_name: "Morgan",
+    id: "11111111-1111-1111-1111-111111111111",
+    email: "sarah.chen@recruittech.demo",
+    first_name: "Sarah",
+    last_name: "Chen",
     role: "talent_partner",
     organisation_id: null,
     is_active: true,
@@ -21,10 +22,10 @@ export const MOCK_USERS: User[] = [
     updated_at: "2026-01-15T09:00:00Z",
   },
   {
-    id: uuid(2),
-    email: "jamie.chen@acmecorp.demo",
-    first_name: "Jamie",
-    last_name: "Chen",
+    id: "22222222-2222-2222-2222-111111111111",
+    email: "alex.thompson@monzo.demo",
+    first_name: "Alex",
+    last_name: "Thompson",
     role: "client",
     organisation_id: uuid(100),
     is_active: true,
@@ -32,10 +33,10 @@ export const MOCK_USERS: User[] = [
     updated_at: "2026-02-01T09:00:00Z",
   },
   {
-    id: uuid(3),
-    email: "sam.patel@mothership.demo",
-    first_name: "Sam",
-    last_name: "Patel",
+    id: "33333333-3333-3333-3333-111111111111",
+    email: "admin@recruittech.demo",
+    first_name: "Admin",
+    last_name: "User",
     role: "admin",
     organisation_id: null,
     is_active: true,
