@@ -32,18 +32,18 @@ export function formatRelativeTime(dateString: string): string {
 
 export function confidenceColor(confidence: string): string {
   switch (confidence) {
-    case "strong": return "text-green-600 bg-green-50 border-green-200";
-    case "good": return "text-amber-600 bg-amber-50 border-amber-200";
-    case "possible": return "text-slate-500 bg-slate-50 border-slate-200";
-    default: return "text-slate-400 bg-slate-50 border-slate-200";
+    case "strong": return "text-emerald-400 bg-emerald-500/10 border-emerald-500/20";
+    case "good": return "text-amber-400 bg-amber-500/10 border-amber-500/20";
+    case "possible": return "text-slate-400 bg-slate-500/10 border-slate-500/20";
+    default: return "text-slate-500 bg-slate-500/10 border-slate-500/20";
   }
 }
 
 export function skillMatchColor(status: string): string {
   switch (status) {
-    case "matched": return "bg-green-100 text-green-800 border-green-300";
-    case "partial": return "bg-amber-100 text-amber-800 border-amber-300";
-    case "missing": return "bg-slate-100 text-slate-500 border-slate-300";
-    default: return "bg-slate-100 text-slate-500 border-slate-300";
+    case "matched": return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+    case "partial": return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+    case "missing": return "bg-slate-500/10 text-slate-500 border-slate-500/20";
+    default: return "bg-slate-500/10 text-slate-500 border-slate-500/20";
   }
 }

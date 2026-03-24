@@ -37,11 +37,14 @@ export default function MindLayout({ children }: { children: ReactNode }) {
   useKeyboardShortcuts();
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-sm">
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-50 border-b border-white/6 bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link href="/mind/dashboard" className="text-xl font-semibold text-slate-900">
-            Mind
+          <Link href="/mind/dashboard" className="flex items-center gap-2">
+            <div className="h-7 w-7 rounded-lg bg-blue-500/20 border border-blue-500/20 flex items-center justify-center">
+              <span className="text-xs font-bold text-blue-400">M</span>
+            </div>
+            <span className="text-lg font-semibold text-foreground tracking-tight">Mind</span>
           </Link>
 
           <nav className="flex items-center gap-1">
@@ -53,8 +56,8 @@ export default function MindLayout({ children }: { children: ReactNode }) {
                     variant="ghost"
                     size="sm"
                     className={cn(
-                      "gap-2 text-slate-500 hover:text-slate-900",
-                      isActive && "bg-slate-100 text-slate-900"
+                      "gap-2 text-muted-foreground hover:text-foreground transition-all",
+                      isActive && "bg-white/8 text-foreground"
                     )}
                   >
                     <item.icon className="h-4 w-4" />
@@ -66,16 +69,16 @@ export default function MindLayout({ children }: { children: ReactNode }) {
           </nav>
 
           <DropdownMenu>
-            <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm hover:bg-accent focus:outline-none">
+            <DropdownMenuTrigger className="inline-flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm hover:bg-white/5 transition-colors focus:outline-none">
               <Avatar className="h-7 w-7">
-                <AvatarFallback className="bg-slate-100 text-xs">
+                <AvatarFallback className="bg-blue-500/10 text-blue-400 text-xs font-semibold">
                   {user?.first_name?.charAt(0) ?? "U"}
                 </AvatarFallback>
               </Avatar>
-              <span className="text-sm text-slate-700">{user ? `${user.first_name} ${user.last_name}` : "User"}</span>
+              <span className="text-sm text-muted-foreground">{user ? `${user.first_name} ${user.last_name}` : "User"}</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={signOut} className="gap-2 text-red-600">
+            <DropdownMenuContent align="end" className="bg-card border-white/8">
+              <DropdownMenuItem onClick={signOut} className="gap-2 text-red-400 focus:text-red-400">
                 <LogOut className="h-4 w-4" />
                 Sign out
               </DropdownMenuItem>

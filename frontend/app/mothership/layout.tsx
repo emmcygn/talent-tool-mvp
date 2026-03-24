@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import {
   LayoutDashboard,
   Users,
@@ -55,10 +54,10 @@ function SidebarLink({ href, label, icon: Icon, isActive }: SidebarLinkProps) {
     <Link href={href}>
       <div
         className={cn(
-          "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+          "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
           isActive
-            ? "bg-slate-100 text-slate-900"
-            : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
         )}
       >
         <Icon className="h-4 w-4 shrink-0" />
@@ -80,16 +79,20 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
   const isAdmin = user?.role === "admin";
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-background">
       {/* Sidebar */}
-      <aside className="flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
-        <div className="flex h-16 items-center px-6">
-          <Link href="/mothership/dashboard" className="text-xl font-semibold text-slate-900">
-            Mothership
+      <aside className="flex w-64 shrink-0 flex-col border-r border-white/6 bg-sidebar">
+        {/* Brand */}
+        <div className="flex h-16 items-center px-6 border-b border-white/6">
+          <Link href="/mothership/dashboard" className="flex items-center gap-2">
+            <div className="h-7 w-7 rounded-lg teal-gradient flex items-center justify-center">
+              <span className="text-xs font-bold text-primary-foreground">M</span>
+            </div>
+            <span className="text-lg font-semibold text-foreground tracking-tight">Mothership</span>
           </Link>
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {MAIN_NAV.map((item) => (
             <SidebarLink
               key={item.href}
@@ -100,10 +103,10 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
 
           {isAdmin && (
             <>
-              <Separator className="my-3" />
+              <div className="my-4 h-px bg-white/6" />
               <button
                 onClick={() => setAdminExpanded(!adminExpanded)}
-                className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400 hover:text-slate-600"
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/60 hover:text-muted-foreground transition-colors"
               >
                 {adminExpanded ? (
                   <ChevronDown className="h-3 w-3" />
@@ -124,43 +127,50 @@ export default function MothershipLayout({ children }: { children: ReactNode }) 
           )}
         </nav>
 
-        <div className="border-t border-slate-200 p-3">
-          <div className="flex items-center gap-3 rounded-md px-3 py-2">
+        {/* User */}
+        <div className="border-t border-white/6 p-3">
+          <div className="flex items-center gap-3 rounded-lg px-3 py-2.5">
             <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-slate-100 text-xs">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                 {user?.first_name?.charAt(0) ?? "U"}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="truncate text-sm font-medium text-slate-900">
+              <p className="truncate text-sm font-medium text-foreground">
                 {user ? `${user.first_name} ${user.last_name}` : "User"}
               </p>
-              <p className="truncate text-xs text-slate-500 capitalize">
+              <p className="truncate text-xs text-muted-foreground capitalize">
                 {user?.role?.replace("_", " ") ?? ""}
               </p>
             </div>
-            <Button variant="ghost" size="icon" onClick={signOut} className="h-8 w-8">
-              <LogOut className="h-4 w-4 text-slate-400" />
+            <Button variant="ghost" size="icon" onClick={signOut} className="h-8 w-8 text-muted-foreground hover:text-foreground">
+              <LogOut className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-white/6 bg-background/80 backdrop-blur-sm px-6">
           <div />
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setCopilotOpen(!copilotOpen)}
-            className="gap-2 text-slate-500"
+            className={cn(
+              "gap-2 text-sm transition-all",
+              copilotOpen
+                ? "text-primary bg-primary/10"
+                : "text-muted-foreground hover:text-foreground"
+            )}
           >
             {copilotOpen ? (
               <PanelRightClose className="h-4 w-4" />
             ) : (
               <PanelRightOpen className="h-4 w-4" />
             )}
+            <MessageSquare className="h-4 w-4" />
             Copilot
           </Button>
         </header>

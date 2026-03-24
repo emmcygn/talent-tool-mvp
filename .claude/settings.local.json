@@ -1,13 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(bash /c/Users/cuyug/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.5/skills/brainstorming/scripts/start-server.sh --project-dir /c/Users/cuyug/Desktop/Github/recruittech)",
-      "Bash(gh repo:*)",
-      "Bash(gh api:*)",
-      "Bash(git init:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(ls /c/Users/cuyug/Desktop/Github/recruittech/plans/*.md)"
+      "Bash(*)",
+      "Edit(*)",
+      "Write(*)",
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:www.wavetalent.co)"
     ]
   }
 }
