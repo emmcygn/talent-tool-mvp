@@ -51,7 +51,7 @@ _(none)_
 | 09   | completed | 2026-03-24 | B-03, B-04 | Mothership: Collections UI |
 | 10   | completed | 2026-03-24 | B-03, B-04 | Mothership: Handoff inbox/outbox |
 | 11   | completed | 2026-03-24 | B-03, B-04 | Mind: Quotes + pipeline |
-| 12   | not_started | | B-04 | Mothership: Copilot sidebar |
+| 12   | completed | 2026-03-24 | B-04 | Mothership: Copilot sidebar |
 | 13   | not_started | | B-03..B-11 | Mind + Mothership: Dashboards |
 | 14   | not_started | | B-04, A-15 | Admin: Analytics + data quality |
 | 15   | not_started | | B-14 | Admin: Adapters + monitoring + users |
