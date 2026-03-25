@@ -14,8 +14,6 @@ A proof-of-concept recruitment platform built to demonstrate the **Mind + Mother
 
 talent-tool-mvp is a working prototype of a dual-product recruitment platform. It mirrors the architecture described in the Wave Talent founding engineer brief: an external-facing product for hiring managers (**Mind**) and an internal operating system for talent partners and admins (**Mothership**), unified by a shared AI-powered data layer.
 
-The platform was built in 8 days by two autonomous AI agents working in parallel -- one handling the data engineering backend, the other building the product UI -- coordinated through a shared contract boundary and an orchestration framework.
-
 ---
 
 ## The Problem
