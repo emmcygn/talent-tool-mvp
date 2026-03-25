@@ -14,8 +14,8 @@ export function WizardStepTitle({ title, department, onChange }: WizardStepTitle
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-medium text-slate-900 mb-1">What role are you hiring for?</h2>
-        <p className="text-sm text-slate-500">Start with the basics.</p>
+        <h2 className="text-lg font-medium text-foreground mb-1">What role are you hiring for?</h2>
+        <p className="text-sm text-muted-foreground">Start with the basics.</p>
       </div>
 
       <div className="space-y-4">

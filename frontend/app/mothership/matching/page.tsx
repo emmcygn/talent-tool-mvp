@@ -153,31 +153,31 @@ export default function MatchingPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Match Results</h1>
           <p className="text-muted-foreground">AI-matched candidates ranked by fit</p>
         </div>
         {selectedIds.size > 0 && (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary">{selectedIds.size} selected</Badge>
             <Button size="sm" variant="outline" onClick={handleBulkAddToCollection}>
-              <FolderOpen className="mr-2 h-4 w-4" /> Add to Collection
+              <FolderOpen className="mr-2 h-4 w-4" /> <span className="hidden sm:inline">Add to</span> Collection
             </Button>
             <Button size="sm" variant="outline" onClick={handleBulkSendHandoff}>
-              <Send className="mr-2 h-4 w-4" /> Send as Handoff
+              <Send className="mr-2 h-4 w-4" /> <span className="hidden sm:inline">Send as</span> Handoff
             </Button>
           </div>
         )}
       </div>
 
       {/* Role selector + Filter bar */}
-      <div className="flex gap-4 items-center flex-wrap">
+      <div className="flex flex-col gap-3 md:flex-row md:gap-4 md:items-center md:flex-wrap">
         <Select
           value={selectedRoleId ?? undefined}
           onValueChange={(val) => val && handleSelectRole(val)}
         >
-          <SelectTrigger className="w-[300px]">
+          <SelectTrigger className="w-full md:w-[300px]">
             <SelectValue placeholder="Select a role..." />
           </SelectTrigger>
           <SelectContent>
@@ -193,7 +193,7 @@ export default function MatchingPage() {
           value={filterConfidence}
           onValueChange={(val) => val && setFilterConfidence(val)}
         >
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-full md:w-[160px]">
             <SelectValue placeholder="Confidence" />
           </SelectTrigger>
           <SelectContent>
@@ -208,7 +208,7 @@ export default function MatchingPage() {
           value={sortBy}
           onValueChange={(val) => val && setSortBy(val)}
         >
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-full md:w-[160px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>

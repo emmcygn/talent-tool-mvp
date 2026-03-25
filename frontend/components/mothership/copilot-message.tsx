@@ -33,7 +33,7 @@ export function CopilotMessageComponent({ message, onAction }: CopilotMessagePro
         <div className={`inline-block rounded-lg px-3 py-2 text-sm max-w-full ${
           isUser
             ? "bg-slate-900 text-white rounded-tr-sm"
-            : "bg-slate-100 text-slate-900 rounded-tl-sm"
+            : "bg-muted text-foreground rounded-tl-sm"
         }`}>
           <p className="whitespace-pre-wrap text-left">{message.content}</p>
           {message.isStreaming && (
@@ -45,20 +45,20 @@ export function CopilotMessageComponent({ message, onAction }: CopilotMessagePro
           <div>
             <button
               onClick={() => setQueryOpen(!queryOpen)}
-              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-slate-900 transition-colors"
+              className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <Code className="h-3 w-3" />
               <span>Show query</span>
               <ChevronDown className={`h-3 w-3 transition-transform ${queryOpen ? "rotate-180" : ""}`} />
             </button>
             {queryOpen && (
-              <div className="mt-1 rounded-md bg-slate-950 p-3 text-xs font-mono text-slate-300 overflow-x-auto">
-                <p className="text-slate-400 mb-1">{"// "}{message.structuredQuery.description}</p>
+              <div className="mt-1 rounded-md bg-slate-950 p-3 text-xs font-mono text-muted-foreground/40 overflow-x-auto">
+                <p className="text-muted-foreground/60 mb-1">{"// "}{message.structuredQuery.description}</p>
                 <pre>{JSON.stringify(message.structuredQuery.filters, null, 2)}</pre>
                 {message.structuredQuery.sort_by && (
-                  <p className="mt-1 text-slate-500">sort: {message.structuredQuery.sort_by}</p>
+                  <p className="mt-1 text-muted-foreground">sort: {message.structuredQuery.sort_by}</p>
                 )}
-                <p className="text-slate-500">limit: {message.structuredQuery.limit}</p>
+                <p className="text-muted-foreground">limit: {message.structuredQuery.limit}</p>
               </div>
             )}
           </div>

@@ -38,8 +38,8 @@ export function WizardStepDetails({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-medium text-slate-900 mb-1">Role details</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-lg font-medium text-foreground mb-1">Role details</h2>
+        <p className="text-sm text-muted-foreground">
           Add salary, location, and work arrangement. All fields are optional.
         </p>
       </div>
@@ -64,7 +64,7 @@ export function WizardStepDetails({
             onChange={(e) => onChange({ salary_min: e.target.value ? Number(e.target.value) : null })}
             className="w-32"
           />
-          <span className="text-slate-400">to</span>
+          <span className="text-muted-foreground/60">to</span>
           <Input
             type="number"
             placeholder="Max"
@@ -95,12 +95,12 @@ export function WizardStepDetails({
               onClick={() => onChange({ remote_policy: opt.value })}
               className={`rounded-lg border p-4 text-left transition-all ${
                 remotePolicy === opt.value
-                  ? "border-slate-900 bg-slate-50 ring-1 ring-slate-900"
-                  : "border-slate-200 hover:border-slate-300"
+                  ? "border-slate-900 bg-muted ring-1 ring-slate-900"
+                  : "border-border hover:border-border"
               }`}
             >
-              <p className="text-sm font-medium text-slate-900">{opt.label}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{opt.description}</p>
+              <p className="text-sm font-medium text-foreground">{opt.label}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{opt.description}</p>
             </button>
           ))}
         </div>

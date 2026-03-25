@@ -60,8 +60,8 @@ export function KanbanBoard<T extends KanbanItem>({
           <div
             key={stage.id}
             className={cn(
-              "flex-shrink-0 w-72 rounded-lg border bg-slate-50/50 transition-colors",
-              isOver && "border-blue-300 bg-blue-50/30"
+              "flex-shrink-0 w-72 rounded-lg border bg-muted/50 transition-colors",
+              isOver && "border-blue-300 bg-blue-500/10/30"
             )}
             onDragOver={(e) => handleDragOver(e, stage.id)}
             onDrop={() => handleDrop(stage.id)}
@@ -77,7 +77,7 @@ export function KanbanBoard<T extends KanbanItem>({
                     <div className={cn("w-2 h-2 rounded-full", stage.color)} />
                     <span className="text-sm font-medium">{stage.label}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground bg-white rounded-full px-2 py-0.5 border">
+                  <span className="text-xs text-muted-foreground bg-card rounded-full px-2 py-0.5 border">
                     {stageItems.length}
                   </span>
                 </div>

@@ -13,11 +13,11 @@ const statusConfig: Record<QuoteStatus, {
   className: string;
   icon: React.ElementType;
 }> = {
-  generated: { label: "Ready", className: "border-blue-300 bg-blue-50 text-blue-700", icon: Sparkles },
-  sent: { label: "Sent", className: "border-amber-300 bg-amber-50 text-amber-700", icon: Clock },
-  accepted: { label: "Accepted", className: "border-green-300 bg-green-50 text-green-700", icon: CheckCircle2 },
-  declined: { label: "Declined", className: "border-red-300 bg-red-50 text-red-700", icon: XCircle },
-  expired: { label: "Expired", className: "border-slate-300 bg-slate-50 text-slate-500", icon: Clock },
+  generated: { label: "Ready", className: "border-blue-300 bg-blue-500/10 text-blue-400", icon: Sparkles },
+  sent: { label: "Sent", className: "border-amber-500/20 bg-amber-500/10 text-amber-400", icon: Clock },
+  accepted: { label: "Accepted", className: "border-emerald-500/20 bg-emerald-500/10 text-emerald-400", icon: CheckCircle2 },
+  declined: { label: "Declined", className: "border-red-300 bg-red-500/10 text-red-400", icon: XCircle },
+  expired: { label: "Expired", className: "border-border bg-muted text-muted-foreground", icon: Clock },
 };
 
 interface QuoteCardProps {
@@ -73,7 +73,7 @@ export function QuoteCard({
       </CardHeader>
       <CardContent>
         {/* Fee breakdown */}
-        <div className="rounded-lg bg-slate-50 p-4 space-y-3">
+        <div className="rounded-lg bg-muted p-4 space-y-3">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Standard placement fee</span>
             <span className="font-medium">{formatCurrency(quote.base_fee)}</span>
@@ -82,11 +82,11 @@ export function QuoteCard({
           {hasDiscount && (
             <>
               <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1.5 text-green-700">
+                <span className="flex items-center gap-1.5 text-emerald-400">
                   <Tag className="h-3.5 w-3.5" />
                   Pre-vetted talent network discount
                 </span>
-                <span className="font-medium text-green-700">
+                <span className="font-medium text-emerald-400">
                   -{formatCurrency(savingAmount)}
                 </span>
               </div>
@@ -106,8 +106,8 @@ export function QuoteCard({
           </div>
 
           {hasDiscount && (
-            <div className="rounded-md bg-green-50 border border-green-200 px-3 py-2 text-center">
-              <p className="text-sm font-medium text-green-800">
+            <div className="rounded-md bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 text-center">
+              <p className="text-sm font-medium text-emerald-400">
                 You save {formatCurrency(savingAmount)} with our pre-vetted talent network
               </p>
             </div>

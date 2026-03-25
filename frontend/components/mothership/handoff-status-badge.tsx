@@ -11,25 +11,25 @@ const statusConfig: Record<HandoffStatus, {
   pending: {
     label: "Pending",
     variant: "outline",
-    className: "border-amber-300 bg-amber-50 text-amber-700",
+    className: "border-amber-500/20 bg-amber-500/10 text-amber-400",
     icon: Clock,
   },
   accepted: {
     label: "Accepted",
     variant: "outline",
-    className: "border-green-300 bg-green-50 text-green-700",
+    className: "border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
     icon: CheckCircle2,
   },
   declined: {
     label: "Declined",
     variant: "outline",
-    className: "border-red-300 bg-red-50 text-red-700",
+    className: "border-red-300 bg-red-500/10 text-red-400",
     icon: XCircle,
   },
   expired: {
     label: "Expired",
     variant: "outline",
-    className: "border-slate-300 bg-slate-50 text-slate-500",
+    className: "border-border bg-muted text-muted-foreground",
     icon: Timer,
   },
 };

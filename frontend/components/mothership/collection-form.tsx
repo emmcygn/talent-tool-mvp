@@ -159,8 +159,8 @@ export function CollectionForm({
                     className={cn(
                       "flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm cursor-pointer transition-colors",
                       sharedWith.includes(p.id)
-                        ? "border-blue-300 bg-blue-50 text-blue-800"
-                        : "border-slate-200 hover:bg-slate-50"
+                        ? "border-blue-300 bg-blue-500/10 text-blue-800"
+                        : "border-border hover:bg-muted"
                     )}
                   >
                     <input

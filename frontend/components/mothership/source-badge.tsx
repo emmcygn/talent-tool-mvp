@@ -9,8 +9,8 @@ interface SourceBadgeProps {
 const ADAPTER_COLORS: Record<string, string> = {
   bullhorn: "bg-orange-50 text-orange-700 border-orange-200",
   hubspot: "bg-rose-50 text-rose-700 border-rose-200",
-  linkedin: "bg-blue-50 text-blue-700 border-blue-200",
-  manual: "bg-slate-50 text-slate-700 border-slate-200",
+  linkedin: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  manual: "bg-muted text-foreground/80 border-border",
 };
 
 const ADAPTER_LABELS: Record<string, string> = {

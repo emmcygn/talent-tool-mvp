@@ -13,8 +13,8 @@ export function WizardStepDescription({ description, onChange }: WizardStepDescr
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-medium text-slate-900 mb-1">Describe the role</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-lg font-medium text-foreground mb-1">Describe the role</h2>
+        <p className="text-sm text-muted-foreground">
           Write or paste the job description. Our AI will extract the key requirements automatically.
         </p>
       </div>
@@ -29,7 +29,7 @@ export function WizardStepDescription({ description, onChange }: WizardStepDescr
           className="min-h-[250px] resize-y text-sm leading-relaxed"
           autoFocus
         />
-        <div className="flex justify-between text-xs text-slate-400">
+        <div className="flex justify-between text-xs text-muted-foreground/60">
           <span>
             {description.length > 0
               ? `${description.length} characters`

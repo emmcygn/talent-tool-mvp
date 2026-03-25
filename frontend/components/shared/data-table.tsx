@@ -78,7 +78,7 @@ export function DataTable<T>({
     <div className={cn("space-y-4", className)}>
       {searchable && (
         <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -88,16 +88,16 @@ export function DataTable<T>({
         </div>
       )}
 
-      <div className="rounded-lg border border-slate-200 overflow-hidden">
+      <div className="rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-slate-50 border-b border-slate-200">
+            <tr className="bg-muted border-b border-border">
               {columns.map((col) => (
                 <th
                   key={col.key}
                   className={cn(
-                    "px-4 py-3 text-left font-medium text-slate-500",
-                    col.sortable && "cursor-pointer select-none hover:text-slate-700",
+                    "px-4 py-3 text-left font-medium text-muted-foreground",
+                    col.sortable && "cursor-pointer select-none hover:text-foreground/80",
                     col.className
                   )}
                   onClick={() => col.sortable && handleSort(col.key)}
@@ -115,7 +115,7 @@ export function DataTable<T>({
                 </th>
               ))}
               {actions && actions.length > 0 && (
-                <th className="px-4 py-3 text-right font-medium text-slate-500 w-12" />
+                <th className="px-4 py-3 text-right font-medium text-muted-foreground w-12" />
               )}
             </tr>
           </thead>
@@ -124,7 +124,7 @@ export function DataTable<T>({
               <tr>
                 <td
                   colSpan={columns.length + (actions ? 1 : 0)}
-                  className="px-4 py-12 text-center text-slate-400"
+                  className="px-4 py-12 text-center text-muted-foreground/60"
                 >
                   {emptyMessage}
                 </td>
@@ -133,7 +133,7 @@ export function DataTable<T>({
               filteredData.map((item) => (
                 <tr
                   key={keyExtractor(item)}
-                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors"
+                  className="border-b border-border last:border-0 hover:bg-muted transition-colors"
                 >
                   {columns.map((col) => (
                     <td key={col.key} className={cn("px-4 py-3", col.className)}>
@@ -151,7 +151,7 @@ export function DataTable<T>({
                             <DropdownMenuItem
                               key={action.label}
                               onClick={() => action.onClick(item)}
-                              className={cn(action.destructive && "text-red-600")}
+                              className={cn(action.destructive && "text-red-400")}
                             >
                               {action.icon && <span className="mr-2">{action.icon}</span>}
                               {action.label}

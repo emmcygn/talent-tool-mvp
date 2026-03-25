@@ -20,7 +20,7 @@ export function WizardProgress({ steps, currentStep }: WizardProgressProps) {
                   "flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors",
                   isCompleted && "bg-slate-900 text-white",
                   isCurrent && "bg-slate-900 text-white ring-4 ring-slate-100",
-                  !isCompleted && !isCurrent && "bg-slate-100 text-slate-400"
+                  !isCompleted && !isCurrent && "bg-muted text-muted-foreground/60"
                 )}
               >
                 {isCompleted ? <Check className="h-4 w-4" /> : index + 1}
@@ -28,7 +28,7 @@ export function WizardProgress({ steps, currentStep }: WizardProgressProps) {
               <span
                 className={cn(
                   "text-sm font-medium hidden sm:block",
-                  isCurrent ? "text-slate-900" : "text-slate-400"
+                  isCurrent ? "text-foreground" : "text-muted-foreground/60"
                 )}
               >
                 {label}

@@ -22,7 +22,7 @@ const PIPELINE_STAGES: KanbanStage[] = [
   { id: "intro_requested", label: "Intro Requested", color: "bg-purple-500" },
   { id: "interviewing", label: "Interviewing", color: "bg-amber-500" },
   { id: "offer", label: "Offer", color: "bg-orange-500" },
-  { id: "placed", label: "Placed", color: "bg-green-500" },
+  { id: "placed", label: "Placed", color: "bg-emerald-500" },
 ];
 
 export default function PipelinePage() {
@@ -91,9 +91,9 @@ export default function PipelinePage() {
       : items; // Filter by role when data model supports it
 
   return (
-    <div className="p-6">
+    <div className="p-0">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
             <Columns3 className="h-6 w-6" />
@@ -106,7 +106,7 @@ export default function PipelinePage() {
         <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-muted-foreground" />
           <Select value={selectedRole} onValueChange={(val) => val && setSelectedRole(val)}>
-            <SelectTrigger className="w-[220px]">
+            <SelectTrigger className="w-full sm:w-[220px]">
               <SelectValue placeholder="All roles" />
             </SelectTrigger>
             <SelectContent>
@@ -123,9 +123,9 @@ export default function PipelinePage() {
 
       {/* Kanban */}
       {loading ? (
-        <div className="flex gap-4">
+        <div className="flex gap-4 overflow-x-auto pb-4">
           {PIPELINE_STAGES.map((stage) => (
-            <Skeleton key={stage.id} className="h-96 w-72 rounded-lg" />
+            <Skeleton key={stage.id} className="h-96 w-72 shrink-0 rounded-lg" />
           ))}
         </div>
       ) : items.length === 0 ? (

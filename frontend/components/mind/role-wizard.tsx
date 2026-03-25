@@ -102,8 +102,8 @@ export function RoleWizard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Post a New Role</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="text-2xl font-semibold text-foreground">Post a New Role</h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Describe the role and we will find the best candidates for you
         </p>
       </div>
@@ -152,7 +152,7 @@ export function RoleWizard() {
         )}
       </div>
 
-      <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+      <div className="flex items-center justify-between border-t border-border pt-4">
         <Button
           variant="ghost"
           onClick={() => setStep((s) => s - 1)}
@@ -164,7 +164,7 @@ export function RoleWizard() {
         </Button>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400 flex items-center gap-1">
+          <span className="text-xs text-muted-foreground/60 flex items-center gap-1">
             <Save className="h-3 w-3" />
             Draft saved
           </span>

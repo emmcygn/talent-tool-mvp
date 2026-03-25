@@ -31,10 +31,10 @@ const AVAILABILITY_LABELS: Record<AvailabilityStatus, string> = {
 };
 
 const AVAILABILITY_COLORS: Record<AvailabilityStatus, string> = {
-  immediate: "text-green-600",
-  "1_month": "text-amber-600",
-  "3_months": "text-slate-500",
-  not_looking: "text-slate-400",
+  immediate: "text-emerald-400",
+  "1_month": "text-amber-400",
+  "3_months": "text-muted-foreground",
+  not_looking: "text-muted-foreground/60",
 };
 
 export function CandidateCard({
@@ -63,21 +63,21 @@ export function CandidateCard({
     >
       <CardHeader className="flex flex-row items-start gap-4 pb-3">
         <Avatar className="h-10 w-10">
-          <AvatarFallback className="bg-slate-100 text-sm font-medium">
+          <AvatarFallback className="bg-muted text-sm font-medium">
             {initials}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-slate-900 truncate">{displayName}</h3>
+            <h3 className="font-semibold text-foreground truncate">{displayName}</h3>
             {isPoolCandidate && (
-              <Badge variant="secondary" className="bg-blue-50 text-blue-700 text-xs shrink-0">
+              <Badge variant="secondary" className="bg-blue-500/10 text-blue-400 text-xs shrink-0">
                 Pre-vetted
               </Badge>
             )}
           </div>
           {candidate.seniority && (
-            <p className="text-sm text-slate-500">{SENIORITY_LABELS[candidate.seniority]}</p>
+            <p className="text-sm text-muted-foreground">{SENIORITY_LABELS[candidate.seniority]}</p>
           )}
         </div>
       </CardHeader>
@@ -85,7 +85,7 @@ export function CandidateCard({
       <CardContent className="space-y-3 pt-0">
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {candidate.location && (
-            <span className="flex items-center gap-1 text-slate-500">
+            <span className="flex items-center gap-1 text-muted-foreground">
               <MapPin className="h-3.5 w-3.5" />
               {candidate.location}
             </span>
@@ -97,7 +97,7 @@ export function CandidateCard({
             </span>
           )}
           {candidate.industries.length > 0 && (
-            <span className="flex items-center gap-1 text-slate-500">
+            <span className="flex items-center gap-1 text-muted-foreground">
               <Briefcase className="h-3.5 w-3.5" />
               {candidate.industries.slice(0, 2).join(", ")}
             </span>
@@ -108,11 +108,11 @@ export function CandidateCard({
           {candidate.skills.slice(0, 5).map((skill) => (
             <Badge key={skill.name} variant="outline" className="text-xs font-normal">
               {skill.name}
-              {skill.years && <span className="ml-1 text-slate-400">{skill.years}y</span>}
+              {skill.years && <span className="ml-1 text-muted-foreground/60">{skill.years}y</span>}
             </Badge>
           ))}
           {candidate.skills.length > 5 && (
-            <Badge variant="outline" className="text-xs font-normal text-slate-400">
+            <Badge variant="outline" className="text-xs font-normal text-muted-foreground/60">
               +{candidate.skills.length - 5}
             </Badge>
           )}

@@ -64,7 +64,7 @@ export default function LoginPage() {
             <Sparkles className="h-3 w-3 text-primary" />
             AI-Powered Platform
           </div>
-          <h1 className="text-5xl font-bold tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
             <span className="teal-gradient-text">Recruit</span>
             <span className="text-foreground">Tech</span>
           </h1>
@@ -85,7 +85,7 @@ export default function LoginPage() {
                   key={role}
                   onClick={() => !loading && handleLogin(role)}
                   disabled={!!loading}
-                  className={`group relative w-full text-left rounded-xl border border-white/8 bg-card/60 backdrop-blur-sm p-5 transition-all duration-300 ${persona.border} hover:bg-card/80 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`group relative w-full text-left rounded-xl border border-white/8 bg-white/60 backdrop-blur-sm p-5 transition-all duration-300 ${persona.border} hover:bg-white/80 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed`}
                   style={{ animationDelay: `${0.2 + index * 0.08}s` }}
                 >
                   <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${persona.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />

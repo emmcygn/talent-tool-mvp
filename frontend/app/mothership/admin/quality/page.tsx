@@ -45,7 +45,7 @@ const INITIAL_PAIRS: DedupPair[] = [
 ];
 
 function fieldBg(a: string, b: string) {
-  return a.toLowerCase() === b.toLowerCase() ? "bg-green-50" : "bg-red-50";
+  return a.toLowerCase() === b.toLowerCase() ? "bg-emerald-500/10" : "bg-red-500/10";
 }
 
 export default function DataQualityPage() {
@@ -161,7 +161,7 @@ export default function DataQualityPage() {
                 <div className="rounded-md border overflow-hidden">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="bg-slate-50 border-b">
+                      <tr className="bg-muted border-b">
                         <th className="text-left font-medium px-3 py-2 w-28">Field</th>
                         <th className="text-left font-medium px-3 py-2">Candidate A</th>
                         <th className="text-left font-medium px-3 py-2">Candidate B</th>

@@ -72,7 +72,7 @@ export function PipelineCandidateCard({ item, onUpdateNotes }: PipelineCandidate
         <div className="mt-2 pt-2 border-t">
           <button
             onClick={(e) => { e.stopPropagation(); setShowNotes(!showNotes); }}
-            className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-slate-900 transition-colors"
+            className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
           >
             {item.stageNotes ? (
               <StickyNote className="h-3 w-3 text-amber-500" />

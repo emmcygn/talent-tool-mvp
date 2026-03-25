@@ -15,22 +15,22 @@ const signalConfig: Record<string, {
 }> = {
   candidate_ingested: {
     icon: UserPlus,
-    color: "text-blue-500 bg-blue-50",
+    color: "text-blue-500 bg-blue-500/10",
     format: () => "New candidate ingested",
   },
   candidate_viewed: {
     icon: Eye,
-    color: "text-slate-500 bg-slate-50",
+    color: "text-muted-foreground bg-muted",
     format: () => "Candidate profile viewed",
   },
   candidate_shortlisted: {
     icon: Star,
-    color: "text-amber-500 bg-amber-50",
+    color: "text-amber-500 bg-amber-500/10",
     format: () => "Candidate shortlisted",
   },
   candidate_dismissed: {
     icon: XCircle,
-    color: "text-red-400 bg-red-50",
+    color: "text-red-400 bg-red-500/10",
     format: () => "Candidate dismissed",
   },
   match_generated: {
@@ -40,32 +40,32 @@ const signalConfig: Record<string, {
   },
   intro_requested: {
     icon: UserPlus,
-    color: "text-green-500 bg-green-50",
+    color: "text-green-500 bg-emerald-500/10",
     format: () => "Introduction requested",
   },
   handoff_sent: {
     icon: Send,
-    color: "text-blue-500 bg-blue-50",
+    color: "text-blue-500 bg-blue-500/10",
     format: () => "Handoff sent",
   },
   handoff_accepted: {
     icon: CheckCircle2,
-    color: "text-green-500 bg-green-50",
+    color: "text-green-500 bg-emerald-500/10",
     format: () => "Handoff accepted",
   },
   handoff_declined: {
     icon: XCircle,
-    color: "text-red-400 bg-red-50",
+    color: "text-red-400 bg-red-500/10",
     format: () => "Handoff declined",
   },
   quote_generated: {
     icon: DollarSign,
-    color: "text-green-600 bg-green-50",
+    color: "text-emerald-400 bg-emerald-500/10",
     format: () => "Quote generated",
   },
   placement_made: {
     icon: Briefcase,
-    color: "text-green-700 bg-green-50",
+    color: "text-emerald-400 bg-emerald-500/10",
     format: () => "Placement confirmed",
   },
   copilot_query: {
@@ -111,7 +111,7 @@ export function SignalFeed({ signals, loading, maxItems = 10 }: SignalFeedProps)
       {signals.slice(0, maxItems).map((signal) => {
         const config = signalConfig[signal.event_type] || {
           icon: Zap,
-          color: "text-slate-500 bg-slate-50",
+          color: "text-muted-foreground bg-muted",
           format: () => signal.event_type.replace(/_/g, " "),
         };
         const Icon = config.icon;
@@ -119,7 +119,7 @@ export function SignalFeed({ signals, loading, maxItems = 10 }: SignalFeedProps)
         return (
           <div
             key={signal.id}
-            className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-slate-50 transition-colors"
+            className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-muted transition-colors"
           >
             <div className={`shrink-0 rounded-full p-1.5 ${config.color}`}>
               <Icon className="h-3.5 w-3.5" />

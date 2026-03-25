@@ -40,8 +40,8 @@ export default function CandidateIngestionPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Add Candidate</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="text-2xl font-semibold text-foreground">Add Candidate</h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Upload a CV, paste profile text, or sync from an adapter
         </p>
       </div>
@@ -111,12 +111,12 @@ export default function CandidateIngestionPage() {
       )}
 
       {state === "saved" && (
-        <div className="rounded-lg border border-green-200 bg-green-50 p-8 text-center">
-          <h2 className="text-lg font-semibold text-green-800">Candidate saved successfully</h2>
-          <p className="text-sm text-green-600 mt-1">The profile has been added to the system.</p>
+        <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-8 text-center">
+          <h2 className="text-lg font-semibold text-emerald-400">Candidate saved successfully</h2>
+          <p className="text-sm text-emerald-400 mt-1">The profile has been added to the system.</p>
           <button
             onClick={handleReset}
-            className="mt-4 text-sm font-medium text-green-700 underline hover:no-underline"
+            className="mt-4 text-sm font-medium text-emerald-400 underline hover:no-underline"
           >
             Add another candidate
           </button>

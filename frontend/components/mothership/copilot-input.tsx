@@ -61,7 +61,7 @@ export function CopilotInput({ onSend, isLoading, suggestions }: CopilotInputPro
         </div>
       )}
 
-      <div className="flex items-end gap-2 rounded-lg border bg-white p-2">
+      <div className="flex items-end gap-2 rounded-lg border bg-card p-2">
         <Textarea
           ref={textareaRef}
           value={value}

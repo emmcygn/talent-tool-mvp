@@ -29,7 +29,7 @@ export function HandoffRespondDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {isAccept ? (
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
+              <CheckCircle2 className="h-5 w-5 text-emerald-400" />
             ) : (
               <XCircle className="h-5 w-5 text-red-500" />
             )}

@@ -57,8 +57,8 @@ export function AdapterSyncButtons({ onSyncStart }: AdapterSyncButtonsProps) {
                   variant="outline"
                   className={
                     adapter.status === "connected"
-                      ? "bg-green-50 text-green-700 border-green-200"
-                      : "bg-amber-50 text-amber-700 border-amber-200"
+                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                      : "bg-amber-500/10 text-amber-400 border-amber-500/20"
                   }
                 >
                   {adapter.status}
@@ -70,7 +70,7 @@ export function AdapterSyncButtons({ onSyncStart }: AdapterSyncButtonsProps) {
             </div>
           </CardHeader>
           <CardContent className="flex items-center justify-between pt-0">
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-muted-foreground/60">
               Last synced: {adapter.lastSync}
             </span>
             <Button

@@ -137,11 +137,11 @@ def _generate_collections(candidates, partner_ids):
 
 
 def _generate_handoffs(candidates, partner_ids, roles):
-    """Generate 12 handoffs between partners."""
+    """Generate 40 handoffs between partners."""
     handoffs = []
     statuses = ["pending", "accepted", "declined", "pending", "accepted"]
 
-    for i in range(12):
+    for i in range(40):
         from_id = random.choice(partner_ids)
         to_candidates = [p for p in partner_ids if p != from_id]
         to_id = random.choice(to_candidates) if to_candidates else from_id
@@ -187,11 +187,11 @@ def _generate_handoffs(candidates, partner_ids, roles):
 
 
 def _generate_quotes(candidates, roles, client_ids):
-    """Generate 18 quotes with various statuses."""
+    """Generate 60 quotes with various statuses."""
     quotes = []
     fee_map = {"junior": 8000, "mid": 12000, "senior": 18000, "lead": 25000, "principal": 35000}
 
-    for i in range(18):
+    for i in range(60):
         role = random.choice(roles)
         candidate = random.choice(candidates)
         seniority = role.get("seniority", "mid")
@@ -233,10 +233,10 @@ def _generate_signal_history(users, candidates, roles):
     partner_users = [u for u in users if u["role"] == "talent_partner"]
     client_users = [u for u in users if u["role"] == "client"]
 
-    # Spread signals over 30 days
-    for day_offset in range(30):
+    # Spread signals over 60 days
+    for day_offset in range(60):
         day = now - timedelta(days=day_offset)
-        daily_count = random.randint(15, 40)
+        daily_count = random.randint(25, 60)
 
         for _ in range(daily_count):
             hour = random.randint(8, 18)
@@ -281,8 +281,8 @@ def _generate_signal_history(users, candidates, roles):
                 "created_at": timestamp.isoformat(),
             })
 
-    # Add a few placements
-    for _ in range(5):
+    # Add placements
+    for _ in range(15):
         signals.append({
             "id": str(uuid4()),
             "event_type": "placement_made",
@@ -300,7 +300,7 @@ def _generate_signal_history(users, candidates, roles):
 def _generate_dedup_queue(candidates):
     """Generate dedup queue items for admin review."""
     items = []
-    for i in range(8):
+    for i in range(20):
         a, b = random.sample(candidates, 2)
         items.append({
             "id": str(uuid4()),
@@ -497,10 +497,10 @@ def _sql_json(value) -> str:
 
 
 def _sql_array(value) -> str:
+    """Convert a Python list to a JSONB array literal for PostgreSQL."""
     if value is None or len(value) == 0:
-        return "ARRAY[]::text[]"
-    items = ", ".join(f"'{str(v).replace(chr(39), chr(39)+chr(39))}'" for v in value)
-    return f"ARRAY[{items}]"
+        return "'[]'::jsonb"
+    return "'" + json.dumps([str(v) for v in value]).replace("'", "''") + "'::jsonb"
 
 
 if __name__ == "__main__":

@@ -17,14 +17,14 @@ export function ActionCard({
   return (
     <Card className={`p-4 transition-all hover:shadow-md ${
       variant === "highlight"
-        ? "border-blue-200 bg-blue-50/50"
+        ? "border-blue-500/20 bg-blue-500/10/50"
         : ""
     }`}>
       <div className="flex items-start gap-3">
         <div className={`shrink-0 rounded-lg p-2 ${
           variant === "highlight"
-            ? "bg-blue-100 text-blue-700"
-            : "bg-slate-100 text-slate-600"
+            ? "bg-blue-500/10 text-blue-400"
+            : "bg-muted text-muted-foreground"
         }`}>
           {icon}
         </div>

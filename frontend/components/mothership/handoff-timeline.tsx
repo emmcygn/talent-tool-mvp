@@ -26,7 +26,7 @@ export function HandoffTimeline({ handoff, relatedSignals = [] }: HandoffTimelin
       description: `${handoff.candidate_ids.length} candidate(s) shared`,
       timestamp: handoff.created_at,
       icon: Send,
-      color: "text-blue-500 bg-blue-50",
+      color: "text-blue-500 bg-blue-500/10",
     },
   ];
 
@@ -38,8 +38,8 @@ export function HandoffTimeline({ handoff, relatedSignals = [] }: HandoffTimelin
       timestamp: handoff.responded_at,
       icon: handoff.status === "accepted" ? CheckCircle2 : XCircle,
       color: handoff.status === "accepted"
-        ? "text-green-500 bg-green-50"
-        : "text-red-500 bg-red-50",
+        ? "text-green-500 bg-emerald-500/10"
+        : "text-red-500 bg-red-500/10",
     });
   }
 
@@ -47,16 +47,16 @@ export function HandoffTimeline({ handoff, relatedSignals = [] }: HandoffTimelin
   relatedSignals.forEach((signal) => {
     let icon: React.ElementType = Star;
     let label = signal.event_type.replace(/_/g, " ");
-    let color = "text-slate-500 bg-slate-50";
+    let color = "text-muted-foreground bg-muted";
 
     if (signal.event_type === "candidate_shortlisted") {
       icon = Star;
       label = "Candidate Shortlisted";
-      color = "text-amber-500 bg-amber-50";
+      color = "text-amber-500 bg-amber-500/10";
     } else if (signal.event_type === "placement_made") {
       icon = Briefcase;
       label = "Placement Made";
-      color = "text-green-600 bg-green-50";
+      color = "text-emerald-400 bg-emerald-500/10";
     } else if (signal.event_type === "intro_requested") {
       icon = UserPlus;
       label = "Intro Requested";

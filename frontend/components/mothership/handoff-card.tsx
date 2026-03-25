@@ -34,7 +34,7 @@ export function HandoffCard({
           {/* Left: sender info + context */}
           <div className="flex items-start gap-3 flex-1 min-w-0">
             <Avatar className="h-9 w-9 shrink-0">
-              <AvatarFallback className="text-xs bg-slate-100">
+              <AvatarFallback className="text-xs bg-muted">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -71,7 +71,7 @@ export function HandoffCard({
               {handoff.context_notes && (
                 <div className="mt-2 flex items-start gap-1.5">
                   <MessageSquare className="h-3.5 w-3.5 text-muted-foreground mt-0.5 shrink-0" />
-                  <p className="text-sm text-slate-600 line-clamp-2">
+                  <p className="text-sm text-muted-foreground line-clamp-2">
                     {handoff.context_notes}
                   </p>
                 </div>
@@ -79,8 +79,8 @@ export function HandoffCard({
 
               {/* Response notes */}
               {handoff.response_notes && (
-                <div className="mt-1.5 rounded-md bg-slate-50 px-3 py-2">
-                  <p className="text-sm text-slate-600 italic">
+                <div className="mt-1.5 rounded-md bg-muted px-3 py-2">
+                  <p className="text-sm text-muted-foreground italic">
                     &ldquo;{handoff.response_notes}&rdquo;
                   </p>
                 </div>

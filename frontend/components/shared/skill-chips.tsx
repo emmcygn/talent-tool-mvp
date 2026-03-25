@@ -35,7 +35,7 @@ export function SkillChips({ skills, maxDisplay = 8, className }: SkillChipsProp
         </Badge>
       ))}
       {remaining > 0 && (
-        <Badge variant="outline" className="text-xs font-normal text-slate-400 border-slate-200">
+        <Badge variant="outline" className="text-xs font-normal text-muted-foreground/60 border-border">
           +{remaining} more
         </Badge>
       )}

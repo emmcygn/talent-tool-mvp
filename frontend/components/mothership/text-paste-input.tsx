@@ -35,7 +35,7 @@ export function TextPasteInput({ onExtractionStart, onExtractionComplete }: Text
         className="min-h-[200px] resize-y"
       />
       <div className="flex items-center justify-between">
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-muted-foreground/60">
           {text.length > 0 ? `${text.length} characters` : "Paste any unstructured candidate text"}
         </p>
         <Button onClick={handleExtract} disabled={!text.trim()} className="gap-2">

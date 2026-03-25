@@ -75,7 +75,7 @@ export default function HandoffsPage() {
   // Detail view with timeline
   if (detailHandoff) {
     return (
-      <div className="p-6 max-w-3xl">
+      <div className="p-4 md:p-6 max-w-3xl">
         <Button
           variant="ghost"
           size="sm"
@@ -94,9 +94,9 @@ export default function HandoffsPage() {
   const pendingCount = inbox.filter((h) => h.status === "pending").length;
 
   return (
-    <div className="p-6 max-w-4xl">
+    <div className="p-0 max-w-4xl">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Handoffs</h1>
           <p className="text-muted-foreground text-sm mt-1">
@@ -115,7 +115,7 @@ export default function HandoffsPage() {
             <Inbox className="h-4 w-4" />
             Inbox
             {pendingCount > 0 && (
-              <span className="ml-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs font-medium">
+              <span className="ml-1 rounded-full bg-blue-500/10 text-blue-400 px-2 py-0.5 text-xs font-medium">
                 {pendingCount}
               </span>
             )}

@@ -78,21 +78,21 @@ export function CollectionDetail({
 
       {/* Add candidates panel */}
       {addMode && (
-        <div className="rounded-lg border border-dashed border-blue-300 bg-blue-50/50 p-4 space-y-3">
+        <div className="rounded-lg border border-dashed border-blue-300 bg-blue-500/10/50 p-4 space-y-3">
           <div className="flex items-center gap-2">
             <Search className="h-4 w-4 text-muted-foreground" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search candidates to add..."
-              className="flex-1 bg-white"
+              className="flex-1 bg-card"
             />
           </div>
           <div className="max-h-60 overflow-y-auto space-y-1">
             {filteredAdd.slice(0, 10).map((c) => (
               <div
                 key={c.id}
-                className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-white transition-colors"
+                className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-card transition-colors"
               >
                 <span className="text-sm font-medium">
                   {c.first_name} {c.last_name}
@@ -135,7 +135,7 @@ export function CollectionDetail({
           candidates.map((candidate) => (
             <div
               key={candidate.id}
-              className="flex items-center justify-between rounded-lg border p-4 hover:bg-slate-50/50 transition-colors"
+              className="flex items-center justify-between rounded-lg border p-4 hover:bg-muted/50 transition-colors"
             >
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-sm">
@@ -157,7 +157,7 @@ export function CollectionDetail({
                 variant="ghost"
                 size="icon"
                 onClick={() => onRemoveCandidate(candidate.id)}
-                className="text-red-400 hover:text-red-600 hover:bg-red-50"
+                className="text-red-400 hover:text-red-400 hover:bg-red-500/10"
                 aria-label={`Remove ${candidate.first_name} from collection`}
               >
                 <UserMinus className="h-4 w-4" />

@@ -22,9 +22,9 @@ interface AdapterHealth {
 }
 
 const statusConfig: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  healthy: { icon: CheckCircle2, color: "text-green-600 bg-green-50 border-green-200", label: "Healthy" },
-  degraded: { icon: AlertTriangle, color: "text-amber-600 bg-amber-50 border-amber-200", label: "Degraded" },
-  down: { icon: XCircle, color: "text-red-600 bg-red-50 border-red-200", label: "Down" },
+  healthy: { icon: CheckCircle2, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", label: "Healthy" },
+  degraded: { icon: AlertTriangle, color: "text-amber-400 bg-amber-500/10 border-amber-500/20", label: "Degraded" },
+  down: { icon: XCircle, color: "text-red-400 bg-red-500/10 border-red-500/20", label: "Down" },
 };
 
 const SCHEMA_MAPPINGS: Record<string, { from: string; to: string }[]> = {
@@ -132,7 +132,7 @@ export default function AdaptersPage() {
             const isExpanded = expandedAdapter === adapter.adapter_name;
 
             return (
-              <Card key={adapter.adapter_name} className={`border ${adapter.status === "degraded" ? "border-amber-200" : adapter.status === "down" ? "border-red-200" : ""}`}>
+              <Card key={adapter.adapter_name} className={`border ${adapter.status === "degraded" ? "border-amber-500/20" : adapter.status === "down" ? "border-red-500/20" : ""}`}>
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -180,7 +180,7 @@ export default function AdaptersPage() {
                         <div className="mt-2 rounded-md border overflow-hidden">
                           <table className="w-full text-sm">
                             <thead>
-                              <tr className="bg-slate-50 border-b">
+                              <tr className="bg-muted border-b">
                                 <th className="text-left font-medium px-3 py-2">{adapter.adapter_name} Field</th>
                                 <th className="text-left font-medium px-3 py-2">Canonical Field</th>
                               </tr>

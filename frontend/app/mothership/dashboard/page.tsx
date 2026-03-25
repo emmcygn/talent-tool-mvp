@@ -159,7 +159,7 @@ export default function PartnerDashboardPage() {
                   {data?.activeRoles.slice(0, 5).map((role) => (
                     <div
                       key={role.id}
-                      className="flex items-center justify-between rounded-md border px-3 py-2.5 hover:bg-slate-50 cursor-pointer transition-colors"
+                      className="flex items-center justify-between rounded-md border px-3 py-2.5 hover:bg-muted cursor-pointer transition-colors"
                       onClick={() => router.push(`/mothership/matching?role=${role.id}`)}
                     >
                       <div>
@@ -181,13 +181,13 @@ export default function PartnerDashboardPage() {
 
           {/* Handoff inbox preview */}
           {(data?.pendingHandoffs.length ?? 0) > 0 && (
-            <Card className="border-amber-200 bg-amber-50/30">
+            <Card className="border-amber-500/20 bg-amber-500/10/30">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Inbox className="h-4 w-4 text-amber-600" />
+                    <Inbox className="h-4 w-4 text-amber-400" />
                     Pending Handoffs
-                    <Badge className="bg-amber-100 text-amber-700 border-amber-300">
+                    <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20">
                       {data?.pendingHandoffs.length}
                     </Badge>
                   </CardTitle>
@@ -268,7 +268,7 @@ export default function PartnerDashboardPage() {
                   {data?.collections.slice(0, 5).map((col) => (
                     <div
                       key={col.id}
-                      className="flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-slate-50 cursor-pointer transition-colors"
+                      className="flex items-center justify-between rounded-md px-2 py-1.5 hover:bg-muted cursor-pointer transition-colors"
                       onClick={() => router.push("/mothership/collections")}
                     >
                       <span className="text-sm truncate">{col.name}</span>

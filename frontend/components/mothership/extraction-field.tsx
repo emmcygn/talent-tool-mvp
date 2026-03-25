@@ -33,10 +33,10 @@ export function ExtractionField({
     <div
       className={cn(
         "group flex items-center gap-4 py-2 transition-all duration-500 animate-in fade-in slide-in-from-left-2",
-        lowConfidence && "bg-amber-50 -mx-4 px-4 rounded-md border border-amber-100"
+        lowConfidence && "bg-amber-500/10 -mx-4 px-4 rounded-md border border-amber-100"
       )}
     >
-      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider w-32 shrink-0">
+      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider w-32 shrink-0">
         {label}
       </p>
 
@@ -53,12 +53,12 @@ export function ExtractionField({
             className="h-8 w-8"
             onClick={() => setIsEditing(false)}
           >
-            <Check className="h-4 w-4 text-green-600" />
+            <Check className="h-4 w-4 text-emerald-400" />
           </Button>
         </div>
       ) : (
         <div className="flex items-center gap-2 flex-1">
-          <span className={cn("text-sm", lowConfidence ? "text-amber-800" : "text-slate-900")}>
+          <span className={cn("text-sm", lowConfidence ? "text-amber-400" : "text-foreground")}>
             {value}
           </span>
           {lowConfidence && (
@@ -74,7 +74,7 @@ export function ExtractionField({
                 onEdit?.();
               }}
             >
-              <Pencil className="h-3 w-3 text-slate-400" />
+              <Pencil className="h-3 w-3 text-muted-foreground/60" />
             </Button>
           )}
         </div>

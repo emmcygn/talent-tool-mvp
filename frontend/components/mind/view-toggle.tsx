@@ -11,11 +11,11 @@ interface ViewToggleProps {
 
 export function ViewToggle({ view, onChange }: ViewToggleProps) {
   return (
-    <div className="flex items-center rounded-lg border border-slate-200 p-0.5">
+    <div className="flex items-center rounded-lg border border-border p-0.5">
       <Button
         variant="ghost"
         size="icon"
-        className={cn("h-8 w-8 rounded-md", view === "grid" && "bg-slate-100")}
+        className={cn("h-8 w-8 rounded-md", view === "grid" && "bg-muted")}
         onClick={() => onChange("grid")}
       >
         <LayoutGrid className="h-4 w-4" />
@@ -23,7 +23,7 @@ export function ViewToggle({ view, onChange }: ViewToggleProps) {
       <Button
         variant="ghost"
         size="icon"
-        className={cn("h-8 w-8 rounded-md", view === "list" && "bg-slate-100")}
+        className={cn("h-8 w-8 rounded-md", view === "list" && "bg-muted")}
         onClick={() => onChange("list")}
       >
         <List className="h-4 w-4" />

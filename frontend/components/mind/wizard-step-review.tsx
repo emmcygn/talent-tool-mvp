@@ -15,8 +15,8 @@ interface WizardStepReviewProps {
 function ReviewRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-start gap-4 py-3">
-      <span className="text-sm text-slate-500 w-36 shrink-0">{label}</span>
-      <span className="text-sm text-slate-900">{value}</span>
+      <span className="text-sm text-muted-foreground w-36 shrink-0">{label}</span>
+      <span className="text-sm text-foreground">{value}</span>
     </div>
   );
 }
@@ -30,13 +30,13 @@ export function WizardStepReview({ formData, onPublish, publishing }: WizardStep
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-medium text-slate-900 mb-1">Review and publish</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-lg font-medium text-foreground mb-1">Review and publish</h2>
+        <p className="text-sm text-muted-foreground">
           Double-check everything looks right. Once published, we will start matching candidates immediately.
         </p>
       </div>
 
-      <div className="rounded-lg border border-slate-200 divide-y divide-slate-100">
+      <div className="rounded-lg border border-border divide-y divide-border">
         <div className="p-4">
           <ReviewRow label="Role Title" value={formData.title} />
           {formData.department && <ReviewRow label="Department" value={formData.department} />}
@@ -46,7 +46,7 @@ export function WizardStepReview({ formData, onPublish, publishing }: WizardStep
           <ReviewRow
             label="Description"
             value={
-              <p className="text-sm text-slate-700 leading-relaxed line-clamp-4">
+              <p className="text-sm text-foreground/80 leading-relaxed line-clamp-4">
                 {formData.description}
               </p>
             }
@@ -59,9 +59,9 @@ export function WizardStepReview({ formData, onPublish, publishing }: WizardStep
             value={
               <div className="flex flex-wrap gap-1.5">
                 {formData.required_skills.map((s) => (
-                  <Badge key={s.name} variant="outline" className="bg-slate-100 text-slate-800">
+                  <Badge key={s.name} variant="outline" className="bg-muted text-foreground">
                     {s.name}
-                    {s.min_years && <span className="text-slate-400 ml-1">{s.min_years}+ yr</span>}
+                    {s.min_years && <span className="text-muted-foreground/60 ml-1">{s.min_years}+ yr</span>}
                   </Badge>
                 ))}
               </div>
@@ -72,12 +72,12 @@ export function WizardStepReview({ formData, onPublish, publishing }: WizardStep
             value={
               <div className="flex flex-wrap gap-1.5">
                 {formData.preferred_skills.map((s) => (
-                  <Badge key={s.name} variant="outline" className="bg-amber-50 text-amber-800 border-amber-200">
+                  <Badge key={s.name} variant="outline" className="bg-amber-500/10 text-amber-400 border-amber-500/20">
                     {s.name}
                   </Badge>
                 ))}
                 {formData.preferred_skills.length === 0 && (
-                  <span className="text-slate-400">None</span>
+                  <span className="text-muted-foreground/60">None</span>
                 )}
               </div>
             }
@@ -115,7 +115,7 @@ export function WizardStepReview({ formData, onPublish, publishing }: WizardStep
         </Button>
       </div>
 
-      <p className="text-xs text-slate-400 text-center">
+      <p className="text-xs text-muted-foreground/60 text-center">
         After publishing, our AI will begin matching candidates from our talent network. You will receive notifications as matches are found.
       </p>
     </div>

@@ -113,8 +113,8 @@ export function WizardStepRequirements({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-medium text-slate-900 mb-1">Review extracted requirements</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-lg font-medium text-foreground mb-1">Review extracted requirements</h2>
+        <p className="text-sm text-muted-foreground">
           We analysed your description and extracted these requirements. Edit, add, or remove as needed.
         </p>
       </div>
@@ -130,13 +130,13 @@ export function WizardStepRequirements({
       )}
 
       {extracted && !extracting && (
-        <div className="flex items-center gap-3 rounded-lg bg-green-50 border border-green-100 p-4">
-          <Sparkles className="h-5 w-5 text-green-600" />
-          <p className="text-sm text-green-800">
+        <div className="flex items-center gap-3 rounded-lg bg-emerald-500/10 border border-green-100 p-4">
+          <Sparkles className="h-5 w-5 text-emerald-400" />
+          <p className="text-sm text-emerald-400">
             Found {requiredSkills.length} required and {preferredSkills.length} preferred skills.
             Review and adjust below.
           </p>
-          <Button variant="ghost" size="sm" onClick={extractRequirements} className="ml-auto text-green-700">
+          <Button variant="ghost" size="sm" onClick={extractRequirements} className="ml-auto text-emerald-400">
             Re-extract
           </Button>
         </div>
@@ -144,7 +144,7 @@ export function WizardStepRequirements({
 
       {/* Seniority */}
       <div className="space-y-2">
-        <label className="text-sm font-medium text-slate-700">Seniority Level</label>
+        <label className="text-sm font-medium text-foreground/80">Seniority Level</label>
         <Select
           value={seniority ?? ""}
           onValueChange={(val) => onChange({ seniority: val as SeniorityLevel })}
@@ -162,21 +162,21 @@ export function WizardStepRequirements({
 
       {/* Required Skills */}
       <div className="space-y-3">
-        <label className="text-sm font-medium text-slate-700">Required Skills</label>
+        <label className="text-sm font-medium text-foreground/80">Required Skills</label>
         <div className="flex flex-wrap gap-2">
           {requiredSkills.map((skill) => (
             <Badge
               key={skill.name}
               variant="outline"
-              className="bg-slate-100 text-slate-800 border-slate-300 gap-1 pr-1 py-1 text-sm cursor-default"
+              className="bg-muted text-foreground border-border gap-1 pr-1 py-1 text-sm cursor-default"
             >
               {skill.name}
               {skill.min_years && (
-                <span className="text-slate-400 ml-1">{skill.min_years}+ yr</span>
+                <span className="text-muted-foreground/60 ml-1">{skill.min_years}+ yr</span>
               )}
               <button
                 onClick={() => toggleImportance(skill.name)}
-                className="ml-1 px-1 text-xs text-slate-400 hover:text-amber-600"
+                className="ml-1 px-1 text-xs text-muted-foreground/60 hover:text-amber-400"
                 title="Move to preferred"
               >
                 <Pencil className="h-3 w-3" />
@@ -185,7 +185,7 @@ export function WizardStepRequirements({
                 onClick={() => removeSkill(skill.name, "required")}
                 className="ml-0.5 rounded-full hover:bg-slate-200 p-0.5"
               >
-                <X className="h-3 w-3 text-slate-400" />
+                <X className="h-3 w-3 text-muted-foreground/60" />
               </button>
             </Badge>
           ))}
@@ -194,13 +194,13 @@ export function WizardStepRequirements({
 
       {/* Preferred Skills */}
       <div className="space-y-3">
-        <label className="text-sm font-medium text-slate-700">Preferred Skills</label>
+        <label className="text-sm font-medium text-foreground/80">Preferred Skills</label>
         <div className="flex flex-wrap gap-2">
           {preferredSkills.map((skill) => (
             <Badge
               key={skill.name}
               variant="outline"
-              className="bg-amber-50 text-amber-800 border-amber-200 gap-1 pr-1 py-1 text-sm cursor-default"
+              className="bg-amber-500/10 text-amber-400 border-amber-500/20 gap-1 pr-1 py-1 text-sm cursor-default"
             >
               {skill.name}
               {skill.min_years && (
@@ -208,14 +208,14 @@ export function WizardStepRequirements({
               )}
               <button
                 onClick={() => toggleImportance(skill.name)}
-                className="ml-1 px-1 text-xs text-amber-400 hover:text-slate-600"
+                className="ml-1 px-1 text-xs text-amber-400 hover:text-muted-foreground"
                 title="Move to required"
               >
                 <Pencil className="h-3 w-3" />
               </button>
               <button
                 onClick={() => removeSkill(skill.name, "preferred")}
-                className="ml-0.5 rounded-full hover:bg-amber-100 p-0.5"
+                className="ml-0.5 rounded-full hover:bg-amber-500/10 p-0.5"
               >
                 <X className="h-3 w-3 text-amber-400" />
               </button>

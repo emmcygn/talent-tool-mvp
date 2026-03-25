@@ -125,13 +125,13 @@ export function HandoffSendDialog({
               {filteredCandidates.slice(0, 15).map((c) => (
                 <label
                   key={c.id}
-                  className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 cursor-pointer border-b last:border-0"
+                  className="flex items-center gap-3 px-3 py-2 hover:bg-muted cursor-pointer border-b last:border-0"
                 >
                   <input
                     type="checkbox"
                     checked={selectedCandidates.includes(c.id)}
                     onChange={() => toggleCandidate(c.id)}
-                    className="rounded border-slate-300"
+                    className="rounded border-border"
                   />
                   <div className="flex-1 min-w-0">
                     <span className="text-sm font-medium">

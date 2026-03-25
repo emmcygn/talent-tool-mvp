@@ -153,10 +153,10 @@ export default function CandidateBrowsePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Matched Candidates</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-semibold text-foreground">Matched Candidates</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             AI-matched candidates for your active roles
           </p>
         </div>
@@ -166,14 +166,14 @@ export default function CandidateBrowsePage() {
           value={selectedRoleId ?? ""}
           onValueChange={(val) => val && handleSelectRole(val)}
         >
-          <SelectTrigger className="w-72">
+          <SelectTrigger className="w-full md:w-72">
             <SelectValue placeholder="Select a role" />
           </SelectTrigger>
           <SelectContent>
             {roles.map((role) => (
               <SelectItem key={role.id} value={role.id}>
                 <div className="flex items-center gap-2">
-                  <Briefcase className="h-4 w-4 text-slate-400" />
+                  <Briefcase className="h-4 w-4 text-muted-foreground/60" />
                   {role.title}
                 </div>
               </SelectItem>
@@ -184,23 +184,23 @@ export default function CandidateBrowsePage() {
 
       {/* Summary bar */}
       {selectedRole && !loading && (
-        <div className="flex items-center gap-4 text-sm text-slate-500">
+        <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-muted-foreground">
           <span>{sortedMatches.length} candidates matched</span>
-          <span className="text-slate-300">|</span>
-          <span className="text-green-600">
+          <span className="text-muted-foreground/40">|</span>
+          <span className="text-emerald-400">
             {sortedMatches.filter((m) => m.match.confidence === "strong").length} strong
           </span>
-          <span className="text-amber-600">
+          <span className="text-amber-400">
             {sortedMatches.filter((m) => m.match.confidence === "good").length} good
           </span>
-          <span className="text-slate-400">
+          <span className="text-muted-foreground/60">
             {sortedMatches.filter((m) => m.match.confidence === "possible").length} possible
           </span>
         </div>
       )}
 
       {/* Filter Bar + View Toggle */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <CandidateFilterBar
           filters={filters}
           onChange={setFilters}

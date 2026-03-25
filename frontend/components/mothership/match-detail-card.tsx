@@ -75,7 +75,7 @@ export function MatchDetailCard({
               {match.strengths.length > 0 && (
                 <div className="flex gap-1 flex-wrap">
                   {match.strengths.map((s, i) => (
-                    <Badge key={i} variant="outline" className="bg-green-50 text-green-700 text-xs">
+                    <Badge key={i} variant="outline" className="bg-emerald-500/10 text-emerald-400 text-xs">
                       {s}
                     </Badge>
                   ))}
@@ -84,7 +84,7 @@ export function MatchDetailCard({
               {match.gaps.length > 0 && (
                 <div className="flex gap-1 flex-wrap">
                   {match.gaps.map((g, i) => (
-                    <Badge key={i} variant="outline" className="bg-amber-50 text-amber-700 text-xs">
+                    <Badge key={i} variant="outline" className="bg-amber-500/10 text-amber-400 text-xs">
                       {g}
                     </Badge>
                   ))}

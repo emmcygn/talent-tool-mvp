@@ -10,7 +10,14 @@
       "Bash(git push:*)",
       "Bash(curl:*)",
       "Bash(npm run:*)",
-      "WebFetch(domain:www.wavetalent.co)"
+      "WebFetch(domain:www.wavetalent.co)",
+      "Bash(npx tsc:*)",
+      "Bash(python -m seed.generate)",
+      "Bash(claude mcp:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "supabase"
+  ],
+  "enableAllProjectMcpServers": true
 }

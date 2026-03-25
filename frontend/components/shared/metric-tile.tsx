@@ -42,8 +42,8 @@ export function MetricTile({
         {trend && (
           <span className={cn(
             "flex items-center gap-0.5 text-xs font-medium",
-            trend.value > 0 && "text-green-600",
-            trend.value < 0 && "text-red-600",
+            trend.value > 0 && "text-emerald-400",
+            trend.value < 0 && "text-red-400",
             trend.value === 0 && "text-muted-foreground"
           )}>
             {trend.value > 0 && <TrendingUp className="h-3 w-3" />}

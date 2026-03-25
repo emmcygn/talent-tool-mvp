@@ -56,7 +56,7 @@ export default function QuotesPage() {
   const declined = quotes.filter((q) => q.status === "declined" || q.status === "expired");
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-0 max-w-3xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Quotes</h1>
         <p className="text-muted-foreground text-sm mt-1">
@@ -70,7 +70,7 @@ export default function QuotesPage() {
             <Clock className="h-4 w-4" />
             Active
             {active.length > 0 && (
-              <span className="ml-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs font-medium">
+              <span className="ml-1 rounded-full bg-blue-500/10 text-blue-400 px-2 py-0.5 text-xs font-medium">
                 {active.length}
               </span>
             )}

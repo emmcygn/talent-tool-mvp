@@ -155,7 +155,7 @@ export function CopilotSidebar({ pageContext = "default" }: CopilotSidebarProps)
 
   if (collapsed) {
     return (
-      <div className="flex flex-col items-center py-4 px-1 border-l bg-white">
+      <div className="flex flex-col items-center py-4 px-1 border-l bg-card">
         <Button
           variant="ghost"
           size="icon"
@@ -176,7 +176,7 @@ export function CopilotSidebar({ pageContext = "default" }: CopilotSidebarProps)
   }
 
   return (
-    <div className="w-96 border-l bg-white flex flex-col h-full">
+    <div className="w-96 border-l bg-card flex flex-col h-full">
       <div className="flex items-center justify-between px-4 py-3 border-b shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center">

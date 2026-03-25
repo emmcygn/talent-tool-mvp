@@ -72,22 +72,8 @@ export type DemoSignInResult =
 export async function signInAsDemo(role: UserRole): Promise<DemoSignInResult> {
   const creds = DEMO_USERS[role];
 
-  // Try real Supabase auth first
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: creds.email,
-      password: creds.password,
-    });
-    if (!error && data.user) {
-      return { type: "supabase", data };
-    }
-  } catch {
-    // Fall through to demo mode
-  }
-
-  // Fallback: demo mode bypass (no real auth)
-  console.log(`[Demo Mode] Signing in as ${role} — Supabase auth unavailable, using mock user`);
+  // Always use demo mode — avoids session/cookie race conditions with proxy
+  // Supabase auth works but the session isn't available fast enough for middleware
   return { type: "demo", user: creds.mockUser };
 }
 

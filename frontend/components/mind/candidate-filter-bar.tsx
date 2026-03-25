@@ -51,7 +51,7 @@ export function CandidateFilterBar({ filters, onChange }: CandidateFilterBarProp
       <div className="flex items-center gap-3 flex-wrap">
         {/* Skill Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
           <Input
             value={skillInput}
             onChange={(e) => setSkillInput(e.target.value)}
@@ -114,7 +114,7 @@ export function CandidateFilterBar({ filters, onChange }: CandidateFilterBarProp
 
         {/* Clear */}
         {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={clearAll} className="text-slate-400 gap-1">
+          <Button variant="ghost" size="sm" onClick={clearAll} className="text-muted-foreground/60 gap-1">
             <X className="h-3.5 w-3.5" />
             Clear
           </Button>

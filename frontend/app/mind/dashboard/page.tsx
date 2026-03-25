@@ -60,7 +60,7 @@ export default function ClientDashboardPage() {
   const activeRoles = data?.roles.filter((r) => r.status === "active") ?? [];
 
   return (
-    <div className="p-6 md:p-10 max-w-5xl mx-auto">
+    <div className="p-0 max-w-5xl mx-auto">
       {/* Greeting */}
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
@@ -184,17 +184,17 @@ export default function ClientDashboardPage() {
               <div className="space-y-2">
                 {activeRoles.map((role) => {
                   const statusColor = {
-                    draft: "bg-slate-100 text-slate-600",
-                    active: "bg-green-100 text-green-700",
-                    paused: "bg-amber-100 text-amber-700",
-                    filled: "bg-blue-100 text-blue-700",
-                    closed: "bg-slate-100 text-slate-500",
+                    draft: "bg-muted text-muted-foreground",
+                    active: "bg-emerald-500/10 text-emerald-400",
+                    paused: "bg-amber-500/10 text-amber-400",
+                    filled: "bg-blue-500/10 text-blue-400",
+                    closed: "bg-muted text-muted-foreground",
                   }[role.status];
 
                   return (
                     <div
                       key={role.id}
-                      className="flex items-center justify-between rounded-lg border p-3 hover:bg-slate-50 cursor-pointer transition-colors"
+                      className="flex items-center justify-between rounded-lg border p-3 hover:bg-muted cursor-pointer transition-colors"
                       onClick={() => router.push(`/mind/candidates?role=${role.id}`)}
                     >
                       <div className="min-w-0">
@@ -275,11 +275,11 @@ export default function ClientDashboardPage() {
               <div className="space-y-2">
                 {data?.quotes.slice(0, 4).map((q) => {
                   const statusStyle = {
-                    generated: "text-blue-700 bg-blue-50",
-                    sent: "text-amber-700 bg-amber-50",
-                    accepted: "text-green-700 bg-green-50",
-                    declined: "text-red-700 bg-red-50",
-                    expired: "text-slate-500 bg-slate-50",
+                    generated: "text-blue-400 bg-blue-500/10",
+                    sent: "text-amber-400 bg-amber-500/10",
+                    accepted: "text-emerald-400 bg-emerald-500/10",
+                    declined: "text-red-400 bg-red-500/10",
+                    expired: "text-muted-foreground bg-muted",
                   }[q.status];
 
                   return (

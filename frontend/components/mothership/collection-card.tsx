@@ -15,7 +15,7 @@ interface CollectionCardProps {
 function visibilityIcon(visibility: string) {
   switch (visibility) {
     case "private":
-      return <EyeOff className="h-3.5 w-3.5 text-slate-400" />;
+      return <EyeOff className="h-3.5 w-3.5 text-muted-foreground/60" />;
     case "shared_specific":
       return <Share2 className="h-3.5 w-3.5 text-blue-500" />;
     case "shared_all":
@@ -42,8 +42,8 @@ export function CollectionCard({ collection, onClick, isShared }: CollectionCard
   return (
     <Card
       className={cn(
-        "cursor-pointer transition-all hover:shadow-md hover:border-slate-300",
-        isShared && "border-blue-100 bg-blue-50/30"
+        "cursor-pointer transition-all hover:shadow-md hover:border-border",
+        isShared && "border-blue-100 bg-blue-500/10/30"
       )}
       onClick={onClick}
     >
@@ -77,20 +77,20 @@ export function CollectionCard({ collection, onClick, isShared }: CollectionCard
 
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-md bg-slate-50 px-2 py-1.5">
-            <div className="text-lg font-semibold text-slate-900">
+          <div className="rounded-md bg-muted px-2 py-1.5">
+            <div className="text-lg font-semibold text-foreground">
               {collection.candidate_count}
             </div>
             <div className="text-[11px] text-muted-foreground">Candidates</div>
           </div>
-          <div className="rounded-md bg-green-50 px-2 py-1.5">
-            <div className="text-lg font-semibold text-green-700">
+          <div className="rounded-md bg-emerald-500/10 px-2 py-1.5">
+            <div className="text-lg font-semibold text-emerald-400">
               {collection.available_now_count}
             </div>
             <div className="text-[11px] text-muted-foreground">Available</div>
           </div>
-          <div className="rounded-md bg-amber-50 px-2 py-1.5">
-            <div className="text-lg font-semibold text-amber-700">
+          <div className="rounded-md bg-amber-500/10 px-2 py-1.5">
+            <div className="text-lg font-semibold text-amber-400">
               {collection.avg_match_score
                 ? `${Math.round(collection.avg_match_score * 100)}%`
                 : "\u2014"}

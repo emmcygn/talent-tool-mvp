@@ -15,9 +15,9 @@ import { userFullName } from "@/contracts/canonical";
 import type { User } from "@/contracts/canonical";
 
 const roleBadgeStyle: Record<string, string> = {
-  talent_partner: "bg-blue-50 text-blue-700 border-blue-200",
-  client: "bg-green-50 text-green-700 border-green-200",
-  admin: "bg-purple-50 text-purple-700 border-purple-200",
+  talent_partner: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  client: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  admin: "bg-purple-50 text-purple-400 border-purple-200",
 };
 
 const roleIcon: Record<string, React.ElementType> = {
@@ -84,7 +84,7 @@ export default function UsersPage() {
           <div className="rounded-md border-0 overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-slate-50">
+                <tr className="border-b bg-muted">
                   <th className="text-left font-medium px-4 py-3">User</th>
                   <th className="text-left font-medium px-4 py-3">Email</th>
                   <th className="text-left font-medium px-4 py-3">Role</th>
@@ -108,10 +108,10 @@ export default function UsersPage() {
                     {filtered.map((user) => {
                       const RoleIcon = roleIcon[user.role] || Users;
                       return (
-                        <tr key={user.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
+                        <tr key={user.id} className="border-b last:border-0 hover:bg-muted transition-colors">
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
-                              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-medium text-slate-600">
+                              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground">
                                 {user.first_name[0]}{user.last_name[0]}
                               </div>
                               <span className="font-medium">{userFullName(user)}</span>

@@ -72,7 +72,7 @@ export function ExtractionViewer({
       <Card>
         <CardContent className="flex flex-col items-center justify-center py-16">
           <Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-4" />
-          <p className="text-sm font-medium text-slate-700">Uploading document...</p>
+          <p className="text-sm font-medium text-foreground/80">Uploading document...</p>
         </CardContent>
       </Card>
     );
@@ -86,14 +86,14 @@ export function ExtractionViewer({
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
             <Sparkles className="h-5 w-5 text-purple-600" />
           </div>
           <div>
             <CardTitle className="text-lg">
               {state === "extracting" ? "Extracting profile..." : "Review extracted profile"}
             </CardTitle>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-muted-foreground">
               {state === "extracting"
                 ? "AI is reading the document and extracting structured data"
                 : "Review and correct any fields before saving"}
@@ -135,7 +135,7 @@ export function ExtractionViewer({
 
         {visibleFields.has("skills") && (
           <div className={cn("transition-all duration-500", visibleFields.has("skills") ? "opacity-100" : "opacity-0")}>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Skills</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Skills</p>
             <div className="flex flex-wrap gap-1.5">
               {candidate.skills.map((skill) => (
                 <span
@@ -143,12 +143,12 @@ export function ExtractionViewer({
                   className={cn(
                     "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium transition-all",
                     skill.confidence >= lowConfidenceThreshold
-                      ? "bg-slate-100 text-slate-800 border-slate-200"
-                      : "bg-amber-50 text-amber-800 border-amber-200"
+                      ? "bg-muted text-foreground border-border"
+                      : "bg-amber-500/10 text-amber-400 border-amber-500/20"
                   )}
                 >
                   {skill.name}
-                  {skill.years && <span className="ml-1 text-slate-400">{skill.years}y</span>}
+                  {skill.years && <span className="ml-1 text-muted-foreground/60">{skill.years}y</span>}
                   {skill.confidence < lowConfidenceThreshold && (
                     <span className="ml-1 text-amber-500 text-[10px]">?</span>
                   )}
@@ -160,15 +160,15 @@ export function ExtractionViewer({
 
         {visibleFields.has("experience") && (
           <div className="transition-all duration-500">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Experience</p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Experience</p>
             <div className="space-y-2">
               {candidate.experience.map((exp, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm">
-                  <span className="font-medium text-slate-900">{exp.title}</span>
-                  <span className="text-slate-400">at</span>
-                  <span className="text-slate-700">{exp.company}</span>
+                  <span className="font-medium text-foreground">{exp.title}</span>
+                  <span className="text-muted-foreground/60">at</span>
+                  <span className="text-foreground/80">{exp.company}</span>
                   {exp.duration_months && (
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-muted-foreground/60">
                       ({Math.round(exp.duration_months / 12)}y {exp.duration_months % 12}m)
                     </span>
                   )}

@@ -34,10 +34,10 @@ function PartnerPerformanceTable({ data }: { data: PartnerPerformance[] }) {
   }
 
   return (
-    <div className="rounded-md border">
-      <table className="w-full text-sm">
+    <div className="rounded-md border overflow-x-auto">
+      <table className="w-full text-sm min-w-[600px]">
         <thead>
-          <tr className="border-b bg-slate-50">
+          <tr className="border-b bg-muted">
             <th className="text-left font-medium px-4 py-2.5">Partner</th>
             <th className="text-right font-medium px-4 py-2.5">Candidates</th>
             <th className="text-right font-medium px-4 py-2.5">Handoffs</th>
@@ -48,7 +48,7 @@ function PartnerPerformanceTable({ data }: { data: PartnerPerformance[] }) {
         </thead>
         <tbody>
           {data.map((p) => (
-            <tr key={p.id} className="border-b last:border-0 hover:bg-slate-50">
+            <tr key={p.id} className="border-b last:border-0 hover:bg-muted">
               <td className="px-4 py-2.5 font-medium">{p.name}</td>
               <td className="px-4 py-2.5 text-right">{p.candidatesAdded}</td>
               <td className="px-4 py-2.5 text-right">{p.handoffsSent}</td>
@@ -152,13 +152,15 @@ export default function AnalyticsPage() {
       </div>
 
       <Tabs defaultValue="funnel" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="funnel">Pipeline Funnel</TabsTrigger>
-          <TabsTrigger value="skills">Trending Skills</TabsTrigger>
-          <TabsTrigger value="partners">Partner Performance</TabsTrigger>
-          <TabsTrigger value="engagement">Client Engagement</TabsTrigger>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+          <TabsList className="w-max md:w-auto">
+            <TabsTrigger value="funnel">Pipeline Funnel</TabsTrigger>
+            <TabsTrigger value="skills">Trending Skills</TabsTrigger>
+            <TabsTrigger value="partners">Partner Performance</TabsTrigger>
+            <TabsTrigger value="engagement">Client Engagement</TabsTrigger>
+            <TabsTrigger value="activity">Activity</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="funnel">
           <Card>
@@ -221,7 +223,7 @@ export default function AnalyticsPage() {
               <CardTitle className="text-base">Client Engagement</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <MetricTile label="Browse Frequency" value="4.2/week" subtitle="Avg per client" loading={loading} />
                 <MetricTile label="Shortlist Rate" value="38%" subtitle="Of viewed candidates" loading={loading} />
                 <MetricTile label="Quote Acceptance" value="67%" subtitle="Of generated quotes" loading={loading} />

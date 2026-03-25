@@ -76,9 +76,9 @@ const DEMO_STEPS: DemoStep[] = [
 ];
 
 const PERSONA_LABELS: Record<string, { label: string; color: string }> = {
-  talent_partner: { label: "Talent Partner", color: "bg-blue-100 text-blue-700" },
-  client: { label: "Client", color: "bg-green-100 text-green-700" },
-  admin: { label: "Admin", color: "bg-purple-100 text-purple-700" },
+  talent_partner: { label: "Talent Partner", color: "bg-blue-500/10 text-blue-400" },
+  client: { label: "Client", color: "bg-emerald-500/10 text-emerald-400" },
+  admin: { label: "Admin", color: "bg-purple-500/10 text-purple-400" },
 };
 
 interface DemoOverlayProps {
@@ -112,7 +112,7 @@ export function DemoOverlay({ onClose }: DemoOverlayProps) {
           <h2 className="text-xl font-semibold mb-2">{step.title}</h2>
           <p className="text-sm text-muted-foreground mb-6">{step.description}</p>
 
-          <div className="w-full bg-slate-100 rounded-full h-1 mb-4">
+          <div className="w-full bg-muted rounded-full h-1 mb-4">
             <div
               className="bg-primary h-1 rounded-full transition-all duration-300"
               style={{ width: `${((currentStep + 1) / DEMO_STEPS.length) * 100}%` }}

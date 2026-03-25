@@ -32,8 +32,8 @@ const AVAILABILITY_LABELS: Record<string, string> = {
 
 const STATUS_BADGES: Record<string, { label: string; className: string }> = {
   shortlisted: { label: "Shortlisted", className: "bg-pink-50 text-pink-700 border-pink-200" },
-  intro_requested: { label: "Intro Requested", className: "bg-blue-50 text-blue-700 border-blue-200" },
-  dismissed: { label: "Dismissed", className: "bg-slate-100 text-slate-400 border-slate-200" },
+  intro_requested: { label: "Intro Requested", className: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
+  dismissed: { label: "Dismissed", className: "bg-muted text-muted-foreground/60 border-border" },
 };
 
 export function AnonymizedMatchCard({
@@ -56,16 +56,16 @@ export function AnonymizedMatchCard({
     )}>
       <CardHeader className="flex flex-row items-start gap-4 pb-3">
         <Avatar className="h-11 w-11">
-          <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-sm font-semibold text-slate-600">
+          <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-sm font-semibold text-muted-foreground">
             {candidate.first_name.charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-semibold text-slate-900">{displayName}</h3>
+            <h3 className="font-semibold text-foreground">{displayName}</h3>
             <ConfidenceBadge confidence={match.confidence} />
             {candidate.is_pool_candidate && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 gap-1 text-xs">
+              <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20 gap-1 text-xs">
                 <ShieldCheck className="h-3 w-3" />
                 Pre-vetted
               </Badge>
@@ -77,7 +77,7 @@ export function AnonymizedMatchCard({
               </Badge>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
+          <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
             {candidate.seniority && (
               <span className="capitalize">{candidate.seniority}</span>
             )}
@@ -90,13 +90,13 @@ export function AnonymizedMatchCard({
 
       <CardContent className="space-y-3 pt-0">
         {/* Explanation — plain English */}
-        <p className="text-sm text-slate-600 leading-relaxed">{match.explanation}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{match.explanation}</p>
 
         {/* Skill Chips */}
         <SkillChips skills={match.skill_overlap} maxDisplay={6} />
 
         {/* Meta */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
           {candidate.location && (
             <span className="flex items-center gap-1">
               <MapPin className="h-3.5 w-3.5" />
@@ -106,7 +106,7 @@ export function AnonymizedMatchCard({
           {candidate.availability && (
             <span className={cn(
               "flex items-center gap-1",
-              candidate.availability === "immediate" ? "text-green-600" : ""
+              candidate.availability === "immediate" ? "text-emerald-400" : ""
             )}>
               <Clock className="h-3.5 w-3.5" />
               {AVAILABILITY_LABELS[candidate.availability] ?? candidate.availability}
@@ -116,13 +116,13 @@ export function AnonymizedMatchCard({
 
         {/* Expanded — strengths + gaps */}
         {expanded && (
-          <div className="mt-3 space-y-3 rounded-lg bg-slate-50 p-4 text-sm">
+          <div className="mt-3 space-y-3 rounded-lg bg-muted p-4 text-sm">
             {match.strengths.length > 0 && (
               <div>
-                <p className="font-medium text-slate-700 mb-1">Why they are a great fit:</p>
+                <p className="font-medium text-foreground/80 mb-1">Why they are a great fit:</p>
                 <ul className="space-y-1">
                   {match.strengths.map((s, i) => (
-                    <li key={i} className="text-slate-600 flex items-start gap-2">
+                    <li key={i} className="text-muted-foreground flex items-start gap-2">
                       <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-400 shrink-0" />
                       {s}
                     </li>
@@ -132,10 +132,10 @@ export function AnonymizedMatchCard({
             )}
             {match.gaps.length > 0 && (
               <div>
-                <p className="font-medium text-slate-700 mb-1">Things to consider:</p>
+                <p className="font-medium text-foreground/80 mb-1">Things to consider:</p>
                 <ul className="space-y-1">
                   {match.gaps.map((g, i) => (
-                    <li key={i} className="text-slate-600 flex items-start gap-2">
+                    <li key={i} className="text-muted-foreground flex items-start gap-2">
                       <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />
                       {g}
                     </li>
@@ -144,7 +144,7 @@ export function AnonymizedMatchCard({
               </div>
             )}
             {match.recommendation && (
-              <p className="text-slate-700 font-medium border-t border-slate-200 pt-2">
+              <p className="text-foreground/80 font-medium border-t border-border pt-2">
                 {match.recommendation}
               </p>
             )}
@@ -169,7 +169,7 @@ export function AnonymizedMatchCard({
                 variant="outline"
                 size="sm"
                 onClick={() => onDismiss(match.id)}
-                className="gap-1.5 text-slate-400 hover:text-slate-600"
+                className="gap-1.5 text-muted-foreground/60 hover:text-muted-foreground"
               >
                 <X className="h-3.5 w-3.5" />
               </Button>
@@ -189,7 +189,7 @@ export function AnonymizedMatchCard({
           variant="ghost"
           size="sm"
           onClick={() => setExpanded(!expanded)}
-          className="gap-1 text-slate-400"
+          className="gap-1 text-muted-foreground/60"
         >
           {expanded ? (
             <>Less <ChevronUp className="h-3.5 w-3.5" /></>

@@ -33,11 +33,11 @@ function FieldRow({ label, newValue, existingValue }: FieldRowProps) {
   const match = newValue === existingValue;
   return (
     <div className="grid grid-cols-[140px_1fr_1fr] gap-4 py-2 items-center">
-      <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">{label}</span>
-      <span className={cn("text-sm", match ? "text-slate-600" : "text-blue-700 font-medium")}>
+      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</span>
+      <span className={cn("text-sm", match ? "text-muted-foreground" : "text-blue-400 font-medium")}>
         {newValue ?? "—"}
       </span>
-      <span className={cn("text-sm", match ? "text-slate-600" : "text-purple-700 font-medium")}>
+      <span className={cn("text-sm", match ? "text-muted-foreground" : "text-purple-400 font-medium")}>
         {existingValue ?? "—"}
       </span>
     </div>
@@ -67,13 +67,13 @@ export function DedupComparison({
         <div className="grid grid-cols-[140px_1fr_1fr] gap-4 py-2">
           <span />
           <div className="space-y-1">
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">New Record</Badge>
+            <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">New Record</Badge>
             {newCandidate.sources.length > 0 && (
               <div><SourceBadge source={newCandidate.sources[0]} /></div>
             )}
           </div>
           <div className="space-y-1">
-            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">Existing Record</Badge>
+            <Badge variant="outline" className="bg-purple-50 text-purple-400 border-purple-200">Existing Record</Badge>
             {existingCandidate.sources.length > 0 && (
               <div><SourceBadge source={existingCandidate.sources[0]} /></div>
             )}

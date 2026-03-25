@@ -42,7 +42,7 @@ export function FunnelChart({ stages, className }: FunnelChartProps) {
                   )}
                 </div>
               </div>
-              <div className="h-8 rounded-md bg-slate-100 overflow-hidden">
+              <div className="h-8 rounded-md bg-muted overflow-hidden">
                 <div
                   className="h-full rounded-md transition-all duration-500"
                   style={{

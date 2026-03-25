@@ -110,7 +110,7 @@ export default function CollectionsPage() {
       selectedCollection.candidate_ids.includes(c.id)
     );
     return (
-      <div className="p-6 max-w-5xl">
+      <div className="p-4 md:p-6 max-w-5xl">
         <CollectionDetail
           collection={selectedCollection}
           candidates={collectionCandidates}
@@ -125,9 +125,9 @@ export default function CollectionsPage() {
   }
 
   return (
-    <div className="p-6 max-w-6xl">
+    <div className="p-0 max-w-6xl">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Collections</h1>
           <p className="text-muted-foreground text-sm mt-1">

@@ -70,15 +70,15 @@ export function CVUploadZone({
         className={cn(
           "flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 transition-colors cursor-pointer",
           isDragOver
-            ? "border-blue-400 bg-blue-50"
-            : "border-slate-200 bg-slate-50 hover:border-slate-300"
+            ? "border-blue-400 bg-blue-500/10"
+            : "border-border bg-muted hover:border-border"
         )}
       >
-        <Upload className="h-10 w-10 text-slate-400 mb-4" />
-        <p className="text-sm font-medium text-slate-700 mb-1">
+        <Upload className="h-10 w-10 text-muted-foreground/60 mb-4" />
+        <p className="text-sm font-medium text-foreground/80 mb-1">
           Drop a CV here, or click to browse
         </p>
-        <p className="text-xs text-slate-400">PDF or DOCX, up to 10MB</p>
+        <p className="text-xs text-muted-foreground/60">PDF or DOCX, up to 10MB</p>
         <input
           ref={inputRef}
           type="file"
@@ -93,10 +93,10 @@ export function CVUploadZone({
           <CardContent className="flex items-center gap-3 py-3">
             <FileText className="h-8 w-8 text-blue-500" />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-slate-900 truncate">
+              <p className="text-sm font-medium text-foreground truncate">
                 {selectedFile.name}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground/60">
                 {(selectedFile.size / 1024).toFixed(0)} KB
               </p>
             </div>

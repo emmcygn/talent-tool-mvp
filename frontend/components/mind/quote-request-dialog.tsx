@@ -83,7 +83,7 @@ export function QuoteRequestDialog({
             </div>
           ) : error ? (
             <div className="text-center py-6">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-sm text-red-400">{error}</p>
             </div>
           ) : quote ? (
             <QuoteCard
