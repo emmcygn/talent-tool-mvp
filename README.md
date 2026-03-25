@@ -12,7 +12,9 @@ A proof-of-concept recruitment platform built to demonstrate the **Mind + Mother
 
 ## What is this?
 
-talent-tool-mvp is a working prototype of a dual-product recruitment platform. It mirrors the architecture described in the Wave Talent founding engineer brief: an external-facing product for hiring managers (**Mind**) and an internal operating system for talent partners and admins (**Mothership**), unified by a shared AI-powered data layer.
+talent-tool-mvp is a working prototype of a dual-product recruitment platform: an external-facing product for hiring managers (**Mind**) and an internal operating system for talent partners and admins (**Mothership**), unified by a shared AI-powered data layer.
+
+The core thesis: **competitors can copy a UI, but they can't easily replicate structured operational signal, real-world feedback loops, and workflow context turned into reliable product intelligence.** This platform demonstrates that defensibility layer.
 
 ---
 
@@ -76,6 +78,47 @@ graph TB
     D2 -->|Skill extraction, match explanations, copilot| Mothership
     D2 -->|Role requirement extraction| Mind
 ```
+
+---
+
+## Canonical Data Contracts
+
+Both products build against a shared set of **canonical object definitions** -- the single source of truth for how candidates, roles, matches, and signals are structured across the platform.
+
+```mermaid
+graph LR
+    subgraph Sources ["Raw Data Sources"]
+        S1[Bullhorn ATS]
+        S2[HubSpot CRM]
+        S3[LinkedIn]
+        S4[CV Upload]
+    end
+
+    subgraph Contracts ["Canonical Data Contracts"]
+        C1[Candidate]
+        C2[Role]
+        C3[Match]
+        C4[Signal]
+        C5[Handoff]
+        C6[Quote]
+    end
+
+    subgraph Consumers ["Product Surfaces"]
+        P1[Mind UI]
+        P2[Mothership UI]
+        P3[Copilot]
+        P4[Analytics]
+        P5[API Layer]
+    end
+
+    Sources -->|Adapter normalizes| Contracts
+    Contracts -->|Typed contracts| Consumers
+```
+
+This matters because:
+- **Every data source normalizes to the same shape.** A candidate from Bullhorn and a candidate from a CV upload are identical once in the system. The adapters are the translation layer, not the product.
+- **Frontend and backend share the same type definitions.** Python Pydantic models and TypeScript interfaces are kept in sync -- the contract boundary is explicit, not implicit.
+- **New integrations don't require UI changes.** Add a new adapter, implement the canonical interface, and the candidate flows through every existing workflow automatically.
 
 ---
 
@@ -217,6 +260,69 @@ The copilot shows exactly what query it ran -- no black box. Results include one
 
 ---
 
+## Data Engineering
+
+The data layer is designed as a product, not just storage. Every design decision optimises for retrieval, usability, and quality.
+
+### Identity Resolution and Deduplication
+
+When candidates arrive from multiple sources, the system runs a three-strategy dedup pipeline:
+
+```mermaid
+graph TD
+    A[Candidate Ingested] --> B{Exact Match?}
+    B -->|Email or phone matches existing record| C[Auto-merge, high confidence]
+    B -->|No exact match| D{Fuzzy Match?}
+    D -->|Name + employer + role title similarity| E[Flag for review, 0.6-0.9 confidence]
+    D -->|No fuzzy match| F{Semantic Match?}
+    F -->|Embedding similarity > 0.95 on CV text| E
+    F -->|No match| G[Create new canonical record]
+    C --> H[Merged record preserves all source attributions]
+    E --> I[Admin reviews side-by-side comparison]
+    I -->|Approve merge| H
+    I -->|Keep separate| G
+```
+
+### Signal Layer and Feedback Loops
+
+The signal layer is the platform's instrumentation backbone -- not just analytics, but the data that makes every other feature smarter over time.
+
+```mermaid
+graph LR
+    subgraph Actions ["User Actions (Signals)"]
+        A1[Candidate viewed]
+        A2[Shortlisted]
+        A3[Dismissed with reason]
+        A4[Intro requested]
+        A5[Placement made]
+        A6[Copilot query]
+    end
+
+    subgraph Uses ["What Signals Power"]
+        U1[Activity feeds for talent partners]
+        U2[Proactive recommendations for clients]
+        U3[Match quality calibration]
+        U4[Funnel analytics and drop-off analysis]
+        U5[Partner performance metrics]
+        U6[Trending skills across open roles]
+    end
+
+    Actions --> Uses
+    A3 -->|"Dismissed 'Strong Match' = calibration signal"| U3
+    A5 -->|"Placement confirms match quality"| U3
+```
+
+Every user action -- viewing a candidate, shortlisting, dismissing, requesting an intro, making a placement -- emits a structured signal event. These signals don't just populate dashboards; they create feedback loops. When a "Strong Match" candidate gets dismissed, that's a calibration signal. When pre-vetted pool candidates convert to placements faster, that validates the marketplace model.
+
+### Schema Design
+
+- **pgvector HNSW indexes** on candidate and role embeddings for sub-100ms approximate nearest neighbor search
+- **Row-Level Security** at the database layer -- talent partners see their candidates plus shared collections, clients see only matched candidates (anonymized), admins see everything
+- **JSONB** for semi-structured fields (skills, experience, sources) that need flexible querying without schema migrations
+- **Supabase Realtime** on matches, handoffs, quotes, and signals for live updates across all connected clients
+
+---
+
 ## Key Workflows
 
 ### Candidate Ingestion to Placement
@@ -308,6 +414,32 @@ sequenceDiagram
 
 ---
 
+## Architectural Decisions
+
+Key tradeoffs made to ship a pragmatic v1 without sacrificing extensibility:
+
+| Decision | Why | Trade-off |
+|---|---|---|
+| **Mocked adapters with real interfaces** | Designed clean adapter contracts for Bullhorn, HubSpot, LinkedIn -- each returns realistic data from a seeded dataset. Proves the architecture without burning days on OAuth flows. | Swap in a real API implementation per adapter without touching any downstream code. |
+| **Hybrid matching, not pure LLM** | Structured filtering first (location, salary, availability), then semantic search, then LLM explanation. Three stages, each with a clear purpose. | A pure LLM approach would be simpler to build but doesn't scale, costs more per query, and can't explain its reasoning at the component level. |
+| **Supabase RLS for authorization** | Row-level security policies at the database layer rather than application middleware. Talent partners, clients, and admins see different data -- enforced by PostgreSQL, not by API code. | Harder to debug than application-level auth, but eliminates an entire class of authorization bugs. |
+| **Signal events as append-only log** | Every user action emits a structured signal. The log is never mutated -- only appended to. Analytics, recommendations, and feeds all read from the same stream. | Slightly more storage, but the audit trail and feedback loop data are worth it. |
+| **Confidence scoring on all AI outputs** | Every extraction and match carries a per-field confidence score. Low confidence gets flagged for human review. | More complex than a binary yes/no, but builds trust and catches errors before they propagate. |
+
+---
+
+## Business Model: Pool Pricing
+
+The quote system isn't just a feature -- it's a marketplace incentive structure. Candidates already in the shared talent pool (pre-vetted, pre-interviewed) are offered to clients at a **reduced placement fee**. This creates a flywheel:
+
+- **Talent partners are incentivized to share** -- their candidates get more exposure, more intro requests, more placements
+- **Clients are incentivized to hire from the pool** -- cheaper than an exclusive search, faster turnaround, pre-vetted quality
+- **The platform grows more defensible** -- every placement adds signal data, every shared candidate grows the pool, every interaction trains the matching engine
+
+The pricing breakdown is transparent: clients see the standard fee, the pool discount, and the savings -- building trust in the model.
+
+---
+
 ## Feature Comparison: Mind vs Mothership
 
 | Capability | Mind (Clients) | Mothership (Internal) |
@@ -335,7 +467,7 @@ The platform ships with pre-seeded demo accounts for each persona. On the login 
 | Hiring Manager | `client@demo.recruittech.io` | Mind dashboard with posted roles, AI-matched candidates, quote requests, hiring pipeline |
 | Admin | `admin@demo.recruittech.io` | Full Mothership with analytics dashboards, data quality review, adapter monitoring, platform-wide copilot |
 
-Demo data includes 50+ realistic UK-market candidates, 15+ roles across fintech/healthtech/SaaS, pre-generated matches with explanations, and signal history populating the analytics dashboards.
+Demo data includes 150+ realistic UK-market candidates, 45+ roles across fintech/healthtech/SaaS/e-commerce, pre-generated matches with explanations, 2500+ signal events populating analytics dashboards, and active handoffs, quotes, and collections demonstrating collaborative workflows.
 
 ---
 
