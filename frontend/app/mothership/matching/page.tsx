@@ -178,7 +178,9 @@ export default function MatchingPage() {
           onValueChange={(val) => val && handleSelectRole(val)}
         >
           <SelectTrigger className="w-full md:w-[300px]">
-            <SelectValue placeholder="Select a role..." />
+            {selectedRoleId
+              ? roles.find((r) => r.id === selectedRoleId)?.title ?? "Select a role..."
+              : "Select a role..."}
           </SelectTrigger>
           <SelectContent>
             {roles.map((role) => (

@@ -167,7 +167,9 @@ export default function CandidateBrowsePage() {
           onValueChange={(val) => val && handleSelectRole(val)}
         >
           <SelectTrigger className="w-full md:w-72">
-            <SelectValue placeholder="Select a role" />
+            {selectedRoleId
+              ? roles.find((r) => r.id === selectedRoleId)?.title ?? "Select a role"
+              : "Select a role"}
           </SelectTrigger>
           <SelectContent>
             {roles.map((role) => (
