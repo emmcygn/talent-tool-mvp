@@ -85,7 +85,7 @@ export default function LoginPage() {
                   key={role}
                   onClick={() => !loading && handleLogin(role)}
                   disabled={!!loading}
-                  className={`group relative w-full text-left rounded-xl border border-white/8 bg-white/60 backdrop-blur-sm p-5 transition-all duration-300 ${persona.border} hover:bg-white/80 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`group relative w-full text-left rounded-xl border border-white/8 bg-[#151B2B]/60 backdrop-blur-sm p-5 transition-all duration-300 ${persona.border} hover:bg-[#151B2B]/80 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed`}
                   style={{ animationDelay: `${0.2 + index * 0.08}s` }}
                 >
                   <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${persona.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
