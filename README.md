@@ -325,46 +325,6 @@ sequenceDiagram
 
 ---
 
-## Screenshots
-
-> The following screenshots show the dark luxe UI theme -- dark navy with teal accents, glass-morphism cards, inspired by Wave Talent's aesthetic.
-
-### Mind (Client Views)
-
-![Mind Dashboard -- action cards, active roles, pipeline metrics](docs/screenshots/mind-dashboard.png)
-
-![Role Posting -- guided workflow with real-time AI extraction](docs/screenshots/mind-role-posting.png)
-
-![Candidate Browse -- ranked matches with explanations and skill chips](docs/screenshots/mind-candidates.png)
-
-![Quote Request -- transparent pricing with pool discount breakdown](docs/screenshots/mind-quote.png)
-
-![Hiring Pipeline -- kanban board with drag-and-drop stages](docs/screenshots/mind-pipeline.png)
-
-### Mothership (Internal Views)
-
-![Talent Partner Dashboard -- active roles, pipeline health, handoff inbox](docs/screenshots/mothership-dashboard.png)
-
-![Candidate Ingestion -- CV upload with real-time extraction animation](docs/screenshots/mothership-ingestion.png)
-
-![Match Results -- ranked cards with explanations, skill chips, confidence badges](docs/screenshots/mothership-matching.png)
-
-![Copilot -- natural language queries with transparent structured output](docs/screenshots/mothership-copilot.png)
-
-![Collections -- themed candidate groups with sharing controls](docs/screenshots/mothership-collections.png)
-
-![Handoff Inbox -- incoming referrals with context and accept/decline](docs/screenshots/mothership-handoffs.png)
-
-### Admin Views
-
-![Analytics Dashboard -- funnel visualization, trending skills, partner performance](docs/screenshots/admin-analytics.png)
-
-![Data Quality -- dedup review queue with side-by-side comparison](docs/screenshots/admin-dedup.png)
-
-![Adapter Health -- sync status, error rates, schema mapping](docs/screenshots/admin-adapters.png)
-
----
-
 ## Demo Access
 
 The platform ships with pre-seeded demo accounts for each persona. On the login page, use the one-click persona selector to sign in as:
